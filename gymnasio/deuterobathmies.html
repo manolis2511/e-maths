@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Λύση Δευτέρου Βαθμού Εξίσωσης</title>
+    <script type="text/javascript" async
+        src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML">
+    </script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f8ff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            height: 100vh;
+            margin: 0;
+            padding-top: 30px;
+        }
+        h1 {
+            font-size: 40px;
+            margin-bottom: 30px;
+        }
+
+        #header {
+            background-color: #4CAF50;
+            color: black;
+            text-align: center;
+            padding: 10px 0;
+            font-size: 24px;
+            width: 100%;
+	    margin-bottom: 30px;
+ 	}
+	html, body {
+            height: 100%;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+        }
+
+        #footer {
+            margin-top: auto;
+            background-color: #4CAF50;
+            color: black;
+            text-align: center;
+            padding: 10px 0;
+            font-size: 20px;
+            width: 100%;
+        }
+
+        input {
+            font-size: 18px;
+            padding: 5px;
+            margin: 5px;
+            width: 100px;
+        }
+
+        button {
+            font-size: 18px;
+            padding: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #4CAF50;
+        }
+
+        .result {
+            margin-top: 20px;
+            font-size: 18px;
+        }
+
+        .formula {
+            font-style: italic;
+            margin-top: 10px;
+        }
+
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+	<header id="header">
+    <h1>Επίλυση Εξισώσεων 2ου Βαθμού </h1>
+    	</header>
+
+    
+    <label for="a">α:</label>
+    <input type="number" id="a" placeholder="α">
+    
+    <label for="b">β:</label>
+    <input type="number" id="b" placeholder="β">
+    
+    <label for="c">γ:</label>
+    <input type="number" id="c" placeholder="γ">
+    
+    <button onclick="showEquation()">Εμφάνιση Εξίσωσης</button>
+
+    <div id="equation" class="result hidden">
+        Εξίσωση: <span id="equation-text"></span>
+        <button onclick="calculate()">Υπολογισμός Λύσεων</button>
+    </div>
+
+    <div id="result" class="result hidden">
+        <h3>Αποτελέσματα:</h3>
+        <div id="discriminant-step"></div><br>
+        <div id="discriminant">Η Διακρίνουσα είναι Δ= <span id="delta-value"></span></div><br><br>
+        <div id="solutions-step"></div><br>
+        <div id="solutions"></div>
+    </div>
+
+    <script>
+        function showEquation() {
+            const a = parseFloat(document.getElementById('a').value);
+            const b = parseFloat(document.getElementById('b').value);
+            const c = parseFloat(document.getElementById('c').value);
+
+            if (isNaN(a) || isNaN(b) || isNaN(c)) {
+                alert("Παρακαλώ εισάγετε έγκυρες τιμές για α, β, γ.");
+                return;
+            }
+
+            // Δημιουργία της εξίσωσης
+            let equationText = `\\(${a}x^2 ${b >= 0 ? '+ ' + b : '- ' + Math.abs(b)}x ${c >= 0 ? '+ ' + c : '- ' + Math.abs(c)} = 0\\)`;
+
+            document.getElementById('equation-text').innerHTML = equationText;
+            document.getElementById('equation').classList.remove('hidden');
+            MathJax.Hub.Queue(["Typeset", MathJax.Hub, document.getElementById("equation-text")]);
+        }
+
+        function calculate() {
+            const a = parseFloat(document.getElementById('a').value);
+            const b = parseFloat(document.getElementById('b').value);
+            const c = parseFloat(document.getElementById('c').value);
+
+            const discriminant = b * b - 4 * a * c;
+
+            let discriminantStep = `\\( \\Delta = β^2 - 4aγ = (${b})^2 - 4 \\cdot (${a}) \\cdot (${c}) = ${discriminant} \\)`;
+            let solutionsText = "";
+            let solutionsStep = "";
+
+            if (discriminant < 0) {
+                solutionsText = "Δεν υπάρχουν πραγματικές λύσεις, γιατί η διακρίνουσα είναι αρνητική.";
+            } else if (discriminant === 0) {
+                const x = -b / (2 * a);
+                solutionsText = `Υπάρχει μία διπλή ρίζα: \\( x= ${x} \\)`;
+                solutionsStep = `\\( x = \\frac{-β}{2a}= \\frac{-(${b})}{2 \\cdot (${a})}  = ${x} \\)`;
+            } else {
+                const sqrtDiscriminant = Math.sqrt(discriminant);
+                const x1 = (-b + sqrtDiscriminant) / (2 * a);
+                const x2 = (-b - sqrtDiscriminant) / (2 * a);
+                solutionsText = `Οι λύσεις είναι: \\( x_1 = ${x1}, x_2 = ${x2} \\)`;
+                solutionsStep = `\\(x_{1,2}= \\frac{-β \\pm \\sqrt{\\Delta}}{2a}\\)<br>
+				 \\( x_1 = \\frac{-β + \\sqrt{\\Delta}}{2a} = \\frac{-(${b}) + \\sqrt{${discriminant}}}{2 \\cdot (${a})} = ${x1} \\)<br>
+                                 \\( x_2 = \\frac{-β - \\sqrt{\\Delta}}{2a} = \\frac{-(${b}) - \\sqrt{${discriminant}}}{2 \\cdot (${a})} = ${x2} \\)`;
+            }
+
+            document.getElementById('delta-value').textContent = discriminant;
+            document.getElementById('discriminant-step').innerHTML = discriminantStep;
+            document.getElementById('solutions').innerHTML = solutionsText;
+            document.getElementById('solutions-step').innerHTML = solutionsStep;
+
+            document.getElementById('result').classList.remove('hidden');
+            MathJax.Hub.Queue(["Typeset", MathJax.Hub, document.getElementById("result")]);
+        }
+    </script>
+<footer id="footer">
+    <p>© 2025 Επίλυση Εξισώσεων 2ου Βαθμού. Created by Παρα-school-ακης</p>
+</footer>
+</body>
+</html>

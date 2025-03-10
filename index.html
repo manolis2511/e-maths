@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Καλώς ήρθατε στο e-maths</title>
+    <title>E-Maths | Αρχική</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -19,6 +19,10 @@
         h1 {
             font-size: 40px;
             margin-bottom: 30px;
+        }
+        h2 {
+            font-size: 20px;
+            margin-bottom: 20px;
         }
         #header {
             background-color: blue;
@@ -44,18 +48,19 @@
             font-size: 20px;
             width: 100%;
         }
- .quiz-link {
-            display: block;
-            font-size: 24px;
-            margin: 15px;
-            padding: 10px;
+
+        .category {
+            padding: 20px;
             background-color: blue;
             color: white;
+            font-size: 24px;
             text-decoration: none;
-            border-radius: 5px;
-            width: 200px;
-            margin-left: auto;
-            margin-right: auto;
+            border-radius: 10px;
+            transition: 0.3s;
+        }
+        .category:hover {
+            background-color: white;
+	    color:blue;
         }
     </style>
 </head>
@@ -63,29 +68,17 @@
     	<header id="header">
     <h1>Καλώς ήρθατε στο e-maths</h1>
     	</header>
-	
-       <p>Επιλέξτε κατηγορία:</p>
+    <h2>Διαλέξτε εκπαιδευτικό επίπεδο για να ξεκινήσετε:</h2>
 
-    <div class="category">
-        <h2>📘 Δημοτικό</h2>
-        <button class="quiz-button" onclick="location.href='dimotiko/propaideia.html'">Προπαίδεια</button>
-        <button class="quiz-button" onclick="location.href='dimotiko/prosthesi.html'">Πρόσθεση</button>
+    <div class="category-container">
+        <a href="dimotiko.html" class="category">Δημοτικό</a>
+        <a href="gymnasio.html" class="category">Γυμνάσιο</a>
+        <a href="lykeio.html" class="category">Λύκειο</a>
     </div>
 
-    <div class="category">
-        <h2>📗 Γυμνάσιο</h2>
-        <button class="quiz-button" onclick="location.href='gymnasio/quiz1.html'">Κουίζ 1</button>
-        <button class="quiz-button" onclick="location.href='gymnasio/quiz2.html'">Κουίζ 2</button>
-    </div>
-
-    <div class="category">
-        <h2>📕 Λύκειο</h2>
-        <button class="quiz-button" onclick="location.href='lykeio/quiz1.html'">Κουίζ 1</button>
-        <button class="quiz-button" onclick="location.href='lykeio/quiz2.html'">Κουίζ 2</button>
-    </div>
-
-	<footer id="footer">
+ 	<footer id="footer">
     <p>© 2025 Created by Παρα-school-ακης</p>
 </footer>
+
 </body>
 </html>

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Κουίζ Προπαίδειας</title>
+    <title>Κουίζ Αθροισμάτων</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -21,14 +21,14 @@
             margin-bottom: 30px;
         }
         #header {
-            background-color: #FF0080;
+            background-color: blue;
             color: white;
             text-align: center;
             padding: 10px 0;
             font-size: 24px;
             width: 100%;
-	    margin-bottom: 30px;
- 	}
+            margin-bottom: 30px;
+        }
 	html, body {
             height: 100%;
             margin: 0;
@@ -37,46 +37,34 @@
         }
         #footer {
             margin-top: auto;
-            background-color: #FF0080;
+            background-color: blue;
             color: white;
             text-align: center;
             padding: 10px 0;
             font-size: 20px;
             width: 100%;
         }
-        .selection {
-            font-size: 18px;
+        .question {
+            font-size: 24px;
             margin-bottom: 20px;
+        }
+        .result {
+            font-size: 30px;
+            margin-top: 20px;
+        }
+        #answerInput {
+            font-size: 24px;
+            padding: 10px;
+            width: 110px;
+            margin-top: 10px;
             text-align: center;
-        }
-        .columns {
-            display: flex;
-            justify-content: center;
-            gap: 30px;
-            margin-bottom: 30px;
-        }
-        .column {
-            text-align: left;
-        }
-        .answer-btn {
-            font-size: 20px;
-            padding: 10px 20px;
-            margin: 20px;
-            cursor: pointer;
-            width: 200px;
-            background-color: pink;
-            color: white;
-            border: none;
+            border: 2px solid #FF0080;
             border-radius: 5px;
         }
-        .answer-btn:hover {
-            background-color: #FF0080;
-            color: white;
-        }
-        #startButton, #nextButton, #restartButton {
+        #startQuizButton, #startButton, #restartButton {
             font-size: 30px;
             padding: 20px 40px;
-            background-color: #FF0080;
+            background-color: blue;
             color: white;
             border: none;
             border-radius: 10px;
@@ -88,14 +76,6 @@
             color: red;
             margin-top: 20px;
         }
-        .question {
-            font-size: 24px;
-            margin-bottom: 20px;
-        }
-        .result {
-            font-size: 30px;
-            margin-top: 20px;
-        }
         #totalTime {
             font-size: 18px;
             margin-top: 20px;
@@ -103,49 +83,17 @@
         #restartContainer {
             margin-top: 30px;
         }
-   #answerInput {
-       font-size: 24px; /* Αυξάνει το μέγεθος της γραμματοσειράς */
-       padding: 10px; /* Αυξάνει το εσωτερικό κενό (padding) */
-       width: 110px; /* Ρυθμίζει το πλάτος του πεδίου */
-       margin-top: 10px; /* Προσθέτει απόσταση από το πάνω μέρος */
-       text-align: center; /* Κεντράρει το κείμενο στο πεδίο */
-       border: 2px solid #FF0080; /* Προσθέτει πλαίσιο με πράσινο χρώμα */
-       border-radius: 5px; /* Κάνει τις γωνίες στρογγυλές */
-    }
     </style>
 </head>
 <body>
-	<header id="header">
-        <h1>Κουίζ Προπαίδειας</h1>
-    	</header>
-    <div class="selection" id="selection">
-        <p>Επιλέξτε τις προπαίδειες που θέλετε να περιλαμβάνονται στο κουίζ:</p>
-        <div class="columns">
-            <div class="column">
-                <label><input type="checkbox" id="checkbox-0" checked> Προπαίδεια του 0</label><br>
-                <label><input type="checkbox" id="checkbox-1" checked> Προπαίδεια του 1</label><br>
-                <label><input type="checkbox" id="checkbox-2" checked> Προπαίδεια του 2</label><br>
-                <label><input type="checkbox" id="checkbox-3" checked> Προπαίδεια του 3</label><br>
-                <label><input type="checkbox" id="checkbox-4" checked> Προπαίδεια του 4</label><br>
-                <label><input type="checkbox" id="checkbox-5" checked> Προπαίδεια του 5</label><br>
-                <label><input type="checkbox" id="checkbox-6" checked> Προπαίδεια του 6</label><br>
-            </div>
-            <div class="column">
-                <label><input type="checkbox" id="checkbox-7" checked> Προπαίδεια του 7</label><br>
-                <label><input type="checkbox" id="checkbox-8" checked> Προπαίδεια του 8</label><br>
-                <label><input type="checkbox" id="checkbox-9" checked> Προπαίδεια του 9</label><br>
-                <label><input type="checkbox" id="checkbox-10" checked> Προπαίδεια του 10</label><br>
-                <label><input type="checkbox" id="checkbox-11" checked> Προπαίδεια του 11</label><br>
-                <label><input type="checkbox" id="checkbox-12" checked> Προπαίδεια του 12</label><br>
-		<button onclick="toggleSelectAll()">Επιλογή Όλων</button>
-            </div>
-        </div>
-        
-        <br>
-        <button id="nextButton" onclick="showStartQuizButton()">Επόμενο</button>
+    <header id="header">
+        <h1>Κουίζ Αθροισμάτων</h1>
+    </header>
+    
+    <div id="nameInputContainer">
+        <button id="startQuizButton" onclick="startQuiz()">Ξεκινήστε το κουίζ</button>
     </div>
-
-    <button id="startButton" onclick="startQuiz()" style="display: none;">Ξεκινήστε το κουίζ</button>
+    
     <div class="question" id="question"></div>
     <input type="text" id="answerInput" placeholder="Απάντηση" style="display: none;">
     <div id="timer" style="display: none;">Συνολικός Χρόνος: 0</div>
@@ -154,16 +102,12 @@
     <div id="restartContainer" style="display: none;">
         <button id="restartButton" onclick="restartQuiz()">Ξεκινήστε από την αρχή</button>
     </div>
-	    <a href="index.html" class="quiz-link">Αρχική Σελίδα</a>
-<footer id="footer">
-	    <a href="../index.html" class="quiz-link" style="display: block; text-align: center; font-size: 20px; color: white; text-decoration: none; margin-bottom: 10px;">
-        ⬅ Αρχική Σελίδα
-    </a>
-    <p>© 2025 Κουίζ Προπαίδειας Created by Παρα-school-ακης</p>
-</footer>
+
+    <footer id="footer">
+        <p>© 2025 Κουίζ Αθροισμάτων Created by Παρα-school-ακης</p>
+    </footer>
 
     <script>
-        let selectedTables = [];
         let score = 0;
         let currentQuestion = 0;
         const questions = [];
@@ -173,10 +117,11 @@
 
         function generateQuestions() {
             while (questions.length < 10) {
-                const table = selectedTables[Math.floor(Math.random() * selectedTables.length)];
-                const number = Math.floor(Math.random() * 10) + 1;
-                const correctAnswer = table * number;
-                const questionText = `Πόσο κάνει ${number} x ${table};`;
+                const num1 = Math.floor(Math.random() * 41) - 20; // Από -20 έως 20
+                const num2 = Math.floor(Math.random() * 41) - 20; // Από -20 έως 20
+                const correctAnswer = num1 + num2;
+                const questionText = `${num1 > 0 ? '+' : ''} ${num1} ${num2 < 0 ? '' : '+'} ${num2} =`;
+
                 if (!usedQuestions.has(questionText)) {
                     usedQuestions.add(questionText);
                     questions.push({
@@ -186,13 +131,6 @@
                     });
                 }
             }
-        }
-
-        function showStartQuizButton() {
-            const selectionDiv = document.getElementById("selection");
-            selectionDiv.style.display = "none";
-            document.getElementById("nextButton").style.display = "none";
-            document.getElementById("startButton").style.display = "block";
         }
 
         function displayQuestion() {
@@ -246,21 +184,11 @@
         }
 
         function startQuiz() {
-            document.getElementById("startButton").style.display = 'none';
-            selectedTables = [];
-            for (let i = 0; i <= 12; i++) {
-                if (document.getElementById(`checkbox-${i}`).checked) {
-                    selectedTables.push(i);
-                }
-            }
-            if (selectedTables.length === 0) {
-                alert("Παρακαλώ επιλέξτε τουλάχιστον μία προπαίδεια.");
-                return;
-            }
             generateQuestions();
             displayQuestion();
             totalStartTime = Date.now();
             startTotalTimer();
+            document.getElementById("startQuizButton").style.display = 'none'; // Κρύβουμε το κουμπί για να μην εμφανίζεται ξανά
         }
 
         function startTotalTimer() {
@@ -275,14 +203,6 @@
 
         function restartQuiz() {
             location.reload();
-        }
-
-        let allSelected = true;
-        function toggleSelectAll() {
-            allSelected = !allSelected;
-            for (let i = 0; i <= 12; i++) {
-                document.getElementById(`checkbox-${i}`).checked = allSelected;
-            }
         }
 
         // Προσθήκη ακρόασης για Enter
