@@ -130,14 +130,17 @@
     </div>
 	<footer id="footer">
 	    <div style="text-align: center; margin-bottom: 15px;">
+        <a href="prosthesi.html" class="quiz-link" style="display: inline-block; font-size: 15px; color: white; text-decoration: none; margin: 0 10px;">
+            Ξεκινήστε από την αρχή
+        </a>-
         <a href="../index.html" class="quiz-link" style="display: inline-block; font-size: 15px; color: white; text-decoration: none; margin: 0 10px;">
             Αρχική Σελίδα
-        </a>
-        <a href="../index.html" class="quiz-link" style="display: inline-block; font-size: 15px; color: white; text-decoration: none; margin: 0 10px;">
-            Αρχική Σελίδα
+        </a>-
+        <a href="../dimotiko.html" class="quiz-link" style="display: inline-block; font-size: 15px; color: white; text-decoration: none; margin: 0 10px;">
+            Επιστροφή
         </a>
     </div>
-    <p>© 2025 Κουίζ Πρόσθεσης Created by Παρα-school-ακης</p>
+    <p>© 2025 Created by Παρα-school-ακης</p>
 </footer>
 
     <script>
@@ -147,31 +150,37 @@
         let totalStartTime;
         let timerInterval;
 
-        function generateQuestions() {
-            for (let i = 0; i < 20; i++) {
-                let num1, num2;
-                do {
-                    num1 = Math.floor(Math.random() * 10) + 1;
-                    num2 = Math.floor(Math.random() * 10) + 1;
-                } while (num1 + num2 > 20);
+function generateQuestions() {
+    for (let i = 0; i < 10; i++) {
+        let num1, num2;
+        do {
+            num1 = Math.floor(Math.random() * 10) + 1;
+            num2 = Math.floor(Math.random() * 10) + 1;
+        } while (num1 + num2 > 20);
 
-                const correctAnswer = num1 + num2;
-                const answers = [correctAnswer];
-                while (answers.length < 4) {
-                    const wrongAnswer = Math.floor(Math.random() * 10) + 1;
-                    if (!answers.includes(wrongAnswer) && wrongAnswer <= 10) {
-                        answers.push(wrongAnswer);
-                    }
-                }
-                answers.sort(() => Math.random() - 0.5);
-                questions.push({
-                    question: `Πόσο κάνει ${num1} + ${num2};`,
-                    correctAnswer,
-                    answers,
-                    answered: false
-                });
+        const correctAnswer = num1 + num2;
+        const answers = new Set([correctAnswer]);
+
+        while (answers.size < 4) {
+            let deviation = Math.floor(Math.random() * 4) + 1; // 1 έως 4
+            let wrongAnswer = Math.random() < 0.5 ? correctAnswer + deviation : correctAnswer - deviation;
+            
+            if (wrongAnswer > 0 && wrongAnswer <= 20) {
+                answers.add(wrongAnswer);
             }
         }
+
+        let shuffledAnswers = Array.from(answers).sort(() => Math.random() - 0.5);
+
+        questions.push({
+            question: `Πόσο κάνει ${num1} + ${num2};`,
+            correctAnswer,
+            answers: shuffledAnswers,
+            answered: false
+        });
+    }
+}
+
 
         function displayQuestion() {
             const current = questions[currentQuestion];
