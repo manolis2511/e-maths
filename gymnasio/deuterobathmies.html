@@ -4,225 +4,164 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Λύση Δευτέρου Βαθμού Εξίσωσης</title>
+    <link rel="stylesheet" href="../style.css">
     <script type="text/javascript" async
         src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML">
     </script>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f0f8ff;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: flex-start;
-            height: 100vh;
-            margin: 0;
-            padding-top: 30px;
-        }
-        h1 {
-            font-size: 40px;
-            margin-bottom: 30px;
-        }
-
-        #header {
-            background-color: #4CAF50;
-            color: black;
-            text-align: center;
-            padding: 10px 0;
-            font-size: 24px;
-            width: 100%;
-	    margin-bottom: 30px;
- 	}
-	html, body {
-            height: 100%;
-            margin: 0;
-            display: flex;
-            flex-direction: column;
-        }
-
-        #footer {
-            margin-top: auto;
-            background-color: #4CAF50;
-            color: black;
-            text-align: center;
-            padding: 10px 0;
-            font-size: 20px;
-            width: 100%;
-        }
-
-        input {
-            font-size: 18px;
-            padding: 5px;
-            margin: 5px;
-            width: 100px;
-        }
-
-        button {
-            font-size: 18px;
-            padding: 10px;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-
-        button:hover {
-            background-color: #4CAF50;
-        }
-
-        .result {
-            margin-top: 20px;
-            font-size: 18px;
-        }
-
-        .formula {
-            font-style: italic;
-            margin-top: 10px;
-        }
-
-        .hidden {
-            display: none;
-        }
-    </style>
 </head>
 <body>
-	<header id="header">
-    <h1>Επίλυση Εξισώσεων 2ου Βαθμού </h1>
-    	</header>
-	<h2>Συμπληρώστε τους συντελεστές της εξίσωσης</h2>
+    <header id="header">
+        <h1>Επίλυση Εξισώσεων 2ου Βαθμού </h1>
+    </header>
+    <div id="start">
+    <h2>Συμπληρώστε τους συντελεστές της εξίσωσης</h2>
     <div>
-    <label for="a">α:</label>
-    <input type="number" id="a" placeholder="α">
-    
-    <label for="b">β:</label>
-    <input type="number" id="b" placeholder="β">
-    
-    <label for="c">γ:</label>
-    <input type="number" id="c" placeholder="γ">
-	</div>    
-    <button onclick="showEquation()">Εμφάνιση Εξίσωσης</button>
-
-    <div id="equation" class="result hidden">
-        Εξίσωση: <span id="equation-text"></span>
-        <button onclick="calculate()">Υπολογισμός Λύσεων</button>
+        <label for="a">α:</label>
+        <input type="number" id="a" placeholder="α">
+        
+        <label for="b">β:</label>
+        <input type="number" id="b" placeholder="β">
+        
+        <label for="c">γ:</label>
+        <input type="number" id="c" placeholder="γ">
+    </div>    
+    <button id="anotherButton" onclick="showEquation()">Εμφάνιση Εξίσωσης</button>
     </div>
-
+    <div id="equation" class="result hidden">
+        <h2>Εξίσωση: <span id="equation-text"></span></h2>
+    </div>
+    <div id="calculatesolution" class="result hidden">
+    <button id="anotherButton" onclick="calculate()">Υπολογισμός Λύσεων</button></div>
+    
     <div id="result" class="result hidden">
-        <h3>Αποτελέσματα:</h3>
+        <h2>Αποτελέσματα:</h2>
         <div id="discriminant-step"></div><br>
-        <div id="discriminant">Η Διακρίνουσα είναι Δ= <span id="delta-value"></span></div><br>
+        <div id="discriminant"><h2>Η Διακρίνουσα είναι Δ= <span id="delta-value"></span></h2></div><br>
         <div id="solutions-step"></div><br>
         <div id="solutions"></div>
     </div>
-
-    <script>
-function showEquation() {
-    const a = parseFloat(document.getElementById('a').value);
-    const b = parseFloat(document.getElementById('b').value);
-    const c = parseFloat(document.getElementById('c').value);
-
-    if (isNaN(a) || isNaN(b) || isNaN(c)) {
-        alert("Παρακαλώ εισάγετε έγκυρες τιμές για α, β, γ.");
-        return;
-    }
-    if (a == 0) {
-        alert("Ο συντελεστής α δεν μπορεί να πάρει την τιμή 0");
-        return;
-    }
-
-    let equationText = "";
-
-    // Διαχείριση του όρου αx²
-    if (a === 1) {
-        equationText += "x^2";
-    } else if (a === -1) {
-        equationText += "-x^2";
-    } else {
-        equationText += a + "x^2";
-    }
-
-    // Διαχείριση του όρου βx
-    if (b !== 0) {
-        if (b === 1) {
-            equationText += " + x";
-        } else if (b === -1) {
-            equationText += " - x";
-        } else if (b > 0) {
-            equationText += " + " + b + "x";
-        } else {
-            equationText += " " + b + "x"; // Το b είναι ήδη αρνητικό, οπότε δεν χρειάζεται "+"
-        }
-    }
-
-    // Διαχείριση του όρου c
-    if (c !== 0) {
-        if (c > 0) {
-            equationText += " + " + c;
-        } else {
-            equationText += " " + c; // Το c είναι ήδη αρνητικό, οπότε δεν χρειάζεται "+"
-        }
-    }
-
-    equationText += " = 0";
-
-    // Προσθήκη στο HTML με MathJax
-    document.getElementById('equation-text').innerHTML = `\\(${equationText}\\)`;
-    document.getElementById('equation').classList.remove('hidden');
-
-    // Ενημέρωση του MathJax για σωστή εμφάνιση
-    MathJax.Hub.Queue(["Typeset", MathJax.Hub, "equation-text"]);
-}
-
-        function calculate() {
-            const a = parseFloat(document.getElementById('a').value);
-            const b = parseFloat(document.getElementById('b').value);
-            const c = parseFloat(document.getElementById('c').value);
-
-            const discriminant = b * b - 4 * a * c;
-
-            let discriminantStep = `\\( \\Delta = β^2 - 4aγ = ${b >= 0 ? '' : '('}${b}${b >= 0 ? '' : ')'}^2 - 4 \\cdot ${a >= 0 ? '' : '('}${a}${a >= 0 ? '' : ')'} \\cdot ${c >= 0 ? '' : '('}${c}${c >= 0 ? '' : ')'} = ${discriminant} \\)`;
-            let solutionsText = "";
-            let solutionsStep = "";
-
-            if (discriminant < 0) {
-                solutionsText = "Δεν υπάρχουν πραγματικές λύσεις, γιατί η διακρίνουσα είναι αρνητική.";
-            } else if (discriminant === 0) {
-                const x = -b / (2 * a);
-                solutionsText = `Υπάρχει μία διπλή ρίζα: \\( x= ${x} \\)`;
-                solutionsStep = `\\( x = \\frac{-β}{2a}= \\frac{-${b >= 0 ? ' ' : '('}${b}${b >= 0 ? ' ' : ')'}}{2 \\cdot ${a >= 0 ? ' ' : '('}${a}${a >= 0 ? ' ' : ')'}}  = ${x} \\)`;
-            } else {
-                const sqrtDiscriminant = Math.sqrt(discriminant);
-                const x1 = (-b + sqrtDiscriminant) / (2 * a);
-                const x2 = (-b - sqrtDiscriminant) / (2 * a);
-                solutionsText = `Οι λύσεις είναι: \\( x_1 = ${x1}, x_2 = ${x2} \\)`;
-                solutionsStep = `\\(x_{1,2}= \\frac{-β \\pm \\sqrt{\\Delta}}{2a}\\)<br><br>
-				 \\( x_1 = \\frac{-β + \\sqrt{\\Delta}}{2a} = \\frac{-${b >= 0 ? ' ' : '('}${b}${b >= 0 ? ' ' : ')'} + \\sqrt{${discriminant}}}{2 \\cdot ${a >= 0 ? ' ' : '('}${a}${a >= 0 ? ' ' : ')'}}= ${x1} \\)<br>
-                                 \\( x_2 = \\frac{-β - \\sqrt{\\Delta}}{2a} = \\frac{-${b >= 0 ? ' ' : '('}${b}${b >= 0 ? ' ' : ')'} - \\sqrt{${discriminant}}}{2 \\cdot ${a >= 0 ? ' ' : '('}${a}${a >= 0 ? ' ' : ')'}} = ${x2} \\)`;
-            }
-
-            document.getElementById('delta-value').textContent = discriminant;
-            document.getElementById('discriminant-step').innerHTML = discriminantStep;
-            document.getElementById('solutions').innerHTML = solutionsText;
-            document.getElementById('solutions-step').innerHTML = solutionsStep;
-
-            document.getElementById('result').classList.remove('hidden');
-            MathJax.Hub.Queue(["Typeset", MathJax.Hub, document.getElementById("result")]);
-        }
-    </script>
-<footer id="footer">
-		    <div style="text-align: center; margin-bottom: 15px;">
-        <a href="deuterobathmies.html" class="quiz-link" style="display: inline-block; font-size: 15px; color: white; text-decoration: none; margin: 0 10px;">
-            Καινούρια Εξίσωση
-        </a>-
-        <a href="../index.html" class="quiz-link" style="display: inline-block; font-size: 15px; color: white; text-decoration: none; margin: 0 10px;">
-            Αρχική Σελίδα
-        </a>-
-        <a href="../gymnasio.html" class="quiz-link" style="display: inline-block; font-size: 15px; color: white; text-decoration: none; margin: 0 10px;">
-            Επιστροφή
-        </a>
-    </div>
-    <p>© 2025 Created by Παρα-school-ακης</p>
-</footer>
+ <button id="restartButton" class="result hidden" onclick="restartQuiz()">Καινούρια Εξίσωση</button>
+    <footer id="footer">
+        <div style="text-align: center; margin-bottom: 15px;">
+            <a href="deuterobathmies.html" class="quiz-link" style="display: inline-block; font-size: 15px; color: white; text-decoration: none; margin: 0 10px;">
+                Καινούρια Εξίσωση
+            </a>-
+            <a href="../index.html" class="quiz-link" style="display: inline-block; font-size: 15px; color: white; text-decoration: none; margin: 0 10px;">
+                Αρχική Σελίδα
+            </a>-
+            <a href="../gymnasio.html" class="quiz-link" style="display: inline-block; font-size: 15px; color: white; text-decoration: none; margin: 0 10px;">
+                Επιστροφή
+            </a>
+        </div>
+        <p>© 2025 Created by Παρα-school-ακης</p>
+    </footer>
 </body>
+
+<script>
+    function showEquation() {
+        const a = parseFloat(document.getElementById('a').value);
+        const b = parseFloat(document.getElementById('b').value);
+        const c = parseFloat(document.getElementById('c').value);
+
+        if (isNaN(a) || isNaN(b) || isNaN(c)) {
+            alert("Παρακαλώ εισάγετε έγκυρες τιμές για α, β, γ.");
+            return;
+        }
+        if (a == 0) {
+            alert("Ο συντελεστής α δεν μπορεί να πάρει την τιμή 0");
+            return;
+        }
+
+        let equationText = "";
+
+        // Διαχείριση του όρου αx²
+        if (a === 1) {
+            equationText += "x^2";
+        } else if (a === -1) {
+            equationText += "-x^2";
+        } else {
+            equationText += a + "x^2";
+        }
+
+        // Διαχείριση του όρου βx
+        if (b !== 0) {
+            if (b === 1) {
+                equationText += " + x";
+            } else if (b === -1) {
+                equationText += " - x";
+            } else if (b > 0) {
+                equationText += " + " + b + "x";
+            } else {
+                equationText += " " + b + "x"; // Το b είναι ήδη αρνητικό, οπότε δεν χρειάζεται "+"
+            }
+        }
+
+        // Διαχείριση του όρου c
+        if (c !== 0) {
+            if (c > 0) {
+                equationText += " + " + c;
+            } else {
+                equationText += " " + c; // Το c είναι ήδη αρνητικό, οπότε δεν χρειάζεται "+"
+            }
+        }
+
+        equationText += " = 0";
+
+        // Προσθήκη στο HTML με MathJax
+        document.getElementById('equation-text').innerHTML = `\\(${equationText}\\)`;
+        document.getElementById('equation').classList.remove('hidden');
+        document.getElementById('calculatesolution').classList.remove('hidden');
+
+        // Ενημέρωση του MathJax για σωστή εμφάνιση
+        MathJax.Hub.Queue(["Typeset", MathJax.Hub, "equation-text"]);
+    }
+
+    function calculate() {
+        const a = parseFloat(document.getElementById('a').value);
+        const b = parseFloat(document.getElementById('b').value);
+        const c = parseFloat(document.getElementById('c').value);
+
+        const discriminant = b * b - 4 * a * c;
+
+        // Υπολογισμός της διακρίνουσας
+        let discriminantStep = `\\( \\Delta = β^2 - 4aγ = ${b >= 0 ? '' : '('}${b}${b >= 0 ? '' : ')'}^2 - 4 \\cdot ${a >= 0 ? '' : '('}${a}${a >= 0 ? '' : ')'} \\cdot ${c >= 0 ? '' : '('}${c}${c >= 0 ? '' : ')'} = ${discriminant} \\)`;
+
+        let solutionsText = "";
+        let solutionsStep = "";
+
+        if (discriminant < 0) {
+            solutionsText = "Δεν υπάρχουν πραγματικές λύσεις, γιατί η διακρίνουσα είναι αρνητική.";
+        } else if (discriminant === 0) {
+            const x = -b / (2 * a);
+            solutionsText = `Υπάρχει μία διπλή ρίζα: \\( x= ${x} \\)`;
+            solutionsStep = `\\( x = \\frac{-β}{2a}= \\frac{-${b >= 0 ? ' ' : '('}${b}${b >= 0 ? ' ' : ')'}}{2 \\cdot ${a >= 0 ? ' ' : '('}${a}${a >= 0 ? ' ' : ')'}}  = ${x} \\)`;
+        } else {
+            const sqrtDiscriminant = Math.sqrt(discriminant);
+            const x1 = (-b + sqrtDiscriminant) / (2 * a);
+            const x2 = (-b - sqrtDiscriminant) / (2 * a);
+            solutionsText = `Οι λύσεις είναι: \\( x_1 = ${x1}, x_2 = ${x2} \\)`;
+            solutionsStep = `\\(x_{1,2}= \\frac{-β \\pm \\sqrt{\\Delta}}{2a}\\)<br><br>
+                             \\( x_1 = \\frac{-β + \\sqrt{\\Delta}}{2a} = \\frac{-${b >= 0 ? ' ' : '('}${b}${b >= 0 ? ' ' : ')'} + \\sqrt{${discriminant}}}{2 \\cdot ${a >= 0 ? ' ' : '('}${a}${a >= 0 ? ' ' : ')'}}= ${x1} \\)<br>
+                             \\( x_2 = \\frac{-β - \\sqrt{\\Delta}}{2a} = \\frac{-${b >= 0 ? ' ' : '('}${b}${b >= 0 ? ' ' : ')'} - \\sqrt{${discriminant}}}{2 \\cdot ${a >= 0 ? ' ' : '('}${a}${a >= 0 ? ' ' : ')'}} = ${x2} \\)`;
+        }
+
+        // Ενημέρωση των πεδίων με τις υπολογισμένες τιμές
+        document.getElementById('delta-value').textContent = discriminant;
+        document.getElementById('discriminant-step').innerHTML = `<span class="mathjax">${discriminantStep}</span>`;
+        document.getElementById('solutions').innerHTML = `<span class="mathjax">${solutionsText}</span>`;
+        document.getElementById('solutions-step').innerHTML = `<span class="mathjax">${solutionsStep}</span>`;
+        document.getElementById('start').classList.add('hidden');
+        // Εμφάνιση των αποτελεσμάτων
+        document.getElementById('result').classList.remove('hidden');
+        document.getElementById('restartButton').classList.remove('hidden');
+
+        // Κλήση του MathJax για να ανανεώσει τη μορφοποίηση
+        MathJax.Hub.Queue(["Typeset", MathJax.Hub, document.getElementById("result")]);
+    }
+
+    function restartQuiz() {
+            location.reload();
+        }
+</script>
+
 </html>

@@ -1,0 +1,194 @@
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f8ff;
+	    margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            height: 100%;
+            padding-top: 30px;
+        }
+
+	html {
+            height: 100%;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+        }
+
+        h1 {
+            font-size: 40px;
+            margin-bottom: 30px;
+        }
+
+        h2 {
+            font-size: 20px;
+            margin-bottom: 20px;
+        }
+
+        h3 {
+            font-size: 15px;
+            margin-bottom: 10px;
+        }
+
+        #header {
+            background-color: blue;
+            color: white;
+            text-align: center;
+            padding: 10px 0;
+            font-size: 24px;
+            width: 100%;
+	    margin-bottom: 30px;
+ 	}
+
+	 #footer {
+            margin-top: auto;
+            background-color: blue;
+            color: white;
+            text-align: center;
+            padding: 10px 0;
+            font-size: 20px;
+            width: 100%;
+        }
+
+        .category {
+            padding: 20px;
+            background-color: blue;
+            color: white;
+            font-size: 24px;
+            text-decoration: none;
+            border-radius: 10px;
+            transition: 0.3s;
+        }
+
+        .category:hover {
+            background-color: white;
+	    color:blue;
+        }
+
+        .answer-btn {
+            font-size: 20px;
+            padding: 10px 20px;
+            margin: 20px;
+            cursor: pointer;
+            width: 200px;
+            background-color: lightblue;
+            color: white;
+            border: none;
+            border-radius: 5px;
+        }
+
+        .answer-btn:hover {
+            background-color: blue;
+            color: white;
+        }
+
+        #startButton, #nextButton, #restartButton {
+            font-size: 30px;
+            padding: 20px 40px;
+            background-color: blue;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+	#anotherButton {
+	    font-size: 20px;
+	    padding: 15px; auto;background-color: blue;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            margin-top: 20px;
+	}
+
+        #timer {
+            font-size: 20px;
+            color: red;
+            margin-top: 20px;
+        }
+
+        .selection {
+            font-size: 18px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .columns {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        .column {
+            text-align: left;
+        }
+
+        .question {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        .result {
+            font-size: 30px;
+            margin-top: 20px;
+        }
+
+        #totalTime {
+            font-size: 18px;
+            margin-top: 20px;
+        }
+
+        #restartContainer {
+            margin-top: 30px;
+        }
+
+        #answerInput {
+            font-size: 24px; /* Αυξάνει το μέγεθος της γραμματοσειράς */
+            padding: 10px; /* Αυξάνει το εσωτερικό κενό (padding) */
+            width: 110px; /* Ρυθμίζει το πλάτος του πεδίου */
+            margin-top: 10px; /* Προσθέτει απόσταση από το πάνω μέρος */
+            text-align: center; /* Κεντράρει το κείμενο στο πεδίο */
+            border: 2px solid blue; /* Προσθέτει πλαίσιο με πράσινο χρώμα */
+            border-radius: 5px; /* Κάνει τις γωνίες στρογγυλές */
+        }
+	.quiz-info {
+	    max-width: 600px; /* Περιορίζει το πλάτος */
+	    margin: 0 auto; /* Κεντράρει τη div */
+	    padding: 15px;
+	    background-color: #f8f9fa; /* Ανοιχτό γκρι background */
+	    border-radius: 10px; /* Στρογγυλεμένες γωνίες */
+	    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* Ελαφριά σκιά */
+	    font-size: 18px;
+	    line-height: 1.6;
+	    text-align: center;
+	}
+
+        .formula {
+            font-style: italic;
+            margin-top: 10px;
+        }
+
+        .hidden {
+            display: none;
+        }
+	input {
+            font-size: 18px;
+            padding: 5px;
+            margin: 5px;
+            width: 100px;
+        }
+    .mathjax {
+        font-size: 20px; /* Μπορείς να το προσαρμόσεις όπως θέλεις */
+        line-height: 1.5; /* Κανονίζει την απόσταση μεταξύ των γραμμών */
+    }
+.buttons-container {
+    display: flex; /* Χρησιμοποιούμε flexbox για να τα στοιχίσουμε */
+    justify-content: center; /* Στοιχίζουμε τα κουμπιά στο κέντρο */
+    gap: 10px; /* Απόσταση μεταξύ των κουμπιών */
+
+ //     <link rel="stylesheet" href="style.css">

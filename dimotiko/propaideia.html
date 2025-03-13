@@ -4,115 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Κουίζ Προπαίδειας</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f0f8ff;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: flex-start;
-            height: 100vh;
-            margin: 0;
-            padding-top: 30px;
-        }
-        h1 {
-            font-size: 40px;
-            margin-bottom: 30px;
-        }
-        #header {
-            background-color: #FF0080;
-            color: white;
-            text-align: center;
-            padding: 10px 0;
-            font-size: 24px;
-            width: 100%;
-	    margin-bottom: 30px;
- 	}
-	html, body {
-            height: 100%;
-            margin: 0;
-            display: flex;
-            flex-direction: column;
-        }
-        #footer {
-            margin-top: auto;
-            background-color: #FF0080;
-            color: white;
-            text-align: center;
-            padding: 10px 0;
-            font-size: 20px;
-            width: 100%;
-        }
-        .selection {
-            font-size: 18px;
-            margin-bottom: 20px;
-            text-align: center;
-        }
-        .columns {
-            display: flex;
-            justify-content: center;
-            gap: 30px;
-            margin-bottom: 30px;
-        }
-        .column {
-            text-align: left;
-        }
-        .answer-btn {
-            font-size: 20px;
-            padding: 10px 20px;
-            margin: 20px;
-            cursor: pointer;
-            width: 200px;
-            background-color: pink;
-            color: white;
-            border: none;
-            border-radius: 5px;
-        }
-        .answer-btn:hover {
-            background-color: #FF0080;
-            color: white;
-        }
-        #startButton, #nextButton, #restartButton {
-            font-size: 30px;
-            padding: 20px 40px;
-            background-color: #FF0080;
-            color: white;
-            border: none;
-            border-radius: 10px;
-            cursor: pointer;
-            margin-top: 20px;
-        }
-        #timer {
-            font-size: 20px;
-            color: red;
-            margin-top: 20px;
-        }
-        .question {
-            font-size: 24px;
-            margin-bottom: 20px;
-        }
-        .result {
-            font-size: 30px;
-            margin-top: 20px;
-        }
-        #totalTime {
-            font-size: 18px;
-            margin-top: 20px;
-        }
-        #restartContainer {
-            margin-top: 30px;
-        }
-   #answerInput {
-       font-size: 24px; /* Αυξάνει το μέγεθος της γραμματοσειράς */
-       padding: 10px; /* Αυξάνει το εσωτερικό κενό (padding) */
-       width: 110px; /* Ρυθμίζει το πλάτος του πεδίου */
-       margin-top: 10px; /* Προσθέτει απόσταση από το πάνω μέρος */
-       text-align: center; /* Κεντράρει το κείμενο στο πεδίο */
-       border: 2px solid #FF0080; /* Προσθέτει πλαίσιο με πράσινο χρώμα */
-       border-radius: 5px; /* Κάνει τις γωνίες στρογγυλές */
-    }
-    </style>
+    <link rel="stylesheet" href="../style.css">
 </head>
 <body>
 	<header id="header">
@@ -168,6 +60,7 @@
     </div>
     <p>© 2025 Created by Παρα-school-ακης</p>
 </footer>
+
     <script>
         let selectedTables = [];
         let score = 0;
@@ -198,7 +91,7 @@
             const selectionDiv = document.getElementById("selection");
             selectionDiv.style.display = "none";
             document.getElementById("nextButton").style.display = "none";
-            document.getElementById("startButton").style.display = "block";
+            document.getElementById("startButton").style.display = "block";         
         }
 
         function displayQuestion() {
@@ -261,8 +154,7 @@
             }
             if (selectedTables.length === 0) {
                 alert("Παρακαλώ επιλέξτε τουλάχιστον μία προπαίδεια.");
-                return;
-            }
+                restartQuiz();}
             generateQuestions();
             displayQuestion();
             totalStartTime = Date.now();

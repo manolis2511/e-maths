@@ -4,98 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Κουίζ Αθροισμάτων</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f0f8ff;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: flex-start;
-            height: 100vh;
-            margin: 0;
-            padding-top: 30px;
-        }
-        h1 {
-            font-size: 40px;
-            margin-bottom: 30px;
-        }
-        #header {
-            background-color: blue;
-            color: white;
-            text-align: center;
-            padding: 10px 0;
-            font-size: 24px;
-            width: 100%;
-            margin-bottom: 30px;
-        }
-	html, body {
-            height: 100%;
-            margin: 0;
-            display: flex;
-            flex-direction: column;
-        }
-        #footer {
-            margin-top: auto;
-            background-color: blue;
-            color: white;
-            text-align: center;
-            padding: 10px 0;
-            font-size: 20px;
-            width: 100%;
-        }
-        .question {
-            font-size: 24px;
-            margin-bottom: 20px;
-        }
-        .result {
-            font-size: 30px;
-            margin-top: 20px;
-        }
-        #answerInput {
-            font-size: 24px;
-            padding: 10px;
-            width: 110px;
-            margin-top: 10px;
-            text-align: center;
-            border: 2px solid #FF0080;
-            border-radius: 5px;
-        }
-        #startQuizButton, #startButton, #restartButton {
-            font-size: 30px;
-            padding: 20px 40px;
-            background-color: blue;
-            color: white;
-            border: none;
-            border-radius: 10px;
-            cursor: pointer;
-            margin-top: 20px;
-        }
-        #timer {
-            font-size: 20px;
-            color: red;
-            margin-top: 20px;
-        }
-        #totalTime {
-            font-size: 18px;
-            margin-top: 20px;
-        }
-        #restartContainer {
-            margin-top: 30px;
-        }
-.quiz-info {
-    max-width: 600px; /* Περιορίζει το πλάτος */
-    margin: 0 auto; /* Κεντράρει τη div */
-    padding: 15px;
-    background-color: #f8f9fa; /* Ανοιχτό γκρι background */
-    border-radius: 10px; /* Στρογγυλεμένες γωνίες */
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* Ελαφριά σκιά */
-    font-size: 18px;
-    line-height: 1.6;
-    text-align: center;
-}
-
-    </style>
+    <link rel="stylesheet" href="../style.css">
 </head>
 <body>
     <header id="header">
@@ -108,7 +17,7 @@
     Προσπάθησε να απαντήσεις σωστά και γρήγορα!</p>
 </div>
     <div id="startQuiz">
-        <button id="startQuizButton" onclick="startQuiz()">Ξεκινήστε το κουίζ</button>
+        <button id="startButton" onclick="startQuiz()">Ξεκινήστε το κουίζ</button>
     </div>
     
     <div class="question" id="question"></div>
@@ -216,7 +125,8 @@
             displayQuestion();
             totalStartTime = Date.now();
             startTotalTimer();
-            document.getElementById("startQuizButton").style.display = 'none'; // Κρύβουμε το κουμπί για να μην εμφανίζεται ξανά
+            document.getElementById("startButton").style.display = 'none'; // Κρύβουμε το κουμπί για να μην εμφανίζεται ξανά
+            document.querySelector(".quiz-info").style.display = 'none';
         }
 
         function startTotalTimer() {
