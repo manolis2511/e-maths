@@ -83,14 +83,31 @@
         #restartContainer {
             margin-top: 30px;
         }
+.quiz-info {
+    max-width: 600px; /* Περιορίζει το πλάτος */
+    margin: 0 auto; /* Κεντράρει τη div */
+    padding: 15px;
+    background-color: #f8f9fa; /* Ανοιχτό γκρι background */
+    border-radius: 10px; /* Στρογγυλεμένες γωνίες */
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* Ελαφριά σκιά */
+    font-size: 18px;
+    line-height: 1.6;
+    text-align: center;
+}
+
     </style>
 </head>
 <body>
     <header id="header">
         <h1>Κουίζ Αθροισμάτων</h1>
     </header>
-    
-    <div id="nameInputContainer">
+<div class="quiz-info">
+    <p>Αυτό το κουίζ περιλαμβάνει 10 ασκήσεις πρόσθεσης με θετικούς και αρνητικούς αριθμούς. 
+    Δώσε την απάντησή σου χρησιμοποιώντας το πληκτρολόγιο και πάτησε <strong>Enter</strong> για να την καταχωρήσεις. 
+    Στο τέλος, θα δεις το σκορ σου και τον συνολικό χρόνο που χρειάστηκες για να ολοκληρώσεις το κουίζ. 
+    Προσπάθησε να απαντήσεις σωστά και γρήγορα!</p>
+</div>
+    <div id="startQuiz">
         <button id="startQuizButton" onclick="startQuiz()">Ξεκινήστε το κουίζ</button>
     </div>
     
@@ -103,9 +120,20 @@
         <button id="restartButton" onclick="restartQuiz()">Ξεκινήστε από την αρχή</button>
     </div>
 
-    <footer id="footer">
-        <p>© 2025 Κουίζ Αθροισμάτων Created by Παρα-school-ακης</p>
-    </footer>
+<footer id="footer">
+		    <div style="text-align: center; margin-bottom: 15px;">
+        <a href="prosthesirhtwn.html" class="quiz-link" style="display: inline-block; font-size: 15px; color: white; text-decoration: none; margin: 0 10px;">
+            Ξεκινήστε από την αρχή
+        </a>-
+        <a href="../index.html" class="quiz-link" style="display: inline-block; font-size: 15px; color: white; text-decoration: none; margin: 0 10px;">
+            Αρχική Σελίδα
+        </a>-
+        <a href="../gymnasio.html" class="quiz-link" style="display: inline-block; font-size: 15px; color: white; text-decoration: none; margin: 0 10px;">
+            Επιστροφή
+        </a>
+    </div>
+    <p>© 2025 Created by Παρα-school-ακης</p>
+</footer>
 
     <script>
         let score = 0;

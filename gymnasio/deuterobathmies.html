@@ -117,28 +117,62 @@
     </div>
 
     <script>
-        function showEquation() {
-            const a = parseFloat(document.getElementById('a').value);
-            const b = parseFloat(document.getElementById('b').value);
-            const c = parseFloat(document.getElementById('c').value);
+function showEquation() {
+    const a = parseFloat(document.getElementById('a').value);
+    const b = parseFloat(document.getElementById('b').value);
+    const c = parseFloat(document.getElementById('c').value);
 
-            if (isNaN(a) || isNaN(b) || isNaN(c)) {
-                alert("Παρακαλώ εισάγετε έγκυρες τιμές για α, β, γ.");
-                return;
-            }
-if (a == 0) {
-    alert("Ο συντελεστής α δεν μπορεί να πάρει την τιμή 0");
-    return;
-}
-            // Δημιουργία της εξίσωσης
- \\           let equationText = `\\(${a==1 ? ' ' : a}x^2 ${b >= 0 ? '+' : ' '} ${b} x ${c >= 0 ? '+' : ' '} ${c} = 0\\)`;
-  \\          let equationText = `\\(${a == 1 ? '' : a == -1 ? '-': a}x^2 ${b == 1 ? '+' : b == -1 ? '-' : b == 0 ? ' ' : b > 0 ? '+ ' + b : b}${b == 0 ? ' ' : 'x'}${c > 0 ? '+c' : c == 0 ? ' ' : c < 0 ? 'c'} = 0\\)`;
-let equationText = `\\(${a == 1 ? '' : a == -1 ? '-' : a}x^2 ${b == 0 ? '' : b == 1 ? '+ x' : b == -1 ? '- x' : b > 0 ? '+ ' + b + 'x' : b + 'x'} ${c == 0 ? '' : c > 0 ? '+ ' + c : c}\\) = 0`;
+    if (isNaN(a) || isNaN(b) || isNaN(c)) {
+        alert("Παρακαλώ εισάγετε έγκυρες τιμές για α, β, γ.");
+        return;
+    }
+    if (a == 0) {
+        alert("Ο συντελεστής α δεν μπορεί να πάρει την τιμή 0");
+        return;
+    }
 
-            document.getElementById('equation-text').innerHTML = equationText;
-            document.getElementById('equation').classList.remove('hidden');
-            MathJax.Hub.Queue(["Typeset", MathJax.Hub, document.getElementById("equation-text")]);
+    let equationText = "";
+
+    // Διαχείριση του όρου αx²
+    if (a === 1) {
+        equationText += "x^2";
+    } else if (a === -1) {
+        equationText += "-x^2";
+    } else {
+        equationText += a + "x^2";
+    }
+
+    // Διαχείριση του όρου βx
+    if (b !== 0) {
+        if (b === 1) {
+            equationText += " + x";
+        } else if (b === -1) {
+            equationText += " - x";
+        } else if (b > 0) {
+            equationText += " + " + b + "x";
+        } else {
+            equationText += " " + b + "x"; // Το b είναι ήδη αρνητικό, οπότε δεν χρειάζεται "+"
         }
+    }
+
+    // Διαχείριση του όρου c
+    if (c !== 0) {
+        if (c > 0) {
+            equationText += " + " + c;
+        } else {
+            equationText += " " + c; // Το c είναι ήδη αρνητικό, οπότε δεν χρειάζεται "+"
+        }
+    }
+
+    equationText += " = 0";
+
+    // Προσθήκη στο HTML με MathJax
+    document.getElementById('equation-text').innerHTML = `\\(${equationText}\\)`;
+    document.getElementById('equation').classList.remove('hidden');
+
+    // Ενημέρωση του MathJax για σωστή εμφάνιση
+    MathJax.Hub.Queue(["Typeset", MathJax.Hub, "equation-text"]);
+}
 
         function calculate() {
             const a = parseFloat(document.getElementById('a').value);
@@ -177,7 +211,18 @@ let equationText = `\\(${a == 1 ? '' : a == -1 ? '-' : a}x^2 ${b == 0 ? '' : b =
         }
     </script>
 <footer id="footer">
-    <p>© 2025 Επίλυση Εξισώσεων 2ου Βαθμού. Created by Παρα-school-ακης</p>
+		    <div style="text-align: center; margin-bottom: 15px;">
+        <a href="deuterobathmies.html" class="quiz-link" style="display: inline-block; font-size: 15px; color: white; text-decoration: none; margin: 0 10px;">
+            Καινούρια Εξίσωση
+        </a>-
+        <a href="../index.html" class="quiz-link" style="display: inline-block; font-size: 15px; color: white; text-decoration: none; margin: 0 10px;">
+            Αρχική Σελίδα
+        </a>-
+        <a href="../gymnasio.html" class="quiz-link" style="display: inline-block; font-size: 15px; color: white; text-decoration: none; margin: 0 10px;">
+            Επιστροφή
+        </a>
+    </div>
+    <p>© 2025 Created by Παρα-school-ακης</p>
 </footer>
 </body>
 </html>
