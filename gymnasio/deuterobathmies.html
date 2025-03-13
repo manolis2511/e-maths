@@ -90,8 +90,8 @@
 	<header id="header">
     <h1>Επίλυση Εξισώσεων 2ου Βαθμού </h1>
     	</header>
-
-    
+	<h2>Συμπληρώστε τους συντελεστές της εξίσωσης</h2>
+    <div>
     <label for="a">α:</label>
     <input type="number" id="a" placeholder="α">
     
@@ -100,7 +100,7 @@
     
     <label for="c">γ:</label>
     <input type="number" id="c" placeholder="γ">
-    
+	</div>    
     <button onclick="showEquation()">Εμφάνιση Εξίσωσης</button>
 
     <div id="equation" class="result hidden">
@@ -111,7 +111,7 @@
     <div id="result" class="result hidden">
         <h3>Αποτελέσματα:</h3>
         <div id="discriminant-step"></div><br>
-        <div id="discriminant">Η Διακρίνουσα είναι Δ= <span id="delta-value"></span></div><br><br>
+        <div id="discriminant">Η Διακρίνουσα είναι Δ= <span id="delta-value"></span></div><br>
         <div id="solutions-step"></div><br>
         <div id="solutions"></div>
     </div>
@@ -126,9 +126,14 @@
                 alert("Παρακαλώ εισάγετε έγκυρες τιμές για α, β, γ.");
                 return;
             }
-
+if (a == 0) {
+    alert("Ο συντελεστής α δεν μπορεί να πάρει την τιμή 0");
+    return;
+}
             // Δημιουργία της εξίσωσης
-            let equationText = `\\(${a}x^2 ${b >= 0 ? '+ ' + b : '- ' + Math.abs(b)}x ${c >= 0 ? '+ ' + c : '- ' + Math.abs(c)} = 0\\)`;
+ \\           let equationText = `\\(${a==1 ? ' ' : a}x^2 ${b >= 0 ? '+' : ' '} ${b} x ${c >= 0 ? '+' : ' '} ${c} = 0\\)`;
+  \\          let equationText = `\\(${a == 1 ? '' : a == -1 ? '-': a}x^2 ${b == 1 ? '+' : b == -1 ? '-' : b == 0 ? ' ' : b > 0 ? '+ ' + b : b}${b == 0 ? ' ' : 'x'}${c > 0 ? '+c' : c == 0 ? ' ' : c < 0 ? 'c'} = 0\\)`;
+let equationText = `\\(${a == 1 ? '' : a == -1 ? '-' : a}x^2 ${b == 0 ? '' : b == 1 ? '+ x' : b == -1 ? '- x' : b > 0 ? '+ ' + b + 'x' : b + 'x'} ${c == 0 ? '' : c > 0 ? '+ ' + c : c}\\) = 0`;
 
             document.getElementById('equation-text').innerHTML = equationText;
             document.getElementById('equation').classList.remove('hidden');
@@ -142,7 +147,7 @@
 
             const discriminant = b * b - 4 * a * c;
 
-            let discriminantStep = `\\( \\Delta = β^2 - 4aγ = (${b})^2 - 4 \\cdot (${a}) \\cdot (${c}) = ${discriminant} \\)`;
+            let discriminantStep = `\\( \\Delta = β^2 - 4aγ = ${b >= 0 ? '' : '('}${b}${b >= 0 ? '' : ')'}^2 - 4 \\cdot ${a >= 0 ? '' : '('}${a}${a >= 0 ? '' : ')'} \\cdot ${c >= 0 ? '' : '('}${c}${c >= 0 ? '' : ')'} = ${discriminant} \\)`;
             let solutionsText = "";
             let solutionsStep = "";
 
@@ -151,15 +156,15 @@
             } else if (discriminant === 0) {
                 const x = -b / (2 * a);
                 solutionsText = `Υπάρχει μία διπλή ρίζα: \\( x= ${x} \\)`;
-                solutionsStep = `\\( x = \\frac{-β}{2a}= \\frac{-(${b})}{2 \\cdot (${a})}  = ${x} \\)`;
+                solutionsStep = `\\( x = \\frac{-β}{2a}= \\frac{-${b >= 0 ? ' ' : '('}${b}${b >= 0 ? ' ' : ')'}}{2 \\cdot ${a >= 0 ? ' ' : '('}${a}${a >= 0 ? ' ' : ')'}}  = ${x} \\)`;
             } else {
                 const sqrtDiscriminant = Math.sqrt(discriminant);
                 const x1 = (-b + sqrtDiscriminant) / (2 * a);
                 const x2 = (-b - sqrtDiscriminant) / (2 * a);
                 solutionsText = `Οι λύσεις είναι: \\( x_1 = ${x1}, x_2 = ${x2} \\)`;
-                solutionsStep = `\\(x_{1,2}= \\frac{-β \\pm \\sqrt{\\Delta}}{2a}\\)<br>
-				 \\( x_1 = \\frac{-β + \\sqrt{\\Delta}}{2a} = \\frac{-(${b}) + \\sqrt{${discriminant}}}{2 \\cdot (${a})} = ${x1} \\)<br>
-                                 \\( x_2 = \\frac{-β - \\sqrt{\\Delta}}{2a} = \\frac{-(${b}) - \\sqrt{${discriminant}}}{2 \\cdot (${a})} = ${x2} \\)`;
+                solutionsStep = `\\(x_{1,2}= \\frac{-β \\pm \\sqrt{\\Delta}}{2a}\\)<br><br>
+				 \\( x_1 = \\frac{-β + \\sqrt{\\Delta}}{2a} = \\frac{-${b >= 0 ? ' ' : '('}${b}${b >= 0 ? ' ' : ')'} + \\sqrt{${discriminant}}}{2 \\cdot ${a >= 0 ? ' ' : '('}${a}${a >= 0 ? ' ' : ')'}}= ${x1} \\)<br>
+                                 \\( x_2 = \\frac{-β - \\sqrt{\\Delta}}{2a} = \\frac{-${b >= 0 ? ' ' : '('}${b}${b >= 0 ? ' ' : ')'} - \\sqrt{${discriminant}}}{2 \\cdot ${a >= 0 ? ' ' : '('}${a}${a >= 0 ? ' ' : ')'}} = ${x2} \\)`;
             }
 
             document.getElementById('delta-value').textContent = discriminant;
