@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Κουίζ Σύγκρισης Κλασμάτων</title>
+    <link rel="stylesheet" href="../style.css">
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+    <header id="header">
+        <h1>Κουίζ Σύγκρισης Κλασμάτων</h1>
+    </header>
+    <div class="quiz-info">
+        <p>Αυτό το κουίζ περιλαμβάνει 10 ασκήσεις σύγκρισης κλασμάτων. 
+        Διάλεξε το σωστό σύμβολο ( > , < , = ) που συγκρίνει τα δύο κλάσματα. 
+        Στο τέλος, θα δεις το σκορ σου και τον συνολικό χρόνο που χρειάστηκες για να ολοκληρώσεις το κουίζ!</p>
+    </div>
+    <div id="startQuiz">
+        <button id="startButton" onclick="startQuiz()">Ξεκινήστε το κουίζ</button>
+    </div>
+    <div class="quiz-info"> Υπενθύμιση: 
+        <p>2 κλάσματα που έχουν ίδιο αριθμητή, μεγαλύτερο είναι το κλάσμα με τον μικρότερο παρονομαστή.</p>
+        <p>2 κλάσματα που έχουν ίδιο παρονομαστή, μεγαλύτερο είναι το κλάσμα με τον μεγαλύτερο αριθμητή.</p></div>
+    <div class="question" id="question"></div>
+    <div id="choices" style="display: none;">
+        <button id="anotherButton" onclick="submitAnswer('>')">&gt;</button>
+        <button id="anotherButton" onclick="submitAnswer('<')">&lt;</button>
+        <button id="anotherButton" onclick="submitAnswer('=')">=</button>
+    </div>
+    <div id="timer" style="display: none;">Συνολικός Χρόνος: 0</div>
+    <div class="result" id="result"></div>
+    <div id="totalTime" style="display: none;"></div>
+    <div id="restartContainer" style="display: none;">
+        <button id="restartButton" onclick="restartQuiz()">Ξεκινήστε από την αρχή</button>
+    </div>
+
+    <script>
+        let score = 0;
+        let currentQuestion = 0;
+        const questions = [];
+        let usedQuestions = new Set();
+        let totalStartTime;
+        let timerInterval;
+
+        function generateQuestions() {
+            while (questions.length < 10) {
+                let num1, den1, num2, den2;
+                if (Math.random() > 0.5) {
+                    // Ίδιος αριθμητής
+                    num1 = num2 = Math.floor(Math.random() * 9) + 1;
+                    den1 = Math.floor(Math.random() * 9) + 1;
+                    do {
+                        den2 = Math.floor(Math.random() * 9) + 1;
+                    } while (den1 === den2);
+                } else {
+                    // Ίδιος παρονομαστής
+                    den1 = den2 = Math.floor(Math.random() * 9) + 1;
+                    num1 = Math.floor(Math.random() * 9) + 1;
+                    do {
+                        num2 = Math.floor(Math.random() * 9) + 1;
+                    } while (num1 === num2);
+                }
+                
+                const fraction1 = num1 / den1;
+                const fraction2 = num2 / den2;
+                let correctAnswer = '=';
+                if (fraction1 > fraction2) correctAnswer = '>';
+                else if (fraction1 < fraction2) correctAnswer = '<';
+                
+                const questionText = `\\(\\frac{${num1}}{${den1}} ? \\frac{${num2}}{${den2}}\\)`;
+                
+                if (!usedQuestions.has(questionText)) {
+                    usedQuestions.add(questionText);
+                    questions.push({
+                        question: questionText,
+                        correctAnswer,
+                        answered: false
+                    });
+                }
+            }
+        }
+
+        function displayQuestion() {
+            const current = questions[currentQuestion];
+            document.getElementById("question").innerHTML = `<span class="mathjax">${current.question}</span>`;
+            MathJax.typesetPromise();
+            document.getElementById("choices").style.display = 'block';
+            document.getElementById("result").innerHTML = '';
+        }
+    
+        function submitAnswer(userAnswer) {
+            const correctAnswer = questions[currentQuestion].correctAnswer;
+            const resultDiv = document.getElementById("result");
+
+            if (questions[currentQuestion].answered) return;
+
+            if (userAnswer === correctAnswer) {
+                score++;
+                resultDiv.innerHTML = "Σωστά!";
+                resultDiv.style.color = 'green';
+            } else {
+                resultDiv.innerHTML = `Λάθος! Η σωστή απάντηση είναι: ${correctAnswer}`;
+                resultDiv.style.color = 'red';
+            }
+
+            questions[currentQuestion].answered = true;
+
+            setTimeout(() => {
+                currentQuestion++;
+                if (currentQuestion < questions.length) {
+                    displayQuestion();
+                } else {
+                    displayResult();
+                }
+            }, 2000);
+        }
+
+        function displayResult() {
+            clearInterval(timerInterval);
+            const totalTime = (Date.now() - totalStartTime) / 1000;
+            document.getElementById("question").innerHTML = '';
+            document.getElementById("choices").style.display = 'none';
+            document.getElementById("timer").style.display = 'none';
+            document.getElementById("result").innerHTML = `Το κουίζ ολοκληρώθηκε! Σκορ: ${score}/${questions.length}`;
+            document.getElementById("result").style.color = '#FF0080';
+            document.getElementById("totalTime").innerHTML = `Συνολικός χρόνος: ${Math.floor(totalTime / 60)} λεπτά και ${Math.floor(totalTime % 60)} δευτερόλεπτα`;
+            document.getElementById("totalTime").style.display = 'block';
+            document.getElementById("restartContainer").style.display = 'block';
+        }
+
+        function startQuiz() {
+            generateQuestions();
+            displayQuestion();
+            totalStartTime = Date.now();
+            startTotalTimer();
+            document.getElementById("startButton").style.display = 'none';
+            document.querySelector(".quiz-info").style.display = 'none';
+        }
+
+        function startTotalTimer() {
+            timerInterval = setInterval(() => {
+                const totalTime = Date.now() - totalStartTime;
+                const minutes = Math.floor(totalTime / 60000);
+                const seconds = Math.floor((totalTime % 60000) / 1000);
+                document.getElementById("timer").innerHTML = `Συνολικός Χρόνος: ${minutes} λεπτά και ${seconds} δευτερόλεπτα`;
+                document.getElementById("timer").style.display = 'block';
+            }, 1000);
+        }
+
+        function restartQuiz() {
+            location.reload();
+        }
+    </script>
+</body>
+</html>
