@@ -2,7 +2,7 @@
         body {
             font-family: Arial, sans-serif;
             background-color: #f0f8ff;
-	    margin: 0;
+	        margin: 0;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -11,7 +11,7 @@
             padding-top: 30px;
         }
 
-	html {
+	    html {
             height: 100%;
             margin: 0;
             display: flex;
@@ -176,11 +176,23 @@
         .hidden {
             display: none;
         }
-	input {
+	    input {
             font-size: 18px;
             padding: 5px;
             margin: 5px;
-            width: 100px;
+            width: 30px;
+            text-align: center;
+        }
+        .container {
+            width: 100%;
+            margin: 0 auto;
+        }
+        table {
+            margin-top: 20px;
+            border-collapse: collapse;
+            width: 20px;
+            text-align: center;
+            display: inline-block; /* Βοηθά να μη γεμίζει όλη την οθόνη */      
         }
     .mathjax {
         font-size: 20px; /* Μπορείς να το προσαρμόσεις όπως θέλεις */
@@ -190,5 +202,5 @@
     display: flex; /* Χρησιμοποιούμε flexbox για να τα στοιχίσουμε */
     justify-content: center; /* Στοιχίζουμε τα κουμπιά στο κέντρο */
     gap: 10px; /* Απόσταση μεταξύ των κουμπιών */
-
+}
  //     <link rel="stylesheet" href="style.css">

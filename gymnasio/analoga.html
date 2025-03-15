@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Συνάρτηση y = ax</title>
+    <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+    <header id="header">
+        <h1>Πίνακας Τιμών Συνάρτησης y = αx</h1>
+    </header>
+    <div id="head" class="quiz-info">
+        <p>Σε αυτή την άσκηση πρέπει να συμπληρωσεις τον πίνακα τιμών της συνάρτησης y=αx.</p>
+    </div>
+        <div id="startQuiz">
+            <button id="startButton" onclick="startQuiz()">Εμφάνιση του πίνακα</button>
+        </div>
+    <div id="y=ax" class="result hidden" >
+        <h2>Η εξίσωση είναι: <span id="equation">y = ax</span></h2>
+        
+        <!-- Πίνακας -->
+        <table id="equationTable">
+            <tbody>
+                <tr id="tableRow1"><td><h2>x</h2></td>
+                    <!-- Κελιά για τις τιμές x -->
+                </tr>
+                <tr id="tableRow2"><td><h2>y</h2></td>
+                    <!-- Κελιά για τις τιμές y -->
+                </tr>
+            </tbody>
+        </table>
+        </div>
+    <div id="checkAnswer" class="result hidden" >
+        <button id="anotherButton" onclick="checkAnswers()">Έλεγχος Απαντήσεων</button>
+    </div>
+    <footer id="footer">
+        <div style="text-align: center; margin-bottom: 15px;">
+            <a href="analoga.html" class="quiz-link" style="display: inline-block; font-size: 15px; color: white; text-decoration: none; margin: 0 10px;">
+                Καινούρια Συνάρτηση
+            </a>-
+            <a href="../index.html" class="quiz-link" style="display: inline-block; font-size: 15px; color: white; text-decoration: none; margin: 0 10px;">
+                Αρχική Σελίδα
+            </a>-
+            <a href="../gymnasio.html" class="quiz-link" style="display: inline-block; font-size: 15px; color: white; text-decoration: none; margin: 0 10px;">
+                Επιστροφή
+            </a>
+        </div>
+        <p>© 2025 Created by Παρα-school-ακης</p>
+    </footer>
+    <script>
+        function startQuiz(){
+            document.getElementById('y=ax').classList.remove('hidden');
+            document.getElementById('checkAnswer').classList.remove('hidden');
+            document.getElementById('head').style.display = 'none'; 
+        document.getElementById('startQuiz').style.display = 'none';
+        }
+
+        // Συνάρτηση για να δημιουργήσουμε έναν τυχαίο ακέραιο αριθμό για το a μεταξύ -5 και 5 (εκτός του 0)
+        function getRandomA() {
+            let a;
+            do {
+                a = Math.floor(Math.random() * 10) - 5;  // Τυχαίος ακέραιος αριθμός από -5 έως 5
+            } while (a === 0);  // Αν το a είναι 0, δημιουργούμε ξανά τυχαία τιμή
+            return a;
+        }
+
+        // Συνάρτηση για να δημιουργήσουμε 10 τυχαίες τιμές x από -20 έως 20 χωρίς επαναλήψεις
+        function getUniqueRandomX() {
+            const xValues = [];
+            while (xValues.length < 10) {
+                let x = Math.floor(Math.random() * 21) - 10; // Τυχαίος αριθμός από -20 έως 20
+                if (!xValues.includes(x)) {  // Ελέγχουμε αν η τιμή x υπάρχει ήδη στον πίνακα
+                    xValues.push(x);
+                }
+            }
+            return xValues;
+        }
+
+        // Συνάρτηση για να δημιουργήσουμε την εξίσωση και τον πίνακα
+        function generateTable() {
+    let a = getRandomA();  // Τυχαίος ακέραιος αριθμός για το a
+    let equationText = `y = ${a}x`;  // Δημιουργούμε την εξίσωση για το y = ax
+    document.getElementById("equation").innerText = equationText;
+
+    let xValues = getUniqueRandomX();  // Λίστα με 10 μοναδικές τιμές x
+    let yValues = [];
+
+    // Υπολογισμός y = ax
+    for (let i = 0; i < xValues.length; i++) {
+        yValues.push(a * xValues[i]);
+    }
+
+    let tableRow1 = document.getElementById("tableRow1");
+    let tableRow2 = document.getElementById("tableRow2");
+
+    // Καθαρίζουμε τυχόν προηγούμενο περιεχόμενο στον πίνακα
+    tableRow1.innerHTML = "<td>x</td>";
+    tableRow2.innerHTML = "<td>y</td>";
+
+    for (let i = 0; i < 10; i++) {
+        let cellX = document.createElement("td");
+        let cellY = document.createElement("td");
+        
+        let inputX = document.createElement("input");
+        let inputY = document.createElement("input");
+
+        if (i >= 5) {
+            // Τα πρώτα 5 κελιά της γραμμής x είναι κενά για συμπλήρωση από τον χρήστη
+            inputX.type = "text";
+            inputX.placeholder = "?";
+            inputX.dataset.answer = xValues[i];  // Αποθηκεύουμε τη σωστή απάντηση
+        } else {
+            // Τα υπόλοιπα 5 είναι προ-συμπληρωμένα και απενεργοποιημένα
+            inputX.value = xValues[i];
+            inputX.disabled = true;
+        }
+
+        if (i >= 5) {
+            // Τα πρώτα 5 της γραμμής y είναι προ-συμπληρωμένα
+            inputY.value = yValues[i];
+            inputY.disabled = true;
+        } else {
+            // Τα τελευταία 5 είναι κενά για συμπλήρωση από τον χρήστη
+            inputY.type = "text";
+            inputY.placeholder = "?";
+            inputY.dataset.answer = yValues[i];  // Αποθηκεύουμε τη σωστή απάντηση
+        }
+
+        cellX.appendChild(inputX);
+        cellY.appendChild(inputY);
+        tableRow1.appendChild(cellX);
+        tableRow2.appendChild(cellY);
+    }
+}
+
+        // Συνάρτηση για να ελέγξουμε αν οι απαντήσεις είναι σωστές
+        function checkAnswers() {
+    let inputs = document.querySelectorAll('input[type="text"]');
+    let correct = 0;
+    
+    inputs.forEach(input => {
+        if (parseInt(input.value) === parseInt(input.dataset.answer)) {
+            input.style.backgroundColor = "lightgreen"; // Σωστή απάντηση
+            correct++;
+        } else {
+            input.style.backgroundColor = "lightcoral"; // Λάθος απάντηση
+        }
+    });
+
+    alert(`${correct} από 10 σωστές απαντήσεις!`);
+}
+
+        // Καλέστε τη συνάρτηση για να γεμίσετε τον πίνακα όταν φορτώνει η σελίδα
+        window.onload = generateTable;
+    </script>
+</body>
+</html>
