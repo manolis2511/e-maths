@@ -97,7 +97,8 @@
         }
 	#anotherButton {
 	    font-size: 20px;
-	    padding: 15px; auto;background-color: blue;
+	    padding: 15px; auto;
+        background-color: blue;
             color: white;
             border: none;
             border-radius: 10px;
@@ -134,7 +135,7 @@
         }
 
         .result {
-            font-size: 30px;
+            font-size: 50px;
             margin-top: 20px;
         }
 
@@ -184,8 +185,7 @@
             text-align: center;
         }
         .container {
-            width: 100%;
-            margin: 0 auto;
+            margin: 0;
         }
         table {
             margin-top: 20px;
@@ -203,4 +203,4 @@
     justify-content: center; /* Στοιχίζουμε τα κουμπιά στο κέντρο */
     gap: 10px; /* Απόσταση μεταξύ των κουμπιών */
 }
- //     <link rel="stylesheet" href="style.css">
+ //        <link rel="stylesheet" href="../style.css">

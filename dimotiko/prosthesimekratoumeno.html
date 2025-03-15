@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Κάθετη Πρόσθεση</title>
+    <link rel="stylesheet" href="../style.css">
+    <style>
+        .container {
+            font-size: 24px;
+        }
+        table {
+            text-align: right;
+        }
+        td {
+            padding: 5px;
+        }
+        .digit, .carry, .answer {
+            width: 40px;
+            height: 40px;
+            text-align: center;
+            font-size: 24px;
+            margin: 2px;
+        }
+        .carry {
+            border: 1px dashed gray;
+        }
+    </style>
+</head>
+<body>
+    <header id="header">
+    <h1>Παιχνίδι Κάθετης Πρόσθεσης</h1>
+    </header>
+    <div class="container">
+        <table>
+            <tr>
+                <td></td>
+                <td></td>
+                <td><input class="carry" id="carry1"></td>
+                <td><input class="carry" id="carry2"></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td></td>
+                <td id="num1_d1"></td>
+                <td id="num1_d2"></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>+</td>
+                <td id="num2_d1"></td>
+                <td id="num2_d2"></td>
+            </tr>
+            <tr>
+                <td colspan="4"><hr></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td><input class="answer" id="ans1" maxlength="1"></td>
+                <td><input class="answer" id="ans2" maxlength="1"></td>
+                <td><input class="answer" id="ans3" maxlength="1"></td>
+            </tr>
+        </table>
+    </div>
+    <br>
+    <button id="anotherButton" onclick="checkAnswer()">Έλεγχος</button>
+    <button id="anotherButton" onclick="setupGame()">Νέα Ερώτηση</button>
+    <h2 id="result"></h2>
+	<footer id="footer">
+	    <div style="text-align: center; margin-bottom: 15px;">
+        <a href="prosthesimekratoumeno.html" class="quiz-link" style="display: inline-block; font-size: 15px; color: white; text-decoration: none; margin: 0 10px;">
+            Ξεκινήστε από την αρχή
+        </a>-
+        <a href="../index.html" class="quiz-link" style="display: inline-block; font-size: 15px; color: white; text-decoration: none; margin: 0 10px;">
+            Αρχική Σελίδα
+        </a>-
+        <a href="../dimotiko.html" class="quiz-link" style="display: inline-block; font-size: 15px; color: white; text-decoration: none; margin: 0 10px;">
+            Επιστροφή
+        </a>
+    </div>
+    <p>© 2025 Created by Παρα-school-ακης</p>
+</footer>
+
+    <script>
+        let num1, num2, sum;
+        
+        function getRandomNumber() {
+            return Math.floor(Math.random() * (99 - 10 + 1)) + 10;
+        }
+
+        function setupGame() {
+            num1 = getRandomNumber();
+            num2 = getRandomNumber();
+            sum = num1 + num2;
+            let num1Str = num1.toString().padStart(2, '0');
+            let num2Str = num2.toString().padStart(2, '0');
+            
+            document.getElementById("num1_d1").textContent = num1Str[0];
+            document.getElementById("num1_d2").textContent = num1Str[1];
+            document.getElementById("num2_d1").textContent = num2Str[0];
+            document.getElementById("num2_d2").textContent = num2Str[1];
+            
+            document.getElementById("ans1").value = "";
+            document.getElementById("ans2").value = "";
+            document.getElementById("ans3").value = "";
+            document.getElementById("result").textContent = "";
+        }
+
+        function checkAnswer() {
+    let userAnswer = (document.getElementById("ans1").value || '0') +
+                     (document.getElementById("ans2").value || '0') +
+                     (document.getElementById("ans3").value || '0');
+
+    // Αντιστοιχούμε την απάντηση ως αριθμό για να συγκρίνουμε σωστά
+    let userAnswerNum = parseInt(userAnswer, 10);
+
+    if (userAnswerNum === sum) {
+        document.getElementById("result").innerText = "Σωστό!";
+    } else {
+        document.getElementById("result").innerText = `Λάθος! Η σωστή απάντηση είναι: ${sum}`;
+    }
+}
+
+        setupGame();
+    </script>
+</body>
+</html>

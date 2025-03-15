@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Συνάρτηση y = a/x</title>
+    <link rel="stylesheet" href="../style.css">
+    <script type="text/javascript" async
+      src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script type="text/javascript" async
+      src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+    <header id="header">
+        <h1>Πίνακας Τιμών Συνάρτησης \( y = \frac{a}{x} \)</h1>
+    </header>
+    <div id="head" class="quiz-info">
+        <p>Σε αυτή την άσκηση πρέπει να συμπληρώσεις τον πίνακα τιμών της συνάρτησης \( y = \frac{a}{x} \).</p>
+    </div>
+    <div id="startQuiz">
+        <button id="startButton" onclick="startQuiz()">Εμφάνιση του πίνακα</button>
+    </div>
+    <div id="y=ax" class="result hidden">
+        <h2>Η εξίσωση είναι: <span id="equation"></span></h2>
+        <table id="equationTable">
+            <tbody>
+                <tr id="tableRow1"><td><h2>x</h2></td></tr>
+                <tr id="tableRow2"><td><h2>y</h2></td></tr>
+            </tbody>
+        </table>
+    </div>
+    <div id="checkAnswer" class="result hidden">
+        <button id="anotherButton" onclick="checkAnswers()">Έλεγχος Απαντήσεων</button>
+    </div>
+    <footer id="footer">
+        <p>© 2025 Created by Παρα-school-ακης</p>
+    </footer>
+    <script>
+        function startQuiz() {
+            document.getElementById('y=ax').classList.remove('hidden');
+            document.getElementById('checkAnswer').classList.remove('hidden');
+            document.getElementById('head').style.display = 'none';
+            document.getElementById('startQuiz').style.display = 'none';
+        }
+
+        function getRandomA() {
+            let a;
+            do {
+                a = Math.floor(Math.random() * 10) - 5;
+            } while (a === 0);
+            return a;
+        }
+
+        function getUniqueRandomX() {
+            const xValues = [];
+            while (xValues.length < 10) {
+                let x = Math.floor(Math.random() * 21) - 10;
+                if (!xValues.includes(x) && x !== 0) {
+                    xValues.push(x);
+                }
+            }
+            return xValues;
+        }
+
+        function generateTable() {
+            let a = getRandomA();
+            document.getElementById("equation").innerHTML = `y = \( \frac{${a}}{x} \)`;
+            MathJax.typeset();
+            
+            let xValues = getUniqueRandomX();
+            let yValues = xValues.map(x => (a / x).toFixed(2));
+
+            let tableRow1 = document.getElementById("tableRow1");
+            let tableRow2 = document.getElementById("tableRow2");
+
+            tableRow1.innerHTML = "<td>x</td>";
+            tableRow2.innerHTML = "<td>y</td>";
+
+            for (let i = 0; i < 10; i++) {
+                let cellX = document.createElement("td");
+                let cellY = document.createElement("td");
+                
+                let inputX = document.createElement("input");
+                let inputY = document.createElement("input");
+
+                if (i >= 5) {
+                    inputX.type = "text";
+                    inputX.placeholder = "...";
+                    inputX.dataset.answer = xValues[i];
+                } else {
+                    inputX.value = xValues[i];
+                    inputX.disabled = true;
+                }
+
+                if (i >= 5) {
+                    inputY.value = yValues[i];
+                    inputY.disabled = true;
+                } else {
+                    inputY.type = "text";
+                    inputY.placeholder = "...";
+                    inputY.dataset.answer = yValues[i];
+                }
+
+                cellX.appendChild(inputX);
+                cellY.appendChild(inputY);
+                tableRow1.appendChild(cellX);
+                tableRow2.appendChild(cellY);
+            }
+        }
+
+        function checkAnswers() {
+            let inputs = document.querySelectorAll('input[type="text"]');
+            let correct = 0;
+            
+            inputs.forEach(input => {
+                if (parseFloat(input.value).toFixed(2) === parseFloat(input.dataset.answer).toFixed(2)) {
+                    input.style.backgroundColor = "lightgreen";
+                    correct++;
+                } else {
+                    input.style.backgroundColor = "lightcoral";
+                }
+            });
+
+            alert(`${correct} από 10 σωστές απαντήσεις!`);
+        }
+
+        window.onload = generateTable;
+    </script>
+</body>
+</html>

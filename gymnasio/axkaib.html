@@ -3,21 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Συνάρτηση y = ax</title>
+    <title>Συνάρτηση y = αx+β</title>
     <link rel="stylesheet" href="../style.css">
 </head>
 <body>
     <header id="header">
-        <h1>Πίνακας Τιμών Συνάρτησης y = αx</h1>
+        <h1>Πίνακας Τιμών Συνάρτησης y = αx+β</h1>
     </header>
     <div id="head" class="quiz-info">
-        <p>Σε αυτή την άσκηση πρέπει να συμπληρωσεις τον πίνακα τιμών της συνάρτησης y=αx.</p>
+        <p>Σε αυτή την άσκηση πρέπει να συμπληρωσεις τον πίνακα τιμών της συνάρτησης y=αx+β.</p>
     </div>
         <div id="startQuiz">
             <button id="startButton" onclick="startQuiz()">Εμφάνιση του πίνακα</button>
         </div>
     <div id="y=ax" class="result hidden" >
-        <h2>Η εξίσωση είναι: <span id="equation">y = ax</span></h2>
+        <h2>Η εξίσωση είναι: <span id="equation">y = ax+b</span></h2>
         
         <!-- Πίνακας -->
         <table id="equationTable">
@@ -36,7 +36,7 @@
     </div>
     <footer id="footer">
         <div style="text-align: center; margin-bottom: 15px;">
-            <a href="analoga.html" class="quiz-link" style="display: inline-block; font-size: 15px; color: white; text-decoration: none; margin: 0 10px;">
+            <a href="axkaib.html" class="quiz-link" style="display: inline-block; font-size: 15px; color: white; text-decoration: none; margin: 0 10px;">
                 Καινούρια Συνάρτηση
             </a>-
             <a href="../index.html" class="quiz-link" style="display: inline-block; font-size: 15px; color: white; text-decoration: none; margin: 0 10px;">
@@ -64,6 +64,13 @@
             } while (a === 0);  // Αν το a είναι 0, δημιουργούμε ξανά τυχαία τιμή
             return a;
         }
+        function getRandomB() {
+            let b;
+            do {
+                b = Math.floor(Math.random() * 10) - 5;  // Τυχαίος ακέραιος αριθμός από -5 έως 5
+            } while (b === 0);  // Αν το a είναι 0, δημιουργούμε ξανά τυχαία τιμή
+            return b;
+        }
 
         // Συνάρτηση για να δημιουργήσουμε 10 τυχαίες τιμές x από -20 έως 20 χωρίς επαναλήψεις
         function getUniqueRandomX() {
@@ -80,15 +87,15 @@
         // Συνάρτηση για να δημιουργήσουμε την εξίσωση και τον πίνακα
         function generateTable() {
     let a = getRandomA();  // Τυχαίος ακέραιος αριθμός για το a
-    let equationText = `y = ${a}x`;  // Δημιουργούμε την εξίσωση για το y = ax
+    let b = getRandomB();
+    let equationText = `y = ${a === 1 ? " ": a === -1 ? "-" :a}x ${b > 0 ? '+' : ''} ${b}`;  // Δημιουργούμε την εξίσωση για το y = ax
     document.getElementById("equation").innerText = equationText;
-
     let xValues = getUniqueRandomX();  // Λίστα με 10 μοναδικές τιμές x
     let yValues = [];
 
     // Υπολογισμός y = ax
     for (let i = 0; i < xValues.length; i++) {
-        yValues.push(a * xValues[i]);
+        yValues.push(a * xValues[i]+b);
     }
 
     let tableRow1 = document.getElementById("tableRow1");
@@ -141,10 +148,10 @@
     
     inputs.forEach(input => {
         if (parseInt(input.value) === parseInt(input.dataset.answer)) {
-            input.style.backgroundColor = "lightgreen"; // Σωστή απάντηση
+            input.style.backgroundColor = "green"; // Σωστή απάντηση
             correct++;
         } else {
-            input.style.backgroundColor = "lightcoral"; // Λάθος απάντηση
+            input.style.backgroundColor = "red"; // Λάθος απάντηση
         }
     });
 
