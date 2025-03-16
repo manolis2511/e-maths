@@ -190,9 +190,8 @@
         table {
             margin-top: 20px;
             border-collapse: collapse;
-            width: 20px;
+            width: 10px;
             text-align: center;
-            display: inline-block; /* Βοηθά να μη γεμίζει όλη την οθόνη */      
         }
     .mathjax {
         font-size: 20px; /* Μπορείς να το προσαρμόσεις όπως θέλεις */
@@ -203,4 +202,4 @@
     justify-content: center; /* Στοιχίζουμε τα κουμπιά στο κέντρο */
     gap: 10px; /* Απόσταση μεταξύ των κουμπιών */
 }
- //        <link rel="stylesheet" href="../style.css">
+ /*        <link rel="stylesheet" href="../style.css">

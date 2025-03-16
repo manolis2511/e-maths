@@ -22,10 +22,10 @@
         <!-- Πίνακας -->
         <table id="equationTable">
             <tbody>
-                <tr id="tableRow1"><td><h2>x</h2></td>
+                <tr id="tableRow1"><td></td>
                     <!-- Κελιά για τις τιμές x -->
                 </tr>
-                <tr id="tableRow2"><td><h2>y</h2></td>
+                <tr id="tableRow2"><td></td>
                     <!-- Κελιά για τις τιμές y -->
                 </tr>
             </tbody>
@@ -80,9 +80,9 @@
         // Συνάρτηση για να δημιουργήσουμε την εξίσωση και τον πίνακα
         function generateTable() {
     let a = getRandomA();  // Τυχαίος ακέραιος αριθμός για το a
-    let equationText = `y = ${a}x`;  // Δημιουργούμε την εξίσωση για το y = ax
+    let equationText = `y = ${a === 1 ? " ": a === -1 ? "-" :a}x`;  // Δημιουργούμε την εξίσωση για το y = ax
     document.getElementById("equation").innerText = equationText;
-
+     
     let xValues = getUniqueRandomX();  // Λίστα με 10 μοναδικές τιμές x
     let yValues = [];
 
