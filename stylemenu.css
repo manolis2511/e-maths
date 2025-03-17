@@ -1,5 +1,6 @@
 /* Στυλ για τη Navigation Bar */
 .navbar {
+    background-color: var(--secondary-color);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -98,7 +99,7 @@
         top: 50px;
         left: 0;
         width: 100%;
-        background: #222;
+        background: var(--secondary-color);
     }
     .nav-menu li {
         text-align: center;

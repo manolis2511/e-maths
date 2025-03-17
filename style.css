@@ -69,8 +69,15 @@
             font-size: 14px;
             width: 100%;
         }
+        .category-container {
+            display: flex;
+            flex-wrap: wrap; /* Επιτρέπει στα στοιχεία να πάνε σε νέα γραμμή */
+            gap: 10px; /* Προσθέτει κενό μεταξύ τους */
+            justify-content: center; /* Κεντράρει τα στοιχεία */
+        }
 
         .category {
+ /*           flex: 1 1 calc(50% - 10px); */
             padding: 20px;
             background-color:  var(--secondary-color);
             color:  var(--text-color);
@@ -78,6 +85,7 @@
             text-decoration: none;
             border-radius: 10px;
             transition: 0.3s;
+            margin-bottom: 20px 0;
         }
 
         .category:hover {
