@@ -126,11 +126,11 @@ function generateQuestions() {
             const totalTime = Date.now() - totalStartTime;
             const minutes = Math.floor(totalTime / 60000);
             const seconds = Math.floor((totalTime % 60000) / 1000);
-            document.getElementById("question").innerHTML = `Το κουίζ ολοκληρώθηκε! Σκορ: ${score}/10`;
+            document.getElementById("question").innerHTML = '';
             document.getElementById("totalTime").innerHTML = `Συνολικός Χρόνος: ${minutes} λεπτά και ${seconds} δευτερόλεπτα`;
             document.getElementById("timer").style.display = 'none';
             document.getElementById("answers").style.display = 'none';
-            document.getElementById("result").style.display = 'none';
+            document.getElementById("result").style.display = `Το κουίζ ολοκληρώθηκε! Σκορ: ${score}/${questions.length}`;
             document.getElementById("totalTime").style.display = 'block';
             document.getElementById("restartContainer").style.display = 'block';
         }

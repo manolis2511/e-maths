@@ -3,84 +3,75 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="stylemenu.css">
     <title>E-Maths | Αρχική</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f0f8ff;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: flex-start;
-            height: 100vh;
-            margin: 0;
-            padding-top: 30px;
-        }
-        h1 {
-            font-size: 40px;
-            margin-bottom: 30px;
-        }
-        h2 {
-            font-size: 20px;
-            margin-bottom: 20px;
-        }
-        #header {
-            background-color: blue;
-            color: white;
-            text-align: center;
-            padding: 10px 0;
-            font-size: 24px;
-            width: 100%;
-	    margin-bottom: 30px;
- 	}
-	html, body {
-            height: 100%;
-            margin: 0;
-            display: flex;
-            flex-direction: column;
-        }
-        #footer {
-            margin-top: auto;
-            background-color: blue;
-            color: white;
-            text-align: center;
-            padding: 10px 0;
-            font-size: 20px;
-            width: 100%;
-        }
-
-        .category {
-            padding: 20px;
-            background-color: blue;
-            color: white;
-            font-size: 24px;
-            text-decoration: none;
-            border-radius: 10px;
-            transition: 0.3s;
-        }
-        .category:hover {
-            background-color: white;
-	    color:blue;
-        }
-    </style>
 </head>
 <body>
     	<header id="header">
     <h1>Καλώς ήρθατε στο e-maths</h1>
+        <nav class="navbar">
+            <div class="menu-toggle" font-size="14px" onclick="toggleMenu()">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="index.html">Αρχική</a></li>
+                
+                <li class="dropdown">
+                    <a href="dimotiko.html">Δημοτικό ▼</a>
+                    <ul class="dropdown-menu">
+                        <li><a href="dimotiko/prosthesi.html">Πρόσθεση</a>
+                        <li><a href="dimotiko/afairesi.html">Αφαίρεση</a></li>
+                        <li><a href="dimotiko/propaideia.html">Προπαίδεια</a></li>
+                        <li><a href="dimotiko/prosthesimekratoumeno.html">Κάθετη Πρόσθεση</a></li>
+                    </ul>
+                </li>
+    
+                <li class="dropdown">
+                    <a href="#">Γυμνάσιο ▼</a>
+                    <ul class="dropdown-menu">
+                        <li><a href="gymnasio/mathimata.html">Μαθήματα</a></li>
+                        <li><a href="gymnasio/drastiriotites.html">Δραστηριότητες</a></li>
+                        <li><a href="gymnasio/anakoinoseis.html">Ανακοινώσεις</a></li>
+                    </ul>
+                </li>
+    
+                <li class="dropdown">
+                    <a href="#">Λύκειο ▼</a>
+                    <ul class="dropdown-menu">
+                        <li><a href="lykeio/mathimata.html">Μαθήματα</a></li>
+                        <li><a href="lykeio/drastiriotites.html">Δραστηριότητες</a></li>
+                        <li><a href="lykeio/anakoinoseis.html">Ανακοινώσεις</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </nav>
     	</header>
     <h2>Διαλέξτε εκπαιδευτικό επίπεδο για να ξεκινήσετε:</h2>
-
-    <div class="category-container">
+    <div class="category-container" style="margin-bottom: 30px;">
         <a href="dimotiko.html" class="category">Δημοτικό</a>
         <a href="gymnasio.html" class="category">Γυμνάσιο</a>
         <a href="lykeio.html" class="category">Λύκειο</a>
     </div>
-        <div class="category-container">
+    <h2>Κάτι άλλο...</h2>
+    <div class="category-container">
         <a href="Drums/Drums.html" class="category">Virtual Drums</a>
     </div>
  	<footer id="footer">
     <p>© 2025 Created by Παρα-school-ακης</p>
-</footer>
-
+    </footer>
+    <a href="http://www.paypal.com/paypalme/manolis2511" target="_blank"
+    style="position: fixed; bottom: 20px; right: 20px; background: #597ae9; color: black; 
+          padding: 10px 15px; border-radius: 5px; font-weight: bold; text-decoration: none; 
+          box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3); z-index: 1000;">
+    💰 Υποστηρίξτε μας
+    </a>
 </body>
+<script>
+function toggleMenu() {
+    document.querySelector(".nav-menu").classList.toggle("active");
+}
+</script>
 </html>
