@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Σχήμα Horner</title>
+    <link rel="stylesheet" href="../style.css">
+    <style>
+        table {
+            margin: 20px auto;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid black;
+            padding: 10px;
+        }
+        input {
+            margin: 5px;
+            padding: 5px;
+            width: 50px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <header id="header">
+        <h1>Σχήμα Horner</h1>
+    </header>
+    <div id="inputSection" align-items="center">
+        <h3>Συμπληρώστε τους συντελεστές του πολυωνύμου:</h3>
+        <input type="number" id="coef0" placeholder="α₅">
+        <input type="number" id="coef1" placeholder="α₄">
+        <input type="number" id="coef2" placeholder="α₃">
+        <input type="number" id="coef3" placeholder="α₂">
+        <input type="number" id="coef4" placeholder="α₁">
+        <input type="number" id="coef5" placeholder="α₀">
+        <br>
+        <label for="r">Τιμή του ρ: </label>
+        <input type="number" id="r">
+        <br>
+        <button id="anotherButton" onclick="showPolynomial()">Εμφάνιση Πολυωνύμου</button>
+    </div>
+
+    <div id="polynomialSection" class="hidden">
+        <h3>Το Πολυώνυμο είναι:</h3>
+        <h4><p id="polynomial"></p>
+        <p id="factor"></p></h4>
+        <button id="anotherButton" onclick="calculateHorner()">Υπολογισμός</button>
+    </div>
+    <div id="pinakasHorner" class="hidden">
+        <h3>Πίνακας Horner</h3>
+        <table id="hornerTable"></table>
+        <h3>Ταυτότητα διαίρεσης</h3>
+        <p id="divisionIdentity"></p>
+        <button id="restartButton" onclick="restartQuiz()">Ξεκινήστε από την αρχή</button>
+    </div>
+    <script>
+        function showPolynomial() {
+            let coefficients = [
+                document.getElementById("coef0").value || 0,
+                document.getElementById("coef1").value || 0,
+                document.getElementById("coef2").value || 0,
+                document.getElementById("coef3").value || 0,
+                document.getElementById("coef4").value || 0,
+                document.getElementById("coef5").value || 0
+            ].map(Number);
+
+            let r = parseFloat(document.getElementById("r").value);
+            
+            if (isNaN(r)) {
+                alert("Παρακαλώ εισάγετε έγκυρο αριθμό για το ρ.");
+                return;
+            }
+
+            let polynomial = "";
+let degree = coefficients.length - 1;
+
+for (let i = 0; i < coefficients.length; i++) {
+    if (coefficients[i] !== 0) {
+        if (polynomial !== "") {
+            polynomial += coefficients[i] > 0 ? " + " : " - ";
+        } else if (coefficients[i] < 0) {
+            polynomial += "-";
+        }
+
+        // Αν ο συντελεστής είναι 1 ή -1 και δεν είναι ο σταθερός όρος
+        if (Math.abs(coefficients[i]) !== 1 || degree - i === 0) {
+            polynomial += Math.abs(coefficients[i]);
+        }
+
+        if (degree - i > 0) {
+            polynomial += "x";
+            if (degree - i > 1) {
+                polynomial += "<sup>" + (degree - i) + "</sup>";
+            }
+        }
+    }
+}
+
+
+            document.getElementById("polynomial").innerHTML = "P(x) = " + polynomial;
+            document.getElementById("factor").innerHTML = "ρ=" + r;
+            
+            document.getElementById("inputSection").classList.add("hidden");
+            document.getElementById("polynomialSection").classList.remove("hidden");
+        }
+        
+        function calculateHorner() {
+    let coefficients = [
+        document.getElementById("coef0").value || 0,
+        document.getElementById("coef1").value || 0,
+        document.getElementById("coef2").value || 0,
+        document.getElementById("coef3").value || 0,
+        document.getElementById("coef4").value || 0,
+        document.getElementById("coef5").value || 0
+    ].map(Number);
+    
+    let r = parseFloat(document.getElementById("r").value);
+    
+    if (isNaN(r)) {
+        alert("Παρακαλώ εισάγετε έγκυρο αριθμό για το ρ.");
+        return;
+    }
+    
+    let n = coefficients.length;
+    let row1 = [...coefficients, r];
+    let row2 = new Array(n - 1).fill(0);
+    let row3 = new Array(n).fill(0);
+    
+    row3[0] = row1[0];
+    for (let i = 1; i < n; i++) {
+        row2[i - 1] = row3[i - 1] * r;
+        row3[i] = row1[i] + row2[i - 1];
+    }
+    
+    let table = "<tr><td>" + row1.join("</td><td>") + "</td></tr>";
+    table += "<tr><td>" + "</td><td>" + row2.join("</td><td>") + "</td></tr>";
+    table += "<tr><td>" + row3.join("</td><td>") + "</td></tr>";
+    document.getElementById("pinakasHorner").classList.remove("hidden");
+    document.getElementById("hornerTable").innerHTML = table;
+
+    // Υπολογισμός πηλίκου και υπολοίπου
+    let quotientCoeffs = row3.slice(0, -1);
+    let remainder = row3[row3.length - 1];
+
+    let quotientPolynomial = "";
+    let quotientDegree = quotientCoeffs.length - 1;
+
+    for (let i = 0; i < quotientCoeffs.length; i++) {
+        if (quotientCoeffs[i] !== 0) {
+            if (quotientPolynomial !== "") {
+                quotientPolynomial += quotientCoeffs[i] > 0 ? " + " : " - ";
+            } else if (quotientCoeffs[i] < 0) {
+                quotientPolynomial += "-";
+            }
+
+            if (Math.abs(quotientCoeffs[i]) !== 1 || quotientDegree - i === 0) {
+                quotientPolynomial += Math.abs(quotientCoeffs[i]);
+            }
+
+            if (quotientDegree - i > 0) {
+                quotientPolynomial += "x";
+                if (quotientDegree - i > 1) {
+                    quotientPolynomial += "<sup>" + (quotientDegree - i) + "</sup>";
+                }
+            }
+        }
+    }
+
+    // Ταυτότητα διαίρεσης
+    let divisionIdentity = `Το πύλικο είναι π(x)=${quotientPolynomial} `;
+    divisionIdentity += `και το υπόλοιπο υ=${remainder}`;
+    document.getElementById("divisionIdentity").innerHTML = divisionIdentity;
+    }
+
+        function restartQuiz() {
+            location.reload();
+        }
+    </script>
+    
+	<footer id="footer">
+	    <div style="text-align: center; margin-bottom: 15px;">
+        <a href="horner.html" class="quiz-link" style="display: inline-block; font-size: 15px; color: white; text-decoration: none; margin: 0 10px;">
+            Ξεκινήστε από την αρχή
+        </a>-
+        <a href="../index.html" class="quiz-link" style="display: inline-block; font-size: 15px; color: white; text-decoration: none; margin: 0 10px;">
+            Αρχική Σελίδα
+        </a>-
+        <a href="../lykeio.html" class="quiz-link" style="display: inline-block; font-size: 15px; color: white; text-decoration: none; margin: 0 10px;">
+            Επιστροφή
+        </a>
+    </div>
+    <p>© 2025 Created by Παρα-school-ακης</p>
+</footer>
+</body>
+</html>
