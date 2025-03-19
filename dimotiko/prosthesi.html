@@ -130,7 +130,7 @@ function generateQuestions() {
             document.getElementById("totalTime").innerHTML = `Συνολικός Χρόνος: ${minutes} λεπτά και ${seconds} δευτερόλεπτα`;
             document.getElementById("timer").style.display = 'none';
             document.getElementById("answers").style.display = 'none';
-            document.getElementById("result").style.display = `Το κουίζ ολοκληρώθηκε! Σκορ: ${score}/${questions.length}`;
+            document.getElementById("result").innerHTML = `Το κουίζ ολοκληρώθηκε! Σκορ: ${score}/${questions.length}`;
             document.getElementById("totalTime").style.display = 'block';
             document.getElementById("restartContainer").style.display = 'block';
         }

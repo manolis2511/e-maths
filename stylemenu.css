@@ -4,6 +4,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    font-size: 18px;
 }
 
 /* Στυλ για τα Links του Μενού */
@@ -33,6 +34,7 @@
 
 /* Dropdown Menu */
 .dropdown-menu {
+    font-size: 16px;
     display: none;
     position: absolute;
     top: 100%;
@@ -40,17 +42,17 @@
     background: var(--secondary-color);
     min-width: 100px;
     list-style: none;
-    padding: 10px 10px;
-    border-radius: 5px;
+    padding: 5px 5px;
+    border-radius: 2px;
     z-index: 1000;
 }
 
 .dropdown-menu li {
     display: block; /* Κάνει κάθε στοιχείο να είναι σε νέο γραμμή (μπλοκ) */
-    margin: 5px 0; /* Κενό μεταξύ των στοιχείων */
-    padding: 10px;
+    margin: 10px 0px; /* Κενό μεταξύ των στοιχείων */
+    padding: 5px 40px;
     background-color: var(--primary-color); /* Χρώμα φόντου για το κάθε κουτάκι */
-    border-radius: 5px;
+    border-radius: 2px;
 }
 
 .dropdown-menu li:hover {

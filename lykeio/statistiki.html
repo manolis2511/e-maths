@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Πίνακας Συχνοτήτων</title>
+    <script type="text/javascript" async
+        src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML">
+    </script>
+    <link rel="stylesheet" href="../style.css">
+    <style>
+        th, td {
+            border: 1px solid var(--shadow-color);
+            padding: 20px 50px;
+            width: 20px;
+        }
+        input {
+            width: 60px;
+            text-align: center;
+        }
+        .center {
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <header id="header">
+        <h1>Πίνακας Συχνοτήτων</h1>
+    </header>
+    <div class="center">
+        <label for="numVariables">Αριθμός μεταβλητών xᵢ:</label>
+        <input type="number" id="numVariables" min="1">
+        <button id="anotherButton" onclick="generateTable()">Δημιουργία Πίνακα</button>
+    </div>
+    
+    <div id="tableContainer"></div>
+    <footer id="footer">
+	    <div style="text-align: center; margin-bottom: 15px;">
+        <a href="statistiki.html" class="quiz-link" style="display: inline-block; font-size: 15px; color: white; text-decoration: none; margin: 0 10px;">
+            Ξεκινήστε από την αρχή
+        </a>-
+        <a href="../index.html" class="quiz-link" style="display: inline-block; font-size: 15px; color: white; text-decoration: none; margin: 0 10px;">
+            Αρχική Σελίδα
+        </a>-
+        <a href="../lykeio.html" class="quiz-link" style="display: inline-block; font-size: 15px; color: white; text-decoration: none; margin: 0 10px;">
+            Επιστροφή
+        </a>
+    </div>
+    <p>© 2025 Created by Παρα-school-ακης</p>
+    </footer>
+    <script>
+        function generateTable() {
+            let numVariables = parseInt(document.getElementById("numVariables").value);
+            if (isNaN(numVariables) || numVariables < 1) {
+                alert("Παρακαλώ εισάγετε έγκυρο αριθμό μεταβλητών.");
+                return;
+            }
+            
+            let tableHTML = "<table><tr><th>xᵢ</th><th>vᵢ</th><th>Nᵢ</th><th>fᵢ</th><th>Fᵢ</th><th>fᵢ%</th><th>Fᵢ%</th><th>xᵢvᵢ</th></tr>";
+            for (let i = 0; i < numVariables; i++) {
+                tableHTML += `<tr>
+                    <td><input type='number' id='x${i}'></td>
+                    <td><input type='number' id='v${i}'></td>
+                    <td id='N${i}'></td>
+                    <td id='f${i}'></td>
+                    <td id='F${i}'></td>
+                    <td id='fP${i}'></td>
+                    <td id='FP${i}'></td>
+                    <td id='xv${i}'></td>
+                </tr>`;
+            }
+            tableHTML += `<tr>
+                <td>Σύνολο</td>
+                <td id='sumV'></td>
+                <td id='sumN'></td>
+                <td id='sumF'></td>
+                <td></td>
+                <td id='sumFP'></td>
+                <td></td>
+                <td id='sumXV'></td>
+            </tr>`;
+            tableHTML += "</table>";
+            tableHTML += `<button id="anotherButton" onclick='calculateFrequencies()'>Υπολογισμός</button>`;
+            document.getElementById("tableContainer").innerHTML = tableHTML;
+        }
+        
+        function calculateFrequencies() {
+            let numVariables = parseInt(document.getElementById("numVariables").value);
+            let totalFrequency = 0;
+            let cumulativeFrequency = 0;
+            let totalXV = 0;
+
+            let data = [];
+            for (let i = 0; i < numVariables; i++) {
+                let x = parseFloat(document.getElementById(`x${i}`).value) || 0;
+                let v = parseInt(document.getElementById(`v${i}`).value) || 0;
+                data.push({ x, v });
+                totalFrequency += v;
+            }
+
+            let cumulativeRelativeFreq = 0;
+            for (let i = 0; i < numVariables; i++) {
+                let { x, v } = data[i];
+                cumulativeFrequency += v;
+                let fi = v / totalFrequency;
+                cumulativeRelativeFreq += fi;
+                let fPercent = fi * 100;
+                let cumulativeFPercent = cumulativeRelativeFreq * 100;
+                let xv = x * v;
+                totalXV += xv;
+
+                document.getElementById(`N${i}`).innerText = cumulativeFrequency;
+                document.getElementById(`f${i}`).innerText = fi.toFixed(4);
+                document.getElementById(`F${i}`).innerText = cumulativeRelativeFreq.toFixed(4);
+                document.getElementById(`fP${i}`).innerText = fPercent.toFixed(2) + "%";
+                document.getElementById(`FP${i}`).innerText = cumulativeFPercent.toFixed(2) + "%";
+                document.getElementById(`xv${i}`).innerText = xv;
+            }
+
+            document.getElementById("sumV").innerText = totalFrequency;
+            document.getElementById("sumN").innerText = cumulativeFrequency;
+            document.getElementById("sumF").innerText = "1.0000";
+            document.getElementById("sumFP").innerText = "100%";
+            document.getElementById("sumXV").innerText = totalXV;
+
+            if (!document.getElementById("calcStatsBtn")) {
+                let buttonHTML = `<button id="anotherButton" id="calcStatsBtn" onclick='calculateStatistics()'>Υπολογισμός Στατιστικών</button>`;
+                document.getElementById("tableContainer").insertAdjacentHTML("beforeend", buttonHTML);
+            }
+        }
+
+        function calculateStatistics() {
+            let numVariables = parseInt(document.getElementById("numVariables").value);
+            let totalXV = parseFloat(document.getElementById("sumXV").innerText);
+            let totalV = parseInt(document.getElementById("sumV").innerText);
+            let mean = totalXV / totalV;
+
+            let varianceSum = 0;
+            let data = [];
+            for (let i = 0; i < numVariables; i++) {
+                let x = parseFloat(document.getElementById(`x${i}`).value) || 0;
+                let v = parseInt(document.getElementById(`v${i}`).value) || 0;
+                data.push({ x, v });
+                varianceSum += v * Math.pow(x - mean, 2);
+            }
+
+            let variance = varianceSum / totalV;
+            let stdDeviation = Math.sqrt(variance);
+            let cv = (stdDeviation / mean) * 100;
+
+            let statsHTML = `
+                <h3>Στατιστικά:</h3>
+                <h4><p>Μέση Τιμή: \\( \\bar{x} = \\frac{\\sum x_i v_i}{\\sum v_i} = ${mean.toFixed(2)} \\)</p>
+                <p>Διακύμανση: \\( \\sigma^2 = \\frac{\\sum v_i (x_i - \\bar{x})^2}{\\sum v_i} = ${variance.toFixed(2)} \\)</p>
+                <p>Τυπική Απόκλιση: \\( \\sigma = \\sqrt{\\sigma^2} = ${stdDeviation.toFixed(2)} \\)</p>
+                <p>CV: \\( \\frac{\\sigma}{\\bar{x}} \\times 100 = ${cv.toFixed(2)} \\% \\)</p></h4>
+            `;
+
+            let statsContainer = document.getElementById("statsContainer");
+            if (!statsContainer) {
+                statsContainer = document.createElement("div");
+                statsContainer.id = "statsContainer";
+                document.getElementById("tableContainer").appendChild(statsContainer);
+            }
+            statsContainer.innerHTML = statsHTML;
+
+            MathJax.Hub.Queue(["Typeset", MathJax.Hub, statsContainer]);
+        }
+    </script>
+</body>
+</html>
