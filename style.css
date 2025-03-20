@@ -1,4 +1,3 @@
-
 :root {
     --primary-color: #D35400; /* Σκούρο πορτοκαλί για κύρια στοιχεία */
     --secondary-color: #F39C12; /* Ζεστό Κίτρινο για highlights */
@@ -8,238 +7,267 @@
     --hover-color: #FF5733; /* Κόκκινο για hover */
     --shadow-color: #0000001a;
 }
-        body {
-            font-family: Arial, sans-serif;
-            background-color: var(--background-color);
-	        margin: 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: flex-start;
-            height: 100%;
-            padding-top: 30px;
-        }
 
-	    html {
-            height: 100%;
-            margin: 0;
-            display: flex;
-            flex-direction: column;
-        }    
-
-        h1{
-            font-size: 40px;
-        }
-        h2{
-            font-size: 36px;
-        }
-        h3{
-            font-size: 24px;
-        }
-        h4{
-            font-size: 18px;
-        }
-        h5{
-            font-size: 16px;
-        }
-        h6{
-            font-size: 14px;
-        }
-    
-        #header {
-            background-color: var(--primary-color);
-            color: var(--text-color);
-            text-align: center;
-            padding: 10px 0px 10px;
-            font-size: 40px;
-            width: 100%;
-            margin-top: 0px;
-    	    margin-bottom: 30px;
-        }
-
-	    #footer {
-            margin-top: auto;
-            background-color: var(--primary-color);
-            color:  var(--text-color);
-            text-align: center;
-            padding:  10px 0px 10px;
-            font-size: 20px;
-            width: 100%;
-        }
-        .category-container {
-            display: flex;
-            flex-wrap: wrap; /* Επιτρέπει στα στοιχεία να πάνε σε νέα γραμμή */
-            gap: 10px; /* Προσθέτει κενό μεταξύ τους */
-            justify-content: center; /* Κεντράρει τα στοιχεία */
-        }
-        
-        .category {
-            font-size: 20px;
-            padding: 10px 30px;
-            background-color:  var(--secondary-color);
-            color:  var(--text-color);
-            text-decoration: none;
-            border-radius: 10px;
-            transition: 0.3s;
-            margin-bottom: 20px 0;
-        }
-
-        .category:hover {
-            background-color: var(--hover-color);
-	    color: var(--text-color);
-        }
-
-       .answer-btn {
-            font-size: 20px;
-            padding: 10px 20px;
-            margin: 20px;
-            cursor: pointer;
-            width: 200px;
-            background-color: var(--secondary-color);
-            color: var(--text-color);
-            border: none;
-            border-radius: 5px;
-        }
-
-        .answer-btn:hover {
-            background-color: var(--hover-color);
-            color: var(--text-color); 
-        }
-
-        #startButton, #nextButton, #restartButton {
-            font-size: 30px;
-            padding: 20px 40px;
-            background-color: var(--secondary-color);
-            color: var(--text-color);
-            border: none;
-            border-radius: 10px;
-            cursor: pointer;
-            margin-top: 20px;
-            margin-bottom: 20px;
-        }
-	#anotherButton {
-	    font-size: 20px;
-	    padding: 15px; auto;
-        background-color: var(--secondary-color);
-            color: var(--text-color);
-            border: none;
-            border-radius: 10px;
-            cursor: pointer;
-            margin-top: 20px;
-	}
-
-    #anotherButton:hover {
-        background-color: var(--hover-color);
-    }
-
-        #timer {
-            font-size: 20px;
-            color: red;
-            margin-top: 20px;
-        }
-
-        .selection {
-            font-size: 18px;
-            margin-bottom: 20px;
-            text-align: center;
-        }
-
-        .columns {
-            display: flex;
-            justify-content: center;
-            gap: 30px;
-            margin-bottom: 30px;
-        }
-
-        .column {
-            text-align: left;
-        }
-
-        .question {
-            font-size: 24px;
-            margin-bottom: 20px;
-        }
-
-        .result {
-            font-size: 30px;
-            margin-top: 20px;
-            color: var(--text-color);
-        }
-
-        #totalTime {
-            font-size: 18px;
-            margin-top: 20px;
-        }
-
-        #restartContainer {
-            margin-top: 30px;
-        }
-
-        #answerInput {
-            font-size: 24px; /* Αυξάνει το μέγεθος της γραμματοσειράς */
-            padding: 10px; /* Αυξάνει το εσωτερικό κενό (padding) */
-            width: 110px; /* Ρυθμίζει το πλάτος του πεδίου */
-            margin-top: 10px; /* Προσθέτει απόσταση από το πάνω μέρος */
-            text-align: center; /* Κεντράρει το κείμενο στο πεδίο */
-            border-radius: 5px; /* Κάνει τις γωνίες στρογγυλές */
-            background-color: var(--secondary-color);
-            color:var(--text-color)
-        }
-	.quiz-info {
-	    max-width: 600px; /* Περιορίζει το πλάτος */
-	    margin: 0 auto; /* Κεντράρει τη div */
-	    padding: 15px;
-	    background-color: var(--accent-color); /* Ανοιχτό γκρι background */
-	    border-radius: 10px; /* Στρογγυλεμένες γωνίες */
-	    box-shadow: 0px 14px 20px var(--shadow-color); /* Ελαφριά σκιά */
-	    font-size: 18px;
-	    line-height: 1.6;
-	    text-align: center;
-	}
-
-        .formula {
-            font-style: italic;
-            margin-top: 10px;
-        }
-
-        .hidden {
-            justify-content: center;
-            display: none;
-        }
-	    input {
-            font-size: 18px;
-            padding: 5px;
-            margin: 5px;
-            width: 30px;
-            text-align: center;
-        }
-        .container {
-            margin: 0;
-        }
-        table {
-            margin-top: 20px;
-            border-collapse: collapse;
-            width: 30px;
-            text-align: center;
-        }
-    .mathjax {
-        font-size: 20px; /* Μπορείς να το προσαρμόσεις όπως θέλεις */
-        line-height: 1.5; /* Κανονίζει την απόσταση μεταξύ των γραμμών */
-        color: var(--text-color);
-    }
-.buttons-container {
-    display: flex; /* Χρησιμοποιούμε flexbox για να τα στοιχίσουμε */
-    justify-content: center; /* Στοιχίζουμε τα κουμπιά στο κέντρο */
-    gap: 10px; /* Απόσταση μεταξύ των κουμπιών */
+body {
+    font-family: Arial, sans-serif;
+    background-color: var(--background-color);
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    min-height: 100vh; /* Αντί για height: 100% */
+    padding-top: 30px;
+    color: var(--text-color);
+    line-height: 1.8; /* Βελτίωση της αναγνωσιμότητας */
 }
+
+html {
+    height: 100%;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+h1 { font-size: 40px; }
+h2 { font-size: 36px; }
+h3 { font-size: 24px; }
+h4 { font-size: 18px; }
+h5 { font-size: 16px; }
+h6 { font-size: 14px; }
+
+#header {
+    background-color: var(--primary-color);
+    color: white; /* Αλλαγή για καλύτερη αντίθεση */
+    text-align: center;
+    padding: 20px 0;
+    font-size: 40px;
+    width: 100%;
+    margin-bottom: 30px;
+    box-shadow: 0 4px 6px var(--shadow-color);
+}
+
+#footer {
+    margin-top: auto;
+    background-color: var(--primary-color);
+    color: white; /* Αλλαγή για καλύτερη αντίθεση */
+    text-align: center;
+    padding: 20px 0;
+    font-size: 20px;
+    width: 100%;
+    box-shadow: 0 -4px 6px var(--shadow-color);
+}
+
+.category-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px; /* Περισσότερο κενό */
+    justify-content: center;
+    padding: 20px;
+}
+
+.category {
+    font-size: 20px;
+    padding: 15px 40px; /* Περισσότερο padding */
+    background-color: var(--secondary-color);
+    color: white; /* Αλλαγή για καλύτερη αντίθεση */
+    text-decoration: none;
+    border-radius: 10px;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 6px var(--shadow-color);
+}
+
+.category:hover {
+    background-color: var(--hover-color);
+    transform: translateY(-2px); /* Ελαφριά ανύψωση */
+}
+
+.answer-btn, #startButton, #nextButton, #restartButton, #anotherButton {
+    font-size: 20px;
+    padding: 15px 30px;
+    margin: 20px;
+    cursor: pointer;
+    background-color: var(--secondary-color);
+    color: white; /* Αλλαγή για καλύτερη αντίθεση */
+    border: none;
+    border-radius: 10px;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    box-shadow: 0 4px 6px var(--shadow-color);
+}
+
+.answer-btn:hover, #startButton:hover, #nextButton:hover, #restartButton:hover, #anotherButton:hover {
+    background-color: var(--hover-color);
+    transform: translateY(-2px); /* Ελαφριά ανύψωση */
+}
+
+#timer {
+    font-size: 24px;
+    color: red;
+    margin-top: 20px;
+    font-weight: bold;
+}
+
+.selection {
+    font-size: 18px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.columns {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    margin-bottom: 30px;
+}
+
+.column {
+    text-align: left;
+}
+
+.question {
+    font-size: 24px;
+    margin-bottom: 20px;
+    font-weight: bold;
+}
+
+.result {
+    font-size: 30px;
+    margin-top: 20px;
+    color: var(--text-color);
+    font-weight: bold;
+}
+
+#totalTime {
+    font-size: 18px;
+    margin-top: 20px;
+}
+
+#restartContainer {
+    margin-top: 30px;
+}
+
+#answerInput {
+    font-size: 24px;
+    padding: 10px;
+    width: 120px;
+    margin-top: 10px;
+    text-align: center;
+    border-radius: 5px;
+    background-color: var(--secondary-color);
+    color: white; /* Αλλαγή για καλύτερη αντίθεση */
+    border: 2px solid var(--primary-color);
+    transition: border-color 0.3s ease;
+}
+
+#answerInput:focus {
+    border-color: var(--hover-color);
+    outline: none;
+}
+
+.quiz-info {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: var(--accent-color);
+    color: white; /* Αλλαγή για καλύτερη αντίθεση */
+    border-radius: 10px;
+    box-shadow: 0 4px 6px var(--shadow-color);
+    font-size: 18px;
+    line-height: 1.6;
+    text-align: center;
+}
+
+.formula {
+    font-style: italic;
+    margin-top: 10px;
+}
+
+.hidden {
+    display: none;
+}
+
+input {
+    font-size: 18px;
+    padding: 8px;
+    margin: 5px;
+    width: 40px;
+    text-align: center;
+    border-radius: 5px;
+    border: 2px solid var(--primary-color);
+    transition: border-color 0.3s ease;
+}
+
+input:focus {
+    border-color: var(--hover-color);
+    outline: none;
+}
+
+.container {
+    margin: 0;
+}
+
+table {
+    margin-top: 20px;
+    border-collapse: collapse;
+    width: 100%;
+    background-color: white;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 4px 6px var(--shadow-color);
+}
+
+table th, table td {
+    padding: 12px;
+    text-align: center;
+}
+
+table th {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+.mathjax {
+    font-size: 20px;
+    line-height: 1.5;
+    color: var(--text-color);
+}
+
+.buttons-container {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin: 20px 0;
+}
+
 a.donation-link {
-    color: white !important; /* Εξασφαλίζει ότι ο σύνδεσμος θα παραμείνει λευκός */
-    text-decoration: none; /* Αφαιρεί την υπογράμμιση (προαιρετικά) */
+    color: white !important;
+    text-decoration: none;
     font-size: 16px;
+    transition: color 0.3s ease;
 }
 
 a.donation-link:hover {
-    color: grey; /* Ελαφρώς διαφορετική απόχρωση στο hover (προαιρετικά) */
+    color: var(--hover-color) !important;
 }
 
+.donation-button {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: var(--secondary-color);
+    color: white;
+    padding: 10px 15px;
+    border-radius: 5px;
+    font-weight: bold;
+    text-decoration: none;
+    box-shadow: 2px 2px 5px var(--shadow-color);
+    z-index: 1000;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.donation-button:hover {
+    background-color: var(--hover-color);
+    transform: translateY(-2px);
+}
  /*        <link rel="stylesheet" href="../style.css">

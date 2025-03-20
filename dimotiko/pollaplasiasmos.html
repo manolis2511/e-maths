@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Κάθετος Πολλαπλασιασμός</title>
+    <link rel="stylesheet" href="../style.css">
+    <style>
+        .container {
+            font-size: 24px;
+            text-align: center;
+        }
+        table {
+            margin: 0 auto;
+            text-align: right;
+        }
+        td {
+            padding: 5px;
+        }
+        .digit, .answer {
+            width: 40px;
+            height: 40px;
+            text-align: center;
+            font-size: 24px;
+            margin: 2px;
+            border: 1px solid var(--text-color);
+            border-radius: 5px;
+        }
+        .answer {
+            background-color: var(--background-color);
+            color: var(--text-color);
+        }
+        .answer:focus {
+            border-color: var(--hover-color);
+            outline: none;
+        }
+        .line {
+            border-bottom: 2px solid var(--text-color);
+        }
+        #result {
+            margin-top: 20px;
+            font-size: 24px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <header id="header">
+        <h1>Παιχνίδι Κάθετου Πολλαπλασιασμού</h1>
+    </header>
+    <div class="container">
+        <table id="multiplicationTable">
+            <!-- Ο πίνακας θα γεμίζει δυναμικά με JavaScript -->
+        </table>
+    </div>
+    <div>
+    <button id="anotherButton" onclick="checkAnswer()">Έλεγχος</button>
+    <button id="anotherButton" onclick="setupGame()">Νέα Ερώτηση</button>
+    </div>
+    <h2 id="result"></h2>
+    <footer id="footer">
+        <div style="text-align: center; margin-bottom: 15px;">
+            <a href="pollaplasiasmos.html" class="quiz-link" style="display: inline-block; font-size: 15px; color: white; text-decoration: none; margin: 0 10px;">
+                Ξεκινήστε από την αρχή
+            </a>-
+            <a href="../index.html" class="quiz-link" style="display: inline-block; font-size: 15px; color: white; text-decoration: none; margin: 0 10px;">
+                Αρχική Σελίδα
+            </a>-
+            <a href="../dimotiko.html" class="quiz-link" style="display: inline-block; font-size: 15px; color: white; text-decoration: none; margin: 0 10px;">
+                Επιστροφή
+            </a>
+        </div>
+        <p>© 2025 Created by Παρα-school-ακης</p>
+    </footer>
+
+    <script>
+        let num1, num2, product;
+
+        // Δημιουργία τυχαίων αριθμών
+        function getRandomNumber(min, max) {
+            return Math.floor(Math.random() * (max - min + 1)) + min;
+        }
+
+        // Δημιουργία του πίνακα για τον πολλαπλασιασμό
+        function createMultiplicationTable() {
+            const table = document.getElementById("multiplicationTable");
+            table.innerHTML = ""; // Καθαρίζουμε τον πίνακα
+
+            const num1Str = num1.toString();
+            const num2Str = num2.toString();
+
+            // Προσθήκη της πρώτης γραμμής (num1)
+            let row = document.createElement("tr");
+            row.innerHTML = `<td></td><td></td><td></td><td></td>`;
+            for (let i = 0; i < num1Str.length; i++) {
+                row.innerHTML += `<td>${num1Str[i]}</td>`;
+            }
+            table.appendChild(row);
+
+            // Προσθήκη της δεύτερης γραμμής (num2 και το σύμβολο πολλαπλασιασμού)
+            row = document.createElement("tr");
+            row.innerHTML = `<td></td><td></td><td></td>`;
+            if (num2 < 10) {
+                // Αν ο δεύτερος αριθμός είναι μονοψήφιος, στοιχίζεται κάτω από τις μονάδες του πρώτου
+                row.innerHTML += `<td></td><td>x</td><td>${num2Str}</td>`;
+            } else {
+                // Αν ο δεύτερος αριθμός είναι διψήφιος, εμφανίζεται κανονικά
+                row.innerHTML += `<td>x</td>`;
+                for (let i = 0; i < num2Str.length; i++) {
+                    row.innerHTML += `<td>${num2Str[i]}</td>`;
+                }
+            }
+            table.appendChild(row);
+
+            // Προσθήκη της γραμμής υπογράμμισης
+            row = document.createElement("tr");
+            row.innerHTML = `<td colspan="${num1Str.length + 4}"><div class="line"></div></td>`;
+            table.appendChild(row);
+
+            if (num2 < 10) {
+                // Περίπτωση 1: Πολλαπλασιασμός με μονοψήφιο
+                const partialProduct = num1 * num2; // Πολλαπλασιασμός
+                const partialProductStr = partialProduct.toString().padStart(3, ' '); // Πάντα 3 κουτάκια
+
+                // Προσθήκη της γραμμής με τα κουτάκια
+                row = document.createElement("tr");
+                row.innerHTML = `<td></td><td></td><td></td>`;
+                for (let i = 0; i < 3; i++) {
+                    row.innerHTML += `<td><input class="answer" id="ans${i}" maxlength="1"></td>`;
+                }
+                table.appendChild(row);
+            } else {
+                // Περίπτωση 2: Πολλαπλασιασμός με διψήφιο
+                const partialProduct1 = num1 * (num2 % 10); // Πολλαπλασιασμός με τις μονάδες
+                const partialProduct2 = num1 * Math.floor(num2 / 10); // Πολλαπλασιασμός με τις δεκάδες
+
+                // Προσθήκη της πρώτης μερικής γραμμής (μονάδες)
+                row = document.createElement("tr");
+                row.innerHTML = `<td></td><td></td><td></td>`;
+                for (let i = 0; i < 3; i++) {
+                    row.innerHTML += `<td><input class="answer" id="ans1_${i}" maxlength="1"></td>`;
+                }
+                table.appendChild(row);
+
+                // Προσθήκη της δεύτερης μερικής γραμμής (δεκάδες)
+                row = document.createElement("tr");
+                row.innerHTML = `<td></td><td>+</td>`;
+                for (let i = 0; i < 3; i++) {
+                    row.innerHTML += `<td><input class="answer" id="ans2_${i}" maxlength="1"></td>`;
+                }
+                table.appendChild(row);
+
+                // Προσθήκη της γραμμής υπογράμμισης
+                row = document.createElement("tr");
+                row.innerHTML = `<td colspan="${num1Str.length + 4}"><div class="line"></div></td>`;
+                table.appendChild(row);
+
+                // Προσθήκη της τελικής γραμμής (αποτέλεσμα)
+                row = document.createElement("tr");
+                row.innerHTML = `<td></td><td></td>`;
+                for (let i = 0; i < 4; i++) {
+                    row.innerHTML += `<td><input class="answer" id="ansFinal_${i}" maxlength="1"></td>`;
+                }
+                table.appendChild(row);
+            }
+        }
+
+        // Εκκίνηση του παιχνιδιού
+        function setupGame() {
+            num1 = getRandomNumber(15, 99); // Πρώτος αριθμός μεταξύ 15-99
+            num2 = getRandomNumber(1, 99); // Δεύτερος αριθμός μεταξύ 1-99
+            product = num1 * num2; // Υπολογισμός του γινομένου
+
+            createMultiplicationTable(); // Δημιουργία του πίνακα
+            document.getElementById("result").textContent = ""; // Καθαρισμός του αποτελέσματος
+        }
+
+        // Έλεγχος της απάντησης
+        function checkAnswer() {
+            let userAnswer = "";
+
+            if (num2 < 10) {
+                // Περίπτωση 1: Πολλαπλασιασμός με μονοψήφιο
+                for (let i = 0; i < 3; i++) {
+                    userAnswer += document.getElementById(`ans${i}`).value || '0';
+                }
+            } else {
+                // Περίπτωση 2: Πολλαπλασιασμός με διψήφιο
+                for (let i = 0; i < 4; i++) {
+                    userAnswer += document.getElementById(`ansFinal_${i}`).value || '0';
+                }
+            }
+
+            if (parseInt(userAnswer, 10) === product) {
+                document.getElementById("result").textContent = "Σωστό!";
+            } else {
+                document.getElementById("result").textContent = `Λάθος! Η σωστή απάντηση είναι: ${product}`;
+            }
+        }
+
+        // Εκκίνηση του παιχνιδιού κατά τη φόρτωση της σελίδας
+        setupGame();
+    </script>
+</body>
+</html>

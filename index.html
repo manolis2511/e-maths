@@ -5,13 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="stylemenu.css">
+    <link rel="icon" href="pi.png" type="image/x-icon"> <!-- Προσθήκη favicon -->
     <title>E-Maths | Αρχική</title>
 </head>
 <body>
     <header id="header">
         Καλώς ήρθατε στο e-maths
         <nav class="navbar">
-            <div class="menu-toggle" font-size="14px" onclick="toggleMenu()">
+            <div class="menu-toggle" onclick="toggleMenu()">
                 <span></span>
                 <span></span>
                 <span></span>
@@ -22,7 +23,7 @@
                 <li class="dropdown">
                     <a href="#">Δημοτικό ▼</a>
                     <ul class="dropdown-menu">
-                        <li><a href="dimotiko/prosthesi.html">Πρόσθεση</a>
+                        <li><a href="dimotiko/prosthesi.html">Πρόσθεση</a></li>
                         <li><a href="dimotiko/afairesi.html">Αφαίρεση</a></li>
                         <li><a href="dimotiko/propaideia.html">Προπαίδεια</a></li>
                         <li><a href="dimotiko/prosthesimekratoumeno.html">Κάθετη Πρόσθεση</a></li>
@@ -32,13 +33,13 @@
                 <li class="dropdown">
                     <a href="#">Γυμνάσιο ▼</a>
                     <ul class="dropdown-menu">
-                        Α' Γυμνασίου
+                        <li class="dropdown-header">Α' Γυμνασίου</li>
                         <li><a href="gymnasio/sugkrishklasmatwn.html">Σύγκριση Κλασμάτων</a></li>
                         <li><a href="gymnasio/prosthesirhtwn.html">Προσθεση Θετικών-Αρνητικών</a></li>
-                        Β' Γυμνασίου
+                        <li class="dropdown-header">Β' Γυμνασίου</li>
                         <li><a href="gymnasio/analoga.html">Η συνάρτηση y=αx</a></li>
                         <li><a href="gymnasio/axkaib.html">Η συνάρτηση y=αx+β</a></li>
-                        Γ' Γυμνασίου
+                        <li class="dropdown-header">Γ' Γυμνασίου</li>
                         <li><a href="gymnasio/deuterobathmies.html">Επίλυση Εξίσωσης 2ου Βαθμού</a></li>
                     </ul>
                 </li>
@@ -46,38 +47,45 @@
                 <li class="dropdown">
                     <a href="#">Λύκειο ▼</a>
                     <ul class="dropdown-menu">
-                        Β' Λυκείου
-                        <li><a href="lykeio/horner.html">Σχήμα Horner</a></div></li>
-                        ΕΠΑ.Λ.
-                        <li><a href="lykeio/statistiki.html">Στατιστική</a></div></li>
+                        <li class="dropdown-header">Β' Λυκείου</li>
+                        <li><a href="lykeio/horner.html">Σχήμα Horner</a></li>
+                        <li class="dropdown-header">ΕΠΑ.Λ</li>
+                        <li><a href="lykeio/statistiki.html">Στατιστική</a></li>
                     </ul>
                 </li>
             </ul>
         </nav>
-    	</header>
-    <h3>Διαλέξτε εκπαιδευτικό επίπεδο για να ξεκινήσετε:</h3>
-    <div class="category-container" style="margin-bottom: 30px;">
-        <a href="dimotiko.html" class="category">Δημοτικό</a>
-        <a href="gymnasio.html" class="category">Γυμνάσιο</a>
-        <a href="lykeio.html" class="category">Λύκειο</a>
-    </div>
-    <h3>Κάτι άλλο...</h3>
-    <div class="category-container">
-        <a href="Drums/Drums.html" class="category">Virtual Drums</a>
-    </div>
- 	<footer id="footer">
-    <p>© 2025 Created by Παρα-school-ακης</p>
+    </header>
+
+    <main>
+        <h3>Διαλέξτε εκπαιδευτικό επίπεδο για να ξεκινήσετε:</h3>
+        <div class="category-container" style="margin-bottom: 30px;">
+            <a href="dimotiko.html" class="category">Δημοτικό</a>
+            <a href="gymnasio.html" class="category">Γυμνάσιο</a>
+            <a href="lykeio.html" class="category">Λύκειο</a>
+        </div>
+        <h3>Κάτι άλλο...</h3>
+        <div class="category-container">
+            <a href="Drums/Drums.html" class="category">Virtual Drums</a>
+        </div>
+    </main>
+
+    <footer id="footer">
+        <p>© 2025 Created by Παρα-school-ακης</p>
     </footer>
+
     <a href="http://www.paypal.com/paypalme/manolis2511" target="_blank"
-    style="position: fixed; bottom: 20px; right: 20px; background: var(--secondary-color); color: var(--text-color); 
-          padding: 10px 15px; border-radius: 5px; font-weight: bold; text-decoration: none; 
-          box-shadow: 2px 2px 5px var(--shadow-color); z-index: 1000;">
-    💰 Υποστηρίξτε μας
+       class="donation-button">
+       💰 Υποστηρίξτε μας
     </a>
+
+    <script>
+        function toggleMenu() {
+            const navMenu = document.querySelector(".nav-menu");
+            const menuToggle = document.querySelector(".menu-toggle");
+            navMenu.classList.toggle("active");
+            menuToggle.classList.toggle("active");
+        }
+    </script>
 </body>
-<script>
-function toggleMenu() {
-    document.querySelector(".nav-menu").classList.toggle("active");
-}
-</script>
 </html>

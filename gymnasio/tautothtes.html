@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Παζλ Ταυτοτήτων</title>
+    <link rel="stylesheet" href="../style.css"> <!-- Χρήση του style.css -->
+    <link rel="stylesheet" href="stylemenu.css"> <!-- Εάν χρειάζεται -->
+    <link rel="icon" href="favicon.ico" type="image/x-icon"> <!-- Προσθήκη favicon -->
+    <script type="text/javascript" async
+        src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML">
+    </script>
+    <style>
+        /* Επιπλέον styles για το παιχνίδι */
+        .container {
+            display: flex;
+            justify-content: space-between;
+            width: 80%;
+            max-width: 1000px;
+            gap: 40px;
+            flex-wrap: wrap; /* Προσθήκη για responsive design */
+        }
+        .column {
+            width: 45%;
+            min-height: 200px;
+            border: 2px solid var(--primary-color);
+            padding: 20px;
+            background-color: var(--background-color);
+            border-radius: 8px;
+            box-shadow: 0 4px 8px var(--shadow-color);
+            margin-bottom: 20px; /* Προσθήκη για responsive design */
+        }
+        .column p {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: var(--text-color);
+        }
+        .piece {
+            background-color: var(--secondary-color);
+            color: white;
+            padding: 15px;
+            margin: 10px 0;
+            cursor: grab;
+            border-radius: 5px;
+            text-align: center;
+            font-size: 18px;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+        .piece:active {
+            cursor: grabbing;
+            transform: scale(1.05);
+        }
+        .piece:hover {
+            background-color: var(--hover-color);
+        }
+        .dropzone {
+            background-color: var(--background-color);
+            border: 2px dashed var(--primary-color);
+            border-radius: 8px;
+            padding: 20px;
+            height: 80px;
+            text-align: center;
+            font-size: 18px;
+            color: var(--text-color);
+            transition: background-color 0.3s ease, border-color 0.3s ease;
+        }
+        .dropzone.hovered {
+            background-color: var(--accent-color);
+            border-color: var(--hover-color);
+        }
+        .dropzone.correct {
+            background-color: #d4edda;
+            border-color: #c3e6cb;
+        }
+        .dropzone.incorrect {
+            background-color: #f8d7da;
+            border-color: #f5c6cb;
+        }
+        button {
+            background-color: var(--secondary-color);
+            color: white;
+            padding: 10px 20px;
+            font-size: 18px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: background-color 0.3s ease;
+        }
+        button:hover {
+            background-color: var(--hover-color);
+        }
+        button:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+        #result {
+            font-size: 20px;
+            font-weight: bold;
+            margin-top: 20px;
+            text-align: center;
+            color: var(--text-color);
+        }
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+                width: 100%;
+            }
+            .column {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header id="header">
+        Παζλ Ταυτοτήτων
+    </header>
+
+    <h3>Σύρε τις παραστάσεις στο σωστό αναπτυγμένο αποτέλεσμα.</h3>
+    
+    <div class="container">
+        <div class="column" id="expressions-column">
+            <p><strong>Παραστάσεις</strong></p>
+            <div id="piece1" class="piece" draggable="true">
+                \( (x + 3)^2 \)
+            </div>
+            <div id="piece2" class="piece" draggable="true">
+                \( (x - 2)(x + 2) \)
+            </div>
+            <div id="piece3" class="piece" draggable="true">
+                \( (x + 1)^3 \)
+            </div>
+            <div id="piece4" class="piece" draggable="true">
+                \( x^2 - 4x + 4 \)
+            </div>
+            <div id="piece5" class="piece" draggable="true">
+                \( (x + 5)(x - 5) \)
+            </div>
+        </div>
+        
+        <div class="column" id="expansions-column">
+            <p><strong>Αναπτύγματα</strong></p>
+            <div id="box1" class="dropzone" data-correct="piece1">
+                \( x^2 + 6x + 9 \)
+            </div>
+            <div id="box2" class="dropzone" data-correct="piece2">
+                \( x^2 - 4 \)
+            </div>
+            <div id="box3" class="dropzone" data-correct="piece3">
+                \( x^3 + 3x^2 + 3x + 1 \)
+            </div>
+            <div id="box4" class="dropzone" data-correct="piece4">
+                \( x^2 - 4x + 4 \)
+            </div>
+            <div id="box5" class="dropzone" data-correct="piece5">
+                \( x^2 - 25 \)
+            </div>
+        </div>
+    </div>
+    
+    <button id="check-button">Έλεγχος Απαντήσεων</button>
+    <button id="reset-button">Επαναφορά</button>
+    <p id="result"></p>
+
+    <footer id="footer">
+        <p>© 2025 Created by Παρα-school-ακης</p>
+    </footer>
+
+    <script>
+        // Αρχικοποίηση
+        const dropzones = document.querySelectorAll('.dropzone');
+        const pieces = document.querySelectorAll('.piece');
+        const checkButton = document.getElementById('check-button');
+        const resetButton = document.getElementById('reset-button');
+        const resultText = document.getElementById('result');
+
+        // Προσθήκη event listeners για drag-and-drop
+        pieces.forEach(piece => {
+            piece.addEventListener('dragstart', dragStart);
+            piece.addEventListener('dragend', dragEnd);
+        });
+
+        dropzones.forEach(dropzone => {
+            dropzone.addEventListener('dragover', dragOver);
+            dropzone.addEventListener('drop', drop);
+            dropzone.addEventListener('dragenter', dragEnter);
+            dropzone.addEventListener('dragleave', dragLeave);
+        });
+
+        // Συναρτήσεις για drag-and-drop
+        function dragStart(e) {
+            e.dataTransfer.setData('text/plain', e.target.id);
+            setTimeout(() => e.target.classList.add('hidden'), 0);
+        }
+
+        function dragEnd(e) {
+            e.target.classList.remove('hidden');
+        }
+
+        function dragOver(e) {
+            e.preventDefault();
+        }
+
+        function dragEnter(e) {
+            e.preventDefault();
+            e.target.classList.add('hovered');
+        }
+
+        function dragLeave(e) {
+            e.target.classList.remove('hovered');
+        }
+
+        function drop(e) {
+            e.preventDefault();
+            e.target.classList.remove('hovered');
+            const pieceId = e.dataTransfer.getData('text/plain');
+            const piece = document.getElementById(pieceId);
+            e.target.appendChild(piece);
+        }
+
+        // Έλεγχος απαντήσεων
+        checkButton.addEventListener('click', () => {
+            let score = 0;
+            dropzones.forEach(dropzone => {
+                const correctPieceId = dropzone.dataset.correct;
+                const droppedPiece = dropzone.querySelector('.piece');
+                if (droppedPiece && droppedPiece.id === correctPieceId) {
+                    dropzone.classList.add('correct');
+                    dropzone.classList.remove('incorrect');
+                    score++;
+                } else {
+                    dropzone.classList.add('incorrect');
+                    dropzone.classList.remove('correct');
+                }
+            });
+            resultText.textContent = `Βαθμολογία: ${score}/${dropzones.length}`;
+            checkButton.disabled = true;
+        });
+
+        // Επαναφορά
+        resetButton.addEventListener('click', () => {
+            dropzones.forEach(dropzone => {
+                dropzone.classList.remove('correct', 'incorrect');
+                const piece = dropzone.querySelector('.piece');
+                if (piece) {
+                    document.getElementById('expressions-column').appendChild(piece);
+                }
+            });
+            resultText.textContent = '';
+            checkButton.disabled = false;
+        });
+    </script>
+</body>
+</html>

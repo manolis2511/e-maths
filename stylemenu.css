@@ -5,6 +5,8 @@
     justify-content: center;
     align-items: center;
     font-size: 18px;
+    padding: 3px 50px;
+    box-shadow: 0 4px 6px var(--shadow-color);
 }
 
 /* Στυλ για τα Links του Μενού */
@@ -21,15 +23,17 @@
 }
 
 .nav-menu a {
-    color: var(--text-color);
+    color: white; /* Αλλαγή για καλύτερη αντίθεση */
     text-decoration: none;
     padding: 10px 15px;
     display: block;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    border-radius: 5px;
 }
 
 .nav-menu a:hover {
-    background: var(--link-hover-color);
-    border-radius: 5px;
+    background-color: var(--hover-color);
+    color: white;
 }
 
 /* Dropdown Menu */
@@ -38,36 +42,32 @@
     display: none;
     position: absolute;
     top: 100%;
-    left: 10;
-    background: var(--secondary-color);
-    min-width: 100px;
+    left: 0;
+    background-color: var(--primary-color);
+    min-width: 150px; /* Περισσότερο πλάτος για καλύτερη εμφάνιση */
     list-style: none;
-    padding: 5px 5px;
-    border-radius: 2px;
+    padding: 10px 20px;
+    border-radius: 5px;
+    box-shadow: 0 4px 6px var(--shadow-color);
     z-index: 1000;
 }
 
 .dropdown-menu li {
-    display: block; /* Κάνει κάθε στοιχείο να είναι σε νέο γραμμή (μπλοκ) */
-    margin: 10px 0px; /* Κενό μεταξύ των στοιχείων */
-    padding: 5px 40px;
-    background-color: var(--primary-color); /* Χρώμα φόντου για το κάθε κουτάκι */
-    border-radius: 2px;
-}
-
-.dropdown-menu li:hover {
-    background-color: var(--hover-color); /* Αλλαγή χρώματος κατά την επαφή με το ποντίκι */
-    cursor: pointer;
-}
-
-.dropdown-menu a {
-    padding: 5px;
     display: block;
-    color: var(--light-color);
+    margin: 5px 0;
+    padding: 0;
 }
 
-.dropdown-menu a:hover {
-    background: var(--hover-color);
+.dropdown-menu li a {
+    padding: 5px 10px;
+    color: white;
+    display: block;
+    transition: background-color 0.3s ease;
+}
+
+.dropdown-menu li a:hover {
+    background-color: var(--hover-color);
+    border-radius: 5px;
 }
 
 /* Εμφάνιση του Dropdown όταν περνά το ποντίκι */
@@ -80,6 +80,7 @@
     display: none;
     flex-direction: column;
     cursor: pointer;
+    padding: 10px;
 }
 
 .menu-toggle span {
@@ -88,29 +89,57 @@
     width: 25px;
     margin: 4px;
     display: block;
+    transition: transform 0.3s ease, opacity 0.3s ease;
 }
 
 @media (max-width: 768px) {
     .menu-toggle {
         display: flex;
     }
+
     .nav-menu {
         display: none;
         flex-direction: column;
         position: absolute;
-        top: 50px;
+        top: 60px;
         left: 0;
         width: 100%;
-        background: var(--secondary-color);
+        background-color: var(--secondary-color);
+        box-shadow: 0 4px 6px var(--shadow-color);
     }
+
     .nav-menu li {
         text-align: center;
         margin: 0;
     }
+
     .nav-menu a {
         padding: 15px;
     }
+
     .nav-menu.active {
         display: flex;
+    }
+
+    .dropdown-menu {
+        position: static;
+        background-color: var(--primary-color);
+        box-shadow: none;
+    }
+
+    .dropdown-menu li a {
+        padding: 10px 20px;
+    }
+
+    .menu-toggle.active span:nth-child(1) {
+        transform: rotate(45deg) translate(5px, 5px);
+    }
+
+    .menu-toggle.active span:nth-child(2) {
+        opacity: 0;
+    }
+
+    .menu-toggle.active span:nth-child(3) {
+        transform: rotate(-45deg) translate(5px, -5px);
     }
 }
