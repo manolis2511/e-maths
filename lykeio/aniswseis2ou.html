@@ -41,11 +41,13 @@
     <div id="result" class="result hidden">
         <h3>Αποτελέσματα:</h3>
         <h4><div id="discriminant2"><h4>Η Διακρίνουσα είναι Δ= <span id="discriminant"></span></h4></div>
-        <div id="solutions"></div></h4>
+        <div id="solutions"></div>
+        </h4>
     </div>
     <div id="pinakasprosimon" class="result hidden">
         <h3>Πίνακας Προσήμων</h3>
         <table id="signsTable"></table>
+        <h4><div id="conclusion"></div></h4>
     </div>
     
  <button id="restartButton" class="result hidden" onclick="restartQuiz()">Καινούρια Εξίσωση</button>
@@ -128,7 +130,7 @@
     if (discriminant > 0) {
         table += `<th></th><th>${x1}</th><th></th><th>${x2}</th><th></th>`;
     } else if (discriminant === 0) {
-        table += `<th></td><th>${x1}</th><th></th>`;
+        table += `<th></th><th></th><th>${x1}</th><th></th><th></th>`;
     } else {
         table += `<th></th>`;
     }
@@ -145,7 +147,7 @@
         table += `<td>${a > 0 ? "+" : "-"}</td>`; 
     } else if (discriminant === 0) {
         table += `<td></td><td>${a > 0 ? "+" : "-"}</td>`; 
-        table += "<td>0</td>"; 
+        table += "<td></td><td>0</td><td></td>"; 
         table += `<td>${a > 0 ? "+" : "-"}</td>`; 
     } else {
         table += `<td></td><td>${a > 0 ? "+" : "-"}</td><td></td>`; 
@@ -169,6 +171,7 @@ function calculate() {
     let solutionsText = "";
     if (discriminant < 0) {
         solutionsText = "Δεν υπάρχουν πραγματικές ρίζες.";
+        conclusionsText = `\\(P(x)${a > 0 ? ">" : "<"}0\\) για \\(x\\in \\mathbb{R}\\)`;
         calculateSignTable(a, 1, 2, discriminant);
     } else if (discriminant > 0){
         const sqrtDiscriminant = Math.sqrt(discriminant);
@@ -176,6 +179,8 @@ function calculate() {
         const x2 = (-b - sqrtDiscriminant) / (2 * a);
 
         solutionsText = `Οι ρίζες είναι: x₁ = ${x1}, x₂ = ${x2}`;
+        conclusionsText = `\\(P(x)${a > 0 ? ">" : "<"}0\\) για \\(x\\in (-∞,${Math.min(x1, x2)}) \\cup (${Math.max(x1, x2)},+∞)\\) και `;
+        conclusionsText += `\\(P(x)${a > 0 ? "<" : ">"}0\\) για \\(x\\in (${Math.min(x1, x2)},${Math.max(x1, x2)})\\)`;
         calculateSignTable(a, Math.min(x1, x2), Math.max(x1, x2), discriminant);
     } else {
         const sqrtDiscriminant = Math.sqrt(discriminant);
@@ -183,11 +188,14 @@ function calculate() {
         const x2 = (-b - sqrtDiscriminant) / (2 * a);
 
         solutionsText = ` H ρίζα είναι: x = ${x1}`;
+        conclusionsText = `\\(P(x)${a > 0 ? ">" : "<"}0\\) για \\(x\\in (-∞,${x1}) \\cup (${x1},+∞)\\)`;
         calculateSignTable(a, Math.min(x1, x2), Math.max(x1, x2), discriminant);
     }
 
     document.getElementById('solutions').innerHTML = solutionsText; // Ενημέρωση ριζών
+    document.getElementById('conclusion').innerHTML = `<span class="mathjax">${conclusionsText}</span>`; // Ενημέρωση ριζών
     document.getElementById('result').classList.remove("hidden"); // Εμφάνιση αποτελεσμάτων
+    MathJax.Hub.Queue(["Typeset", MathJax.Hub, document.getElementById("conclusion")]);
 }
 
 
