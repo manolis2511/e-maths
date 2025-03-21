@@ -209,6 +209,7 @@ input:focus {
 
 table {
     margin-top: 20px;
+    margin-bottom: 20px;
     border-collapse: collapse;
     width: 100%;
     background-color: white;

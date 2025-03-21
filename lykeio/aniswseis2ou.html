@@ -5,16 +5,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Λύση Δευτέρου Βαθμού Εξίσωσης</title>
     <link rel="stylesheet" href="../style.css">
+    <style>
+    #signsTable th:first-child, #signsTable td:first-child {
+    border-right: 2px solid black; /* Μόνο δεξιά */
+    }
+    </style>
     <script type="text/javascript" async
         src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML">
     </script>
 </head>
 <body>
     <header id="header">
-        <h1>Επίλυση Εξισώσεων 2ου Βαθμού </h1>
+        <h1>Επίλυση Ανισώσεων 2ου Βαθμού </h1>
     </header>
     <div id="start">
-    <h3>Συμπληρώστε τους συντελεστές της εξίσωσης</h3>
+    <h3>Συμπληρώστε τους συντελεστές</h3>
     <div>
         <label for="a">α:</label>
         <input type="number" id="a" placeholder="α">
@@ -25,25 +30,28 @@
         <label for="c">γ:</label>
         <input type="number" id="c" placeholder="γ">
     </div>    
-    <button id="anotherButton" onclick="showEquation()">Εμφάνιση Εξίσωσης</button>
+    <button id="anotherButton" onclick="showEquation()">Εμφάνιση Πολυωνύμου</button>
     </div>
     <div id="equation" class="result hidden">
-        <h3>Εξίσωση: <span id="equation-text"></span></h3>
+        <h3>Πολυώνυμο: <span id="equation-text"></span></h3>
     </div>
     <div id="calculatesolution" class="result hidden">
-    <button id="anotherButton" onclick="calculate()">Υπολογισμός Λύσεων</button></div>
+    <button id="anotherButton" onclick="calculate()">Υπολογισμός Ριζών</button></div>
     
     <div id="result" class="result hidden">
         <h3>Αποτελέσματα:</h3>
-        <h4><div id="discriminant-step"></div><br>
-        <div id="discriminant"><h2>Η Διακρίνουσα είναι Δ= <span id="delta-value"></span></h2></div><br>
-        <div id="solutions-step"></div><br>
+        <h4><div id="discriminant2"><h4>Η Διακρίνουσα είναι Δ= <span id="discriminant"></span></h4></div>
         <div id="solutions"></div></h4>
     </div>
+    <div id="pinakasprosimon" class="result hidden">
+        <h3>Πίνακας Προσήμων</h3>
+        <table id="signsTable"></table>
+    </div>
+    
  <button id="restartButton" class="result hidden" onclick="restartQuiz()">Καινούρια Εξίσωση</button>
     <footer id="footer">
         <div style="text-align: center; margin-bottom: 15px;">
-            <a href="deuterobathmies.html" class="quiz-link" style="display: inline-block; font-size: 15px; color: white; text-decoration: none; margin: 0 10px;">
+            <a href="aniswseis2ou.html" class="quiz-link" style="display: inline-block; font-size: 15px; color: white; text-decoration: none; margin: 0 10px;">
                 Καινούρια Εξίσωση
             </a>-
             <a href="../index.html" class="quiz-link" style="display: inline-block; font-size: 15px; color: white; text-decoration: none; margin: 0 10px;">
@@ -105,8 +113,6 @@
             }
         }
 
-        equationText += " = 0";
-
         // Προσθήκη στο HTML με MathJax
         document.getElementById('equation-text').innerHTML = `\\(${equationText}\\)`;
         document.getElementById('equation').classList.remove('hidden');
@@ -116,50 +122,76 @@
         MathJax.Hub.Queue(["Typeset", MathJax.Hub, "equation-text"]);
     }
 
-    function calculate() {
-        const a = parseFloat(document.getElementById('a').value);
-        const b = parseFloat(document.getElementById('b').value);
-        const c = parseFloat(document.getElementById('c').value);
+    function calculateSignTable(a, x1, x2, discriminant) {
+    let table = "<tr><th>x</th><th>-∞</th>";
 
-        const discriminant = b * b - 4 * a * c;
-
-        // Υπολογισμός της διακρίνουσας
-        let discriminantStep = `\\( \\Delta = β^2 - 4aγ = ${b >= 0 ? '' : '('}${b}${b >= 0 ? '' : ')'}^2 - 4 \\cdot ${a >= 0 ? '' : '('}${a}${a >= 0 ? '' : ')'} \\cdot ${c >= 0 ? '' : '('}${c}${c >= 0 ? '' : ')'} = ${discriminant} \\)`;
-
-        let solutionsText = "";
-        let solutionsStep = "";
-
-        if (discriminant < 0) {
-            solutionsText = "Δεν υπάρχουν πραγματικές λύσεις, γιατί η διακρίνουσα είναι αρνητική.";
-        } else if (discriminant === 0) {
-            const x = -b / (2 * a);
-            solutionsText = `Υπάρχει μία διπλή ρίζα: \\( x= ${x} \\)`;
-            solutionsStep = `\\( x = \\frac{-β}{2a}= \\frac{-${b >= 0 ? ' ' : '('}${b}${b >= 0 ? ' ' : ')'}}{2 \\cdot ${a >= 0 ? ' ' : '('}${a}${a >= 0 ? ' ' : ')'}}  = ${x} \\)`;
-        } else {
-            const sqrtDiscriminant = Math.sqrt(discriminant);
-            const x1 = (-b + sqrtDiscriminant) / (2 * a);
-            const x2 = (-b - sqrtDiscriminant) / (2 * a);
-            solutionsText = `Οι λύσεις είναι: \\( x_1 = ${x1}, x_2 = ${x2} \\)`;
-            solutionsStep = `\\(x_{1,2}= \\frac{-β \\pm \\sqrt{\\Delta}}{2a}\\)<br><br>
-                             \\( x_1 = \\frac{-β + \\sqrt{\\Delta}}{2a} = \\frac{-${b >= 0 ? ' ' : '('}${b}${b >= 0 ? ' ' : ')'} + \\sqrt{${discriminant}}}{2 \\cdot ${a >= 0 ? ' ' : '('}${a}${a >= 0 ? ' ' : ')'}}= ${x1} \\)<br>
-                             \\( x_2 = \\frac{-β - \\sqrt{\\Delta}}{2a} = \\frac{-${b >= 0 ? ' ' : '('}${b}${b >= 0 ? ' ' : ')'} - \\sqrt{${discriminant}}}{2 \\cdot ${a >= 0 ? ' ' : '('}${a}${a >= 0 ? ' ' : ')'}} = ${x2} \\)`;
-        }
-
-        // Ενημέρωση των πεδίων με τις υπολογισμένες τιμές
-        document.getElementById('delta-value').textContent = discriminant;
-        document.getElementById('discriminant-step').innerHTML = `<span class="mathjax">${discriminantStep}</span>`;
-        document.getElementById('solutions').innerHTML = `<span class="mathjax">${solutionsText}</span>`;
-        document.getElementById('solutions-step').innerHTML = `<span class="mathjax">${solutionsStep}</span>`;
-        document.getElementById('start').classList.add('hidden');
-        // Εμφάνιση των αποτελεσμάτων
-        document.getElementById('result').classList.remove('hidden');
-        document.getElementById('restartButton').classList.remove('hidden');
-
-        // Κλήση του MathJax για να ανανεώσει τη μορφοποίηση
-        MathJax.Hub.Queue(["Typeset", MathJax.Hub, document.getElementById("result")]);
+    if (discriminant > 0) {
+        table += `<th></th><th>${x1}</th><th></th><th>${x2}</th><th></th>`;
+    } else if (discriminant === 0) {
+        table += `<th></td><th>${x1}</th><th></th>`;
+    } else {
+        table += `<th></th>`;
     }
 
-    function restartQuiz() {
+    table += "<th>+∞</th></tr>";
+
+    table += "<tr><td>P(x)</td>";
+
+    if (discriminant > 0) {
+        table += `<td></td><td>${a > 0 ? "+" : "-"}</td>`; 
+        table += "<td>0</td>"; 
+        table += `<td>${a > 0 ? "-" : "+"}</td>`; 
+        table += "<td>0</td>"; 
+        table += `<td>${a > 0 ? "+" : "-"}</td>`; 
+    } else if (discriminant === 0) {
+        table += `<td></td><td>${a > 0 ? "+" : "-"}</td>`; 
+        table += "<td>0</td>"; 
+        table += `<td>${a > 0 ? "+" : "-"}</td>`; 
+    } else {
+        table += `<td></td><td>${a > 0 ? "+" : "-"}</td><td></td>`; 
+    }
+    
+    table += "</tr>";
+    
+    document.getElementById("signsTable").innerHTML = table;
+    document.getElementById("result").classList.remove("hidden");
+    document.getElementById("pinakasprosimon").classList.remove("hidden");
+}
+
+function calculate() {
+    const a = parseFloat(document.getElementById('a').value);
+    const b = parseFloat(document.getElementById('b').value);
+    const c = parseFloat(document.getElementById('c').value);
+    const discriminant = b * b - 4 * a * c;
+
+    document.getElementById('discriminant').innerHTML = discriminant; // Ενημέρωση διακρίνουσας
+
+    let solutionsText = "";
+    if (discriminant < 0) {
+        solutionsText = "Δεν υπάρχουν πραγματικές ρίζες.";
+        calculateSignTable(a, 1, 2, discriminant);
+    } else if (discriminant > 0){
+        const sqrtDiscriminant = Math.sqrt(discriminant);
+        const x1 = (-b + sqrtDiscriminant) / (2 * a);
+        const x2 = (-b - sqrtDiscriminant) / (2 * a);
+
+        solutionsText = `Οι ρίζες είναι: x₁ = ${x1}, x₂ = ${x2}`;
+        calculateSignTable(a, Math.min(x1, x2), Math.max(x1, x2), discriminant);
+    } else {
+        const sqrtDiscriminant = Math.sqrt(discriminant);
+        const x1 = (-b + sqrtDiscriminant) / (2 * a);
+        const x2 = (-b - sqrtDiscriminant) / (2 * a);
+
+        solutionsText = ` H ρίζα είναι: x = ${x1}`;
+        calculateSignTable(a, Math.min(x1, x2), Math.max(x1, x2), discriminant);
+    }
+
+    document.getElementById('solutions').innerHTML = solutionsText; // Ενημέρωση ριζών
+    document.getElementById('result').classList.remove("hidden"); // Εμφάνιση αποτελεσμάτων
+}
+
+
+ function restartQuiz() {
             location.reload();
         }
 </script>
