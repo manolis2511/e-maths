@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Υπολογισμός Τριγωνομετρικών Αριθμών των Οξειών Γωνιών σε Ορθογώνιο Τρίγωνο</title>
+  <link rel="stylesheet" href="../style.css">
+  <script type="text/javascript" async
+  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+  <style>
+    p, li {
+      font-size: 16px;
+      line-height: 1.5;
+    }
+    .triangle-diagram {
+      display: block;
+      margin: 30px auto;
+      max-width: 300px;
+    }
+    .diagram-text {
+      font-size: 14px;
+      fill: #333;
+    }
+  </style>
+</head>
+<body>
+    <header id="header">
+        <h1>Υπολογισμός Τριγωνομετρικών Αριθμών των Οξειών Γωνιών σε Ορθογώνιο Τρίγωνο</h1>
+    </header>
+    <button id="anotherButton" onclick="generateTriangle()">Δημιουργία Τυχαίου Τριγώνου</button>
+    <div id="triangleDiagram"></div>
+    <div id="quiz"></div>
+    <div id="restartContainer" style="display: none;">
+        <button id="restartButton" onclick="restartQuiz()">Ξεκινήστε από την αρχή</button>
+    </div>
+    <footer id="footer">
+      <div style="text-align: center; margin-bottom: 15px;">
+      <a href="trigwnometria.html" class="quiz-link" style="display: inline-block; font-size: 15px; color: white; text-decoration: none; margin: 0 10px;">
+          Ξεκινήστε από την αρχή
+      </a>-
+      <a href="../index.html" class="quiz-link" style="display: inline-block; font-size: 15px; color: white; text-decoration: none; margin: 0 10px;">
+          Αρχική Σελίδα
+      </a>-
+      <a href="../gymnasio.html" class="quiz-link" style="display: inline-block; font-size: 15px; color: white; text-decoration: none; margin: 0 10px;">
+          Επιστροφή
+      </a>
+  </div>
+  <p>© 2025 Created by Παρα-school-ακης</p>
+</footer>
+  <script>
+    function generateTriangle() {
+      let m, n;
+      do {
+        m = Math.floor(Math.random() * 5) + 2;
+        n = Math.floor(Math.random() * (m - 1)) + 1;
+      } while (m <= n);
+      const a = m * m - n * n;
+      const b = 2 * m * n;
+      const c = m * m + n * n;
+      const maxSize = 250;
+      const scale =maxSize / Math.max(a, b);
+      const diagram = `
+        <svg class="triangle-diagram" viewBox="0 0 ${b * scale+60} ${a * scale + 60}" width="100%" height="100%">
+
+          <line x1="10" y1="${a * scale + 10}" x2="${b * scale + 10}" y2="${a * scale + 10}" stroke="var(--secondary-color)" stroke-width="1.5"/>
+          <line x1="${b * scale + 10}" y1="${a * scale + 10}" x2="${b * scale + 10}" y2="10" stroke="var(--secondary-color)" stroke-width="1.5"/>
+          <line x1="${b * scale + 10}" y1="10" x2="10" y2="${a * scale + 10}" stroke="var(--secondary-color)" stroke-width="1.5"/>
+
+        <path d="
+          M ${10 + 20 * Math.cos(Math.atan(a / b))} ${a * scale + 10 - 20 * Math.sin(Math.atan(a / b))}
+          A 20 20 0 0 1 ${10 + 20} ${a * scale + 10}
+          " stroke="black" fill="none" stroke-width="2"/>
+          
+      <text class="diagram-text" x="${30 + (20 * Math.cos(Math.atan(a / b) + Math.atan(a / b) )/ 2)}" 
+        y="${a * scale + 15 - (20 * Math.sin(Math.atan(a / b) + Math.atan(a / b) )/ 2)}">ω</text>
+
+          <text class="diagram-text" x="${b * scale / 2}" y="${a * scale + 25}">β = ${b}</text>
+          <text class="diagram-text" x="${b * scale + 12}" y="${a * scale / 2 + 25}">α = ${a}</text>
+          <text class="diagram-text" x="${b * scale /2}" y="${4*a * scale/9}">γ = ${c}</text>
+        </svg>
+      `;
+      document.getElementById('triangleDiagram').innerHTML = diagram;
+      generateQuiz(a, b, c);
+    }
+
+    function generateQuiz(a, b, c) {
+  const quizContainer = document.getElementById('quiz');
+  const correctSin = `\\( \\dfrac{${a}}{${c}}\\)`;
+  const correctCos = `\\( \\dfrac{${b}}{${c}}\\)`;
+  const correctTan = `\\( \\dfrac{${a}}{${b}}\\)`;
+  const choices = [correctSin, correctCos, correctTan, `\\( \\dfrac{${c}}{${a}}\\)`, `\\( \\dfrac{${b}}{${a}}\\)`, `\\( \\dfrac{${c}}{${b}}\\)`];
+  choices.sort(() => Math.random() - 0.5);
+  
+  quizContainer.innerHTML = `
+    <h4>ημω = </h4>
+    <div class="quiz-row">
+      ${choices.map(choice => `<button id="anotherButton" onclick="selectAnswer(this, '${choice}', '${correctSin}')">${choice}</button>`).join('')}
+    </div>
+    
+    <h4>συνω = </h4>
+    <div class="quiz-row">
+      ${choices.map(choice => `<button id="anotherButton" onclick="selectAnswer(this, '${choice}', '${correctCos}')">${choice}</button>`).join('')}
+    </div>
+    
+    <h4>εφω = </h4>
+    <div class="quiz-row">
+      ${choices.map(choice => `<button id="anotherButton" onclick="selectAnswer(this, '${choice}', '${correctTan}')">${choice}</button>`).join('')}
+    </div>
+
+    <button id="anotherButton" onclick="checkQuiz()">Έλεγχος Απαντήσεων</button>
+    <div id="quiz-feedback"></div>
+  `;
+
+  MathJax.Hub.Queue(["Typeset", MathJax.Hub, document.getElementById("quiz")]);
+}
+      let userAnswers = {};
+
+    function selectAnswer(button, selected, correct) {
+      const questionType = button.parentElement.previousElementSibling.innerText;
+      userAnswers[questionType] = { selected, correct };
+
+  // Highlight selected answer
+      const buttons = button.parentElement.querySelectorAll("button");
+      buttons.forEach(btn => btn.style.backgroundColor = ""); 
+      button.style.backgroundColor = "var(--hover-color)"; 
+    }
+
+    function checkQuiz() {
+      let feedbackHTML = "";
+      Object.keys(userAnswers).forEach(question => {
+        const { selected, correct } = userAnswers[question];
+        const isCorrect = selected === correct ? "Σωστό ✅" : "Λάθος ❌";
+        feedbackHTML += `<p>${question} ${isCorrect}</p>`;
+      });
+
+      document.getElementById("quiz-feedback").innerHTML = feedbackHTML;
+      document.getElementById("restartContainer").style.display = 'block';
+
+    }
+
+function restartQuiz() {
+            location.reload();
+        }
+
+  </script>
+</body>
+</html>

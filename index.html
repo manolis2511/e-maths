@@ -3,23 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>E-Maths | Αρχική</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="stylemenu.css">
-    <link rel="icon" href="pi.png" type="image/x-icon"> <!-- Προσθήκη favicon -->
-    <title>E-Maths | Αρχική</title>
 </head>
 <body>
     <header id="header">
         Καλώς ήρθατε στο e-maths
         <nav class="navbar">
-            <div class="menu-toggle" onclick="toggleMenu()">
+            <div class="menu-toggle" font-size="14px" onclick="toggleMenu()">
                 <span></span>
                 <span></span>
                 <span></span>
             </div>
             <ul class="nav-menu">
                 <li><a href="index.html">Αρχική</a></li>
-                
+
                 <li class="dropdown">
                     <a href="#">Δημοτικό ▼</a>
                     <ul class="dropdown-menu">
@@ -27,19 +26,22 @@
                         <li><a href="dimotiko/afairesi.html">Αφαίρεση</a></li>
                         <li><a href="dimotiko/propaideia.html">Προπαίδεια</a></li>
                         <li><a href="dimotiko/prosthesimekratoumeno.html">Κάθετη Πρόσθεση</a></li>
+                        <li><a href="dimotiko/afairesimedaneiko.html">Κάθετη Αφαίρεση</a></li>
+                        <li><a href="dimotiko/pollaplasiasmos.html">Κάθετη Πολλαπλασιασμός</a></li>
                     </ul>
                 </li>
     
                 <li class="dropdown">
                     <a href="#">Γυμνάσιο ▼</a>
                     <ul class="dropdown-menu">
-                        <li class="dropdown-header">Α' Γυμνασίου</li>
+                        <strong>Α' Γυμνασίου</strong>
                         <li><a href="gymnasio/sugkrishklasmatwn.html">Σύγκριση Κλασμάτων</a></li>
+                        <li><a href="gymnasio/equations.html">Εξισώσεις</a></li>
                         <li><a href="gymnasio/prosthesirhtwn.html">Προσθεση Θετικών-Αρνητικών</a></li>
-                        <li class="dropdown-header">Β' Γυμνασίου</li>
+                        <strong>Β' Γυμνασίου</strong>
                         <li><a href="gymnasio/analoga.html">Η συνάρτηση y=αx</a></li>
                         <li><a href="gymnasio/axkaib.html">Η συνάρτηση y=αx+β</a></li>
-                        <li class="dropdown-header">Γ' Γυμνασίου</li>
+                        <strong>Γ' Γυμνασίου</strong>
                         <li><a href="gymnasio/deuterobathmies.html">Επίλυση Εξίσωσης 2ου Βαθμού</a></li>
                     </ul>
                 </li>
@@ -47,28 +49,27 @@
                 <li class="dropdown">
                     <a href="#">Λύκειο ▼</a>
                     <ul class="dropdown-menu">
-                        <li class="dropdown-header">Β' Λυκείου</li>
+                        <strong>A' Λυκείου</strong>
+                        <li><a href="lykeio/aniswseis2ou.html">Πρόσημο Πολυωνύμου</a></li>
+                        <strong>Β' Λυκείου</strong>
                         <li><a href="lykeio/horner.html">Σχήμα Horner</a></li>
-                        <li class="dropdown-header">ΕΠΑ.Λ</li>
+                        <strong>ΕΠΑ.Λ.</strong>
                         <li><a href="lykeio/statistiki.html">Στατιστική</a></li>
                     </ul>
                 </li>
             </ul>
         </nav>
     </header>
-
-    <main>
-        <h3>Διαλέξτε εκπαιδευτικό επίπεδο για να ξεκινήσετε:</h3>
-        <div class="category-container" style="margin-bottom: 30px;">
-            <a href="dimotiko.html" class="category">Δημοτικό</a>
-            <a href="gymnasio.html" class="category">Γυμνάσιο</a>
-            <a href="lykeio.html" class="category">Λύκειο</a>
-        </div>
-        <h3>Κάτι άλλο...</h3>
-        <div class="category-container">
-            <a href="Drums/Drums.html" class="category">Virtual Drums</a>
-        </div>
-    </main>
+    <h3>Διαλέξτε εκπαιδευτικό επίπεδο για να ξεκινήσετε:</h3>
+    <div class="category-container">
+        <a href="dimotiko.html" class="category">Δημοτικό</a>
+        <a href="gymnasio.html" class="category">Γυμνάσιο</a>
+        <a href="lykeio.html" class="category">Λύκειο</a>
+    </div>
+    <h3>Κάτι άλλο...</h3>
+    <div class="category-container">
+        <a href="Drums/Drums.html" class="category">Virtual Drums</a>
+    </div>
 
     <footer id="footer">
         <p>© 2025 Created by Παρα-school-ακης</p>

@@ -12,16 +12,16 @@
 </head>
 <body>
     <header id="header">
-        <h1>Πίνακας Τιμών Συνάρτησης \( y = \frac{a}{x} \)</h1>
+        <h1>Πίνακας Τιμών Συνάρτησης \( y = \dfrac{a}{x} \)</h1>
     </header>
     <div id="head" class="quiz-info">
-        <p>Σε αυτή την άσκηση πρέπει να συμπληρώσεις τον πίνακα τιμών της συνάρτησης \( y = \frac{a}{x} \).</p>
+        <p>Σε αυτή την άσκηση πρέπει να συμπληρώσεις τον πίνακα τιμών της συνάρτησης \( y = \dfrac{a}{x} \).</p>
     </div>
     <div id="startQuiz">
         <button id="startButton" onclick="startQuiz()">Εμφάνιση του πίνακα</button>
     </div>
     <div id="y=ax" class="result hidden">
-        <h2>Η εξίσωση είναι: <span id="equation"></span></h2>
+        <h3>Η εξίσωση είναι: <span id="equation"></span></h3>
         <table id="equationTable">
             <tbody>
                 <tr id="tableRow1"><td><h2>x</h2></td></tr>
@@ -33,6 +33,17 @@
         <button id="anotherButton" onclick="checkAnswers()">Έλεγχος Απαντήσεων</button>
     </div>
     <footer id="footer">
+        <div style="text-align: center; margin-bottom: 15px;">
+            <a href="antistrofwsanaloga.html" class="quiz-link" style="display: inline-block; font-size: 15px; color: white; text-decoration: none; margin: 0 10px;">
+                Καινούρια Συνάρτηση
+            </a>-
+            <a href="../index.html" class="quiz-link" style="display: inline-block; font-size: 15px; color: white; text-decoration: none; margin: 0 10px;">
+                Αρχική Σελίδα
+            </a>-
+            <a href="../gymnasio.html" class="quiz-link" style="display: inline-block; font-size: 15px; color: white; text-decoration: none; margin: 0 10px;">
+                Επιστροφή
+            </a>
+        </div>
         <p>© 2025 Created by Παρα-school-ακης</p>
     </footer>
     <script>
@@ -42,73 +53,84 @@
             document.getElementById('head').style.display = 'none';
             document.getElementById('startQuiz').style.display = 'none';
         }
-
         function getRandomA() {
-            let a;
-            do {
-                a = Math.floor(Math.random() * 10) - 5;
-            } while (a === 0);
-            return a;
+    let candidates = [12, 18, 20, 24, 30, 36, 40, 42, 48, 50, -12, -18, -20, -24, -30, -36, -40, -42, -48, -50];
+    return candidates[Math.floor(Math.random() * candidates.length)];
+}
+
+function getDivisors(num) {
+    let divisors = [];
+    for (let i = 1; i <= Math.abs(num); i++) {
+        if (num % i === 0) {
+            divisors.push(i, -i); // Προσθήκη θετικών και αρνητικών διαιρετών
+        }
+    }
+    return divisors;
+}
+
+function getUniqueRandomX(a) {
+    let divisors = getDivisors(a);
+    let xValues = [];
+
+    // Επιλογή όλων των διαθέσιμων διαιρετών (τυχαία σειρά)
+    let shuffledDivisors = divisors.sort(() => Math.random() - 0.5);
+    xValues = shuffledDivisors.slice(0, Math.min(10, shuffledDivisors.length));
+    
+    // Αν οι διαιρέτες είναι λιγότεροι από 10, συμπλήρωσε με επαναλήψεις
+    while (xValues.length < 10) {
+        let repeatX = xValues[Math.floor(Math.random() * xValues.length)];
+        xValues.push(repeatX);
+    }
+    
+    return xValues;
+}
+
+function generateTable() {
+    let a = getRandomA();
+    document.getElementById("equation").innerHTML = `\\(y = \\dfrac{${a}}{x} \\)`;
+    MathJax.typeset();
+    
+    let xValues = getUniqueRandomX(a);
+    let yValues = xValues.map(x => (a / x));
+
+    let tableRow1 = document.getElementById("tableRow1");
+    let tableRow2 = document.getElementById("tableRow2");
+
+    tableRow1.innerHTML = "<td>x</td>";
+    tableRow2.innerHTML = "<td>y</td>";
+
+    for (let i = 0; i < 10; i++) {
+        let cellX = document.createElement("td");
+        let cellY = document.createElement("td");
+        
+        let inputX = document.createElement("input");
+        let inputY = document.createElement("input");
+
+        if (i >= 5) {
+            inputX.type = "text";
+            inputX.placeholder = "...";
+            inputX.dataset.answer = xValues[i];
+        } else {
+            inputX.value = xValues[i];
+            inputX.disabled = true;
         }
 
-        function getUniqueRandomX() {
-            const xValues = [];
-            while (xValues.length < 10) {
-                let x = Math.floor(Math.random() * 21) - 10;
-                if (!xValues.includes(x) && x !== 0) {
-                    xValues.push(x);
-                }
-            }
-            return xValues;
+        if (i >= 5) {
+            inputY.value = yValues[i];
+            inputY.disabled = true;
+        } else {
+            inputY.type = "text";
+            inputY.placeholder = "...";
+            inputY.dataset.answer = yValues[i];
         }
 
-        function generateTable() {
-            let a = getRandomA();
-            document.getElementById("equation").innerHTML = `y = \( \frac{${a}}{x} \)`;
-            MathJax.typeset();
-            
-            let xValues = getUniqueRandomX();
-            let yValues = xValues.map(x => (a / x).toFixed(2));
-
-            let tableRow1 = document.getElementById("tableRow1");
-            let tableRow2 = document.getElementById("tableRow2");
-
-            tableRow1.innerHTML = "<td>x</td>";
-            tableRow2.innerHTML = "<td>y</td>";
-
-            for (let i = 0; i < 10; i++) {
-                let cellX = document.createElement("td");
-                let cellY = document.createElement("td");
-                
-                let inputX = document.createElement("input");
-                let inputY = document.createElement("input");
-
-                if (i >= 5) {
-                    inputX.type = "text";
-                    inputX.placeholder = "...";
-                    inputX.dataset.answer = xValues[i];
-                } else {
-                    inputX.value = xValues[i];
-                    inputX.disabled = true;
-                }
-
-                if (i >= 5) {
-                    inputY.value = yValues[i];
-                    inputY.disabled = true;
-                } else {
-                    inputY.type = "text";
-                    inputY.placeholder = "...";
-                    inputY.dataset.answer = yValues[i];
-                }
-
-                cellX.appendChild(inputX);
-                cellY.appendChild(inputY);
-                tableRow1.appendChild(cellX);
-                tableRow2.appendChild(cellY);
-            }
-        }
-
-        function checkAnswers() {
+        cellX.appendChild(inputX);
+        cellY.appendChild(inputY);
+        tableRow1.appendChild(cellX);
+        tableRow2.appendChild(cellY);
+    }
+}
+    function checkAnswers() {
             let inputs = document.querySelectorAll('input[type="text"]');
             let correct = 0;
             

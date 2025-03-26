@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Κουίζ Εξισώσεων</title>
+    <link rel="stylesheet" href="../style.css">
+    <script type="text/javascript" async
+        src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML">
+    </script>
+</head>
+<body>
+    <header id="header">
+        <h1>Κουίζ Εξισώσεων</h1>
+    </header>
+    <div class="quiz-info">
+        <p>Αυτό το κουίζ περιλαμβάνει 10 εξισώσεις. Δώσε την τιμή του x και πάτησε <strong>Enter</strong> για να καταχωρήσεις την απάντησή σου.</p>
+    </div>
+    <div id="startQuiz">
+        <button id="startButton" onclick="startQuiz()">Ξεκινήστε το κουίζ</button>
+    </div>
+    
+    <div class="question" id="question"></div>
+    <input type="text" id="answerInput" placeholder="Απάντηση" style="display: none;">
+    <div id="timer" style="display: none;">Συνολικός Χρόνος: 0</div>
+    <div class="result" id="result"></div>
+    <div id="totalTime" style="display: none;"></div>
+    <div id="restartContainer" style="display: none;">
+        <button id="restartButton" onclick="restartQuiz()">Ξεκινήστε από την αρχή</button>
+    </div>
+    <footer id="footer">
+        <div style="text-align: center; margin-bottom: 15px;">
+            <a href="equations.html" class="quiz-link" style="display: inline-block; font-size: 15px; color: white; text-decoration: none; margin: 0 10px;">
+                Ξεκινήστε από την αρχή
+            </a>-
+            <a href="../index.html" class="quiz-link" style="display: inline-block; font-size: 15px; color: white; text-decoration: none; margin: 0 10px;">
+                Αρχική Σελίδα
+            </a>-
+            <a href="../gymnasio.html" class="quiz-link" style="display: inline-block; font-size: 15px; color: white; text-decoration: none; margin: 0 10px;">
+                Επιστροφή
+            </a>
+        </div>
+        <p>© 2025 Created by Παρα-school-ακης</p>
+    </footer>
+    <script>
+        let score = 0;
+        let currentQuestion = 0;
+        const questions = [];
+        let totalStartTime;
+        let timerInterval;
+
+        function generateQuestions() {
+            const operators = ['+', '-', '·', '/', 'x-'];
+            while (questions.length < 10) {
+                const a = Math.floor(Math.random() * 11);
+                const b = Math.floor(Math.random() * 11) || 1; // αποφυγή διαίρεσης με το μηδέν
+                const op = operators[Math.floor(Math.random() * operators.length)];
+                let questionText, correctAnswer;
+
+                switch (op) {
+                    case '+':
+                        questionText = `\\(${a} + x = ${a + b}\\)`;
+                        correctAnswer = b;
+                        break;
+                    case '-':
+                    if (a < b) [a, b] = [b, a]; // Διασφάλιση ότι a - b ≥ 0
+                        questionText = `\\(${a} - x = ${a - b}\\)`;
+                        correctAnswer = b;
+                        break;
+                    case '·':
+                        questionText = `\\(${a} \\cdot x = ${a * b}\\)`;
+                        correctAnswer = b;
+                        break;
+                    case '/':
+                        const product = a * b;
+                        questionText = `\\( \\dfrac{${product}}{x} = ${b} \\)`;
+                        correctAnswer = a;
+                        break;
+                    case 'x-':
+                        questionText = `\\(x - ${a} = ${b}\\)`;
+                        correctAnswer = a + b;
+                        break;
+                }
+                questions.push({ question: questionText, correctAnswer });
+            }
+        }
+
+        function displayQuestion() {
+            const current = questions[currentQuestion];
+            document.getElementById("question").innerHTML = current.question;
+            document.getElementById("answerInput").value = '';
+            document.getElementById("answerInput").style.display = 'block';
+            document.getElementById("result").innerHTML = '';
+            document.getElementById("answerInput").focus();
+            MathJax.Hub.Queue(["Typeset", MathJax.Hub, document.getElementById("question")]);
+        }
+
+        function submitAnswer() {
+            const userAnswer = Number(document.getElementById("answerInput").value);
+            const correctAnswer = questions[currentQuestion].correctAnswer;
+            const resultDiv = document.getElementById("result");
+
+            if (userAnswer === correctAnswer) {
+                score++;
+                resultDiv.innerHTML = "Σωστά!";
+                resultDiv.style.color = 'green';
+            } else {
+                resultDiv.innerHTML = `Λάθος! Η σωστή απάντηση είναι: ${correctAnswer}`;
+                resultDiv.style.color = 'red';
+            }
+
+            setTimeout(() => {
+                currentQuestion++;
+                if (currentQuestion < questions.length) {
+                    displayQuestion();
+                } else {
+                    displayResult();
+                }
+            }, 1500);
+        }
+
+        function displayResult() {
+            clearInterval(timerInterval);
+            const totalTime = Date.now() - totalStartTime;
+            const minutes = Math.floor(totalTime / 60000);
+            const seconds = Math.floor((totalTime % 60000) / 1000);
+            document.getElementById("question").innerHTML = '';
+            document.getElementById("answerInput").style.display = 'none';
+            document.getElementById("timer").style.display = 'none';
+            document.getElementById("result").innerHTML = `Το κουίζ ολοκληρώθηκε! Σκορ: ${score}/${questions.length}`;
+            document.getElementById("totalTime").innerHTML = `Συνολικός Χρόνος: ${minutes} λεπτά και ${seconds} δευτερόλεπτα`;
+            document.getElementById("totalTime").style.display = 'block';
+            document.getElementById("restartContainer").style.display = 'block';
+        }
+
+        function startQuiz() {
+            generateQuestions();
+            displayQuestion();
+            totalStartTime = Date.now();
+            startTotalTimer();
+            document.getElementById("startButton").style.display = 'none';
+            document.querySelector(".quiz-info").style.display = 'none';
+        }
+
+        function startTotalTimer() {
+            timerInterval = setInterval(() => {
+                const totalTime = Date.now() - totalStartTime;
+                const minutes = Math.floor(totalTime / 60000);
+                const seconds = Math.floor((totalTime % 60000) / 1000);
+                document.getElementById("timer").innerHTML = `Συνολικός Χρόνος: ${minutes} λεπτά και ${seconds} δευτερόλεπτα`;
+                document.getElementById("timer").style.display = 'block';
+            }, 1000);
+        }
+
+        function restartQuiz() {
+            location.reload();
+        }
+
+        document.addEventListener("keydown", (event) => {
+            if (event.key === "Enter" && document.getElementById("answerInput").style.display !== "none") {
+                submitAnswer();
+            }
+        });
+    </script>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</body>
+</html>
