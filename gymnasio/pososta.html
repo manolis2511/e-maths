@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Παιχνίδι Ποσοστών</title>
+    <link rel="stylesheet" href="../style.css">
+    <style>
+        .grid-container { display: grid; gap: 2px; margin: 20px auto; }
+        .grid-item { width: 30px; height: 30px; background: lightgray; display: inline-block; cursor: pointer; }
+        .selected { background: var(--hover-color); }
+    </style>
+</head>
+<body>
+    <header id="header"><h1>Παιχνίδι Ποσοστών</h1></header>
+    <h3>Πόσα συνολικά τετράγωνα θα υπάρχουν</h3>
+    <div id="dimensions"><h4>Σύνολο τετραγώνων: <input id="answerInput" type="number" id="totalCellsInput" min="1" value="200">
+    <button id="anotherButton" onclick="generateGrid()">Δημιουργία Πλέγματος</button></h4></div>
+    <div id="selection-mode"><h5>
+    Αυτόματη επιλογή τετραγώνων
+    <input id="answerInput" type="number" id="autoSelect" min="1" value="100" placeholder="Επιλογή"> 
+    <button id="anotherButton" onclick="autoSelectCells()">Επιλογή</button></h5></div>
+    <div id="grid" class="grid-container"></div>
+    <button id="anotherButton" onclick="calculatePercentage()">Υπολογισμός Ποσοστού</button>
+    <p id="result"></p>
+    <button id="anotherButton" onclick="resetGame()">Επαναφορά</button>
+    
+    <script>
+        let totalCells = 0, selectedCells = 0;
+        let gridWidth, gridHeight;
+
+        function getDivisors(num) {
+            let divisors = [];
+            for (let i = 1; i <= Math.sqrt(num); i++) {
+                if (num % i === 0) {
+                    divisors.push(i);
+                    if (i !== num / i) divisors.push(num / i);
+                }
+            }
+            divisors.sort((a, b) => a - b);
+            return divisors;
+        }
+
+        function generateGrid() {
+            const totalCellsInput = parseInt(document.getElementById("totalCellsInput").value);
+            const divisors = getDivisors(totalCellsInput);
+
+            let width, height;
+            const numDivisors = divisors.length;
+            if (numDivisors % 2 === 1) {
+                // Αν ο αριθμός των διαιρετών είναι περιττός, επιλέγουμε τον μεσαίο
+                width = height = divisors[Math.floor(numDivisors / 2)];
+            } else {
+                // Αν είναι άρτιος, επιλέγουμε τον 6ο και 7ο διαιρέτη (αν υπάρχουν)
+                width = divisors[Math.floor(numDivisors / 2) - 1];
+                height = divisors[Math.floor(numDivisors / 2)];
+            }
+
+            const grid = document.getElementById("grid");
+            grid.innerHTML = "";
+            grid.style.gridTemplateColumns = `repeat(${width}, 32px)`;
+            totalCells = width * height;
+            gridWidth = width;
+            gridHeight = height;
+            selectedCells = 0;
+
+            for (let i = 0; i < totalCells; i++) {
+                let cell = document.createElement("div");
+                cell.classList.add("grid-item");
+                grid.appendChild(cell);
+            }
+        }
+
+        function autoSelectCells() {
+            let numToSelect = parseInt(document.getElementById("autoSelect").value);
+            if (isNaN(numToSelect) || numToSelect < 1 || numToSelect > totalCells) {
+                alert("Ο αριθμός τετραγώνων πρέπει να είναι μεταξύ 1 και " + totalCells);
+                return;
+            }
+
+            let cells = document.querySelectorAll(".grid-item");
+            cells.forEach(cell => cell.classList.remove("selected"));
+            
+            let selected = 0;
+
+            // Επιλογή των τετραγώνων με σειρά: πρώτα πρώτες στήλες, μετά γραμμές
+            for (let col = 0; col < gridWidth; col++) {
+                for (let row = 0; row < gridHeight; row++) {
+                    const index = row * gridWidth + col;
+                    if (selected < numToSelect && index < cells.length) {
+                        cells[index].classList.add("selected");
+                        selected++;
+                    }
+                }
+            }
+
+            selectedCells = document.querySelectorAll(".selected").length;
+        }
+
+        function calculatePercentage() {
+            if (totalCells === 0) return;
+            let fraction = `${selectedCells}/${totalCells}`;
+            let percentage = ((selectedCells / totalCells) * 100).toFixed(2);
+            document.getElementById("result").textContent = `Κλάσμα: ${fraction} | Ποσοστό: ${percentage}%`;
+        }
+
+        function resetGame() {
+            document.getElementById("grid").innerHTML = "";
+            document.getElementById("result").textContent = "";
+        }
+    </script>
+</body>
+</html>

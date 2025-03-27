@@ -83,7 +83,7 @@ h6 { font-size: 14px; }
     transform: translateY(-2px); /* Ελαφριά ανύψωση */
 }
 
-.answer-btn, #startButton, #nextButton, #restartButton, #anotherButton {
+.answer-btn, #startButton, #nextButton, #restartButton, #anotherButton, #check-button, #reset-button {
     font-size: 20px;
     padding: 15px 30px;
     margin: 20px;
@@ -96,7 +96,7 @@ h6 { font-size: 14px; }
     box-shadow: 0 4px 6px var(--shadow-color);
 }
 
-.answer-btn:hover, #startButton:hover, #nextButton:hover, #restartButton:hover, #anotherButton:hover {
+.answer-btn:hover, #startButton:hover, #nextButton:hover, #restartButton:hover, #anotherButton:hover, #check-button:hover, #reset-button:hover{
     background-color: var(--hover-color);
     transform: translateY(-2px); /* Ελαφριά ανύψωση */
 }
@@ -163,6 +163,21 @@ h6 { font-size: 14px; }
 #answerInput:focus {
     border-color: var(--hover-color);
     outline: none;
+}
+
+input[type="radio"]{
+        transform: scale(1);
+        appearance: none;
+        width: 20px;
+        height: 5px;
+        border: 2px solid var(--text-color);
+        border-radius: 50%;
+        display: inline-block;
+        position: sticky;
+    }
+input[type="radio"]:checked {
+    background-color: var(--primary-color); /* Εδώ αλλάζεις το χρώμα του επιλεγμένου radio button */
+    border-color: var(--hover-color);
 }
 
 .quiz-info {

@@ -5,144 +5,175 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Παζλ Ταυτοτήτων</title>
     <link rel="stylesheet" href="../style.css">
-    <link rel="stylesheet" href="stylemenu.css">
-    <link rel="icon" href="favicon.ico" type="image/x-icon">
     <script type="text/javascript" async
         src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML">
     </script>
     <style>
-        /* Εδώ διατηρούνται τα styles σου */
+        .container {
+            display: flex;
+            justify-content: space-around;
+            margin: 20px;
+        }
+        .column {
+            width: 500px;
+            padding: 10px;
+            border: 1px solid var(--shadow-color);
+            min-height: 200px;
+            text-align: center;
+        }
+        .piece {
+            padding: 20px;
+            height: 20px;
+            margin: 10px;
+            border: 1px dashed var(--shadow-color);
+            background: var(--secondary-color);
+            cursor: grab;
+        }
+        .dropzone {
+            height: 20px;
+            padding: 20px 20px;
+            margin: 10px;
+            background: var(--hover-color);
+            border: 1px dashed var(--shadow-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .correct { background: green; }
+        .incorrect { background: red; }
     </style>
 </head>
 <body>
     <header id="header">
-        Παζλ Ταυτοτήτων
+        <h1>Παζλ Ταυτοτήτων</h1>
     </header>
-
     <h3>Σύρε τις παραστάσεις στο σωστό αναπτυγμένο αποτέλεσμα.</h3>
-    
     <div class="container">
         <div class="column" id="expressions-column">
             <p><strong>Παραστάσεις</strong></p>
-            <!-- Παραστάσεις θα γεμιστούν από το JS -->
         </div>
-        
         <div class="column" id="expansions-column">
             <p><strong>Αναπτύγματα</strong></p>
-            <!-- Αναπτύγματα θα γεμιστούν από το JS -->
         </div>
     </div>
-    
-    <button id="check-button">Έλεγχος Απαντήσεων</button>
-    <button id="reset-button">Επαναφορά</button>
+    <div>
+        <button id="check-button">Έλεγχος Απαντήσεων</button>
+        <button id="reset-button">Επαναφορά</button>
+    </div>
     <p id="result"></p>
-
     <footer id="footer">
-        <p>© 2025 Created by Παρα-school-ακης</p>
-    </footer>
-
+        <div style="text-align: center; margin-bottom: 15px;">
+    <a href="tautothtes.html" class="quiz-link" style="display: inline-block; font-size: 15px; color: white; text-decoration: none; margin: 0 10px;">
+        Ξεκινήστε από την αρχή
+    </a>-
+    <a href="../index.html" class="quiz-link" style="display: inline-block; font-size: 15px; color: white; text-decoration: none; margin: 0 10px;">
+        Αρχική Σελίδα
+    </a>-
+    <a href="../gymnasio.html" class="quiz-link" style="display: inline-block; font-size: 15px; color: white; text-decoration: none; margin: 0 10px;">
+        Επιστροφή
+    </a>
+</div>
+<p>© 2025 Created by Παρα-school-ακης</p>
+</footer>
     <script>
-        // Αρχικοποίηση
-        const dropzones = document.querySelectorAll('.dropzone');
+        const expressionsColumn = document.getElementById('expressions-column');
+        const expansionsColumn = document.getElementById('expansions-column');
         const checkButton = document.getElementById('check-button');
         const resetButton = document.getElementById('reset-button');
         const resultText = document.getElementById('result');
-        const expressionsColumn = document.getElementById('expressions-column');
-        const expansionsColumn = document.getElementById('expansions-column');
 
-        // Συνάρτηση για δημιουργία τυχαίων αριθμών
         function getRandomInt(min, max) {
             return Math.floor(Math.random() * (max - min + 1)) + min;
         }
 
-        // Δημιουργία των παραστάσεων
         function generateExpressions() {
-            const aValues = [1, 2, 3, 4, 5]; // Τιμές του α
-            const expressions = [
-                `(x + a)^2`, 
-                `(x - a)^2`, 
-                `(x + a)^3`, 
-                `(x - a)^3`, 
-                `(x - a)(x + a)`
-            ];
-            const expansions = [
-                `x^2 + 2ax + a^2`,
-                `x^2 - 2ax + a^2`,
-                `x^3 + 3ax^2 + 3a^2x + a^3`,
-                `x^3 - 3ax^2 + 3a^2x - a^3`,
-                `x^2 - a^2`
+            const identities = [
+                { expr: '(x + a)^2', expansion: (a) => `x^2 + ${2 * a}x + ${a * a}` },
+                { expr: '(x - a)^2', expansion: (a) => `x^2 - ${2 * a}x + ${a * a}` },
+                { expr: '(x + a)(x - a)', expansion: (a) => `x^2 - ${a * a}` },
+                { expr: '(x + a)^3', expansion: (a) => `x^3 + ${3 * a}x^2 + ${3 * a * a}x + ${a * a * a}` },
+                { expr: '(x - a)^3', expansion: (a) => `x^3 - ${3 * a}x^2 + ${3 * a * a}x - ${a * a * a}` }
             ];
 
-            const generatedExpressions = [];
-            const generatedExpansions = [];
-            let correctMapping = [];
+            expressionsColumn.innerHTML = '<p><strong>Παραστάσεις</strong></p>';
+            expansionsColumn.innerHTML = '<p><strong>Αναπτύγματα</strong></p>';
 
-            for (let i = 0; i < 5; i++) {
-                let a = aValues[i];
-                let expression = expressions[i].replace(/a/g, a);
-                let expansion = expansions[i].replace(/a/g, a);
-
-                generatedExpressions.push({ expression, id: `piece${i+1}` });
-                generatedExpansions.push({ expansion, correctPieceId: `piece${i+1}` });
-            }
-
-            // Ανακατεύουμε τα αναπτύγματα
-            generatedExpansions.sort(() => Math.random() - 0.5);
-            
-            // Γέμισμα της στήλης παραστάσεων
-            generatedExpressions.forEach((exp, index) => {
-                const piece = document.createElement('div');
-                piece.classList.add('piece');
-                piece.id = exp.id;
-                piece.draggable = true;
-                piece.innerHTML = exp.expression;
-                expressionsColumn.appendChild(piece);
+            const generatedExpressions = identities.map(({ expr, expansion }, index) => {
+                let a = getRandomInt(1, 5);
+                return {
+                    expr: expr.replace(/a/g, a),
+                    expansion: expansion(a),
+                    id: `exp${index + 1}`
+                };
             });
 
-            // Γέμισμα της στήλης αναπτύγματος
-            generatedExpansions.forEach((exp, index) => {
-                const box = document.createElement('div');
-                box.classList.add('dropzone');
-                box.dataset.correct = exp.correctPieceId;
-                box.innerHTML = exp.expansion;
-                expansionsColumn.appendChild(box);
+            generatedExpressions.forEach(({ expr, expansion, id }) => {
+                const exprDiv = document.createElement('div');
+                exprDiv.classList.add('piece');
+                exprDiv.id = id;
+                exprDiv.draggable = true;
+                exprDiv.innerHTML = `\\(${expr}\\)`;
+                exprDiv.addEventListener('dragstart', dragStart);
+                expressionsColumn.appendChild(exprDiv);
+
+                const dropDiv = document.createElement('div');
+                dropDiv.classList.add('dropzone');
+                dropDiv.dataset.correct = id;
+                dropDiv.addEventListener('dragover', dragOver);
+                dropDiv.addEventListener('drop', drop);
+                expansionsColumn.appendChild(dropDiv);
+                
+                const expansionText = document.createElement('p');
+                expansionText.innerHTML = `\\(${expansion}\\)`;
+                dropDiv.appendChild(expansionText);
             });
+
+            MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
         }
 
-        // Αρχικοποίηση των παραστάσεων και αναπτύγματων
-        generateExpressions();
+        function dragStart(event) {
+            event.dataTransfer.setData('text/plain', event.target.id);
+            setTimeout(() => event.target.style.display = 'none', 0);
+        }
 
-        // Επαναφορά
-        resetButton.addEventListener('click', () => {
-            dropzones.forEach(dropzone => {
-                dropzone.classList.remove('correct', 'incorrect');
-                const piece = dropzone.querySelector('.piece');
-                if (piece) {
-                    expressionsColumn.appendChild(piece);
-                }
-            });
-            resultText.textContent = '';
-            checkButton.disabled = false;
-        });
+        function dragOver(event) {
+            event.preventDefault();
+        }
 
-        // Έλεγχος απαντήσεων
+        function drop(event) {
+            event.preventDefault();
+            const draggedId = event.dataTransfer.getData('text/plain');
+            const draggedElement = document.getElementById(draggedId);
+            const dropzone = event.target.closest('.dropzone');
+
+            if (dropzone && !dropzone.querySelector('.piece')) {
+                dropzone.appendChild(draggedElement);
+                draggedElement.style.display = 'block';
+            }
+        }
+
         checkButton.addEventListener('click', () => {
-            let score = 0;
-            dropzones.forEach(dropzone => {
-                const correctPieceId = dropzone.dataset.correct;
-                const droppedPiece = dropzone.querySelector('.piece');
-                if (droppedPiece && droppedPiece.id === correctPieceId) {
+            let correctCount = 0;
+            document.querySelectorAll('.dropzone').forEach(dropzone => {
+                const placedItem = dropzone.querySelector('.piece');
+                if (placedItem && placedItem.id === dropzone.dataset.correct) {
                     dropzone.classList.add('correct');
                     dropzone.classList.remove('incorrect');
-                    score++;
+                    correctCount++;
                 } else {
                     dropzone.classList.add('incorrect');
                     dropzone.classList.remove('correct');
                 }
             });
-            resultText.textContent = `Βαθμολογία: ${score}/${dropzones.length}`;
-            checkButton.disabled = true;
+            resultText.textContent = `Βαθμολογία: ${correctCount}/5`;
         });
+
+        resetButton.addEventListener('click', () => {
+            generateExpressions();
+            resultText.textContent = '';
+        });
+
+        generateExpressions();
     </script>
 </body>
 </html>
