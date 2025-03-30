@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Κανονικά Πολύγωνα</title>
+    <link rel="stylesheet" href="../style.css">
+    <style>
+        canvas {
+            border: 4px solid black;
+            display: block;
+            margin: 10px 10px;
+        }
+        .container {
+            text-align: center;
+            font-family: Arial, sans-serif;
+        }
+    </style>
+    <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+</script>
+</head>
+<body>
+    <header id="header"><h1>Κανονικά Πολύγωνα</h1></header>
+    <div class="quiz-info">Ένα πολύγωνο λέγεται <strong>κανονικό</strong>, αν όλες οι πλευρές του είναι μεταξύ τους ίσες και όλες οι γωνίες του είναι μεταξύ τους ίσες.</div><br>    
+    <div class="quiz-info">H κεντρική γωνία \( \omega \) ενός κανονικού v -γώνου είναι ίση με \( \omega = \dfrac{360^\circ}{v} \).</div><br>
+    <div class="quiz-info">Η γωνία \( \phi \) ενός κανονικού ν-γώνου είναι παραπληρωματική της κεντρικής γωνίας του ν-γώνου. \( \phi = 180^\circ - \omega \)</div>
+    <label for="sides"><h4>Επιλέξτε αριθμό πλευρών:</h4></label>
+    <input type="number" id="sides" min="3" max="12" value="3">
+    <button id="anotherButton" onclick="drawPolygon()">Σχεδίασε το πολύγωνο</button>
+    <canvas id="canvas" class="hidden" width="600" height="600"></canvas>
+    <div id="info"></div>
+    <footer id="footer">
+        <div style="text-align: center; margin-bottom: 15px;">
+            <a href="polygwna.html" class="quiz-link" style="display: inline-block; font-size: 15px; color: white; text-decoration: none; margin: 0 10px;">
+                Ξεκινήστε από την αρχή
+            </a>-
+            <a href="../index.html" class="quiz-link" style="display: inline-block; font-size: 15px; color: white; text-decoration: none; margin: 0 10px;">
+                Αρχική Σελίδα
+            </a>-
+            <a href="../gymnasio.html" class="quiz-link" style="display: inline-block; font-size: 15px; color: white; text-decoration: none; margin: 0 10px;">
+                Επιστροφή
+            </a>
+        </div>
+        <p>© 2025 Created by Παρα-school-ακης</p>
+    </footer>
+    <script>
+        function drawPolygon() {
+            const sides = parseInt(document.getElementById("sides").value);
+            if (isNaN(sides) || sides < 3 || sides > 360) {
+                alert("Παρακαλώ εισάγετε έναν αριθμό μεταξύ 3 και 360.");
+                return;
+            }
+            
+            const canvas = document.getElementById("canvas");
+            const ctx = canvas.getContext("2d");
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            document.getElementById('canvas').classList.remove('hidden');
+            const centerX = canvas.width / 2;
+            const centerY = canvas.height / 2;
+            const radius = 300;
+            const angleStep = (2 * Math.PI) / sides;
+            
+            let points = [];
+            for (let i = 0; i < sides; i++) {
+                const x = centerX + radius * Math.cos(i * angleStep - Math.PI / 2);
+                const y = centerY + radius * Math.sin(i * angleStep - Math.PI / 2);
+                points.push({ x, y });
+            }
+
+            for (let i = 0; i < sides; i++) {
+                ctx.beginPath();
+                ctx.moveTo(centerX, centerY);
+                ctx.lineTo(points[i].x, points[i].y);
+                ctx.lineTo(points[(i + 1) % sides].x, points[(i + 1) % sides].y);
+                ctx.closePath();
+                ctx.fillStyle = `hsl(${(360 / sides) * i}, 100%, 70%)`;
+                ctx.fill();
+                ctx.stroke();
+            }
+
+            ctx.beginPath();
+            ctx.moveTo(points[0].x, points[0].y);
+            for (let i = 1; i < sides; i++) {
+                ctx.lineTo(points[i].x, points[i].y);
+            }
+            ctx.closePath();
+            ctx.stroke();
+
+            const polygonNames = {
+                3: "Ισόπλευρο Τρίγωνο",
+                4: "Τετράγωνο",
+                5: "Πεντάγωνο",
+                6: "Εξάγωνο",
+                7: "Επτάγωνο",
+                8: "Οκτάγωνο",
+                9: "Εννεάγωνο",
+                10: "Δεκάγωνο",
+                11: "Ενδεκάγωνο",
+                12: "Δωδεκάγωνο"
+            };
+
+            const centralAngle = (360 / sides);
+            const angle = 180-centralAngle;
+            document.getElementById("info").innerHTML = `
+                <p><h4>Αριθμός πλευρών: ${sides}</h4> </p>
+                <p><h4>Όνομα πολυγώνου: ${polygonNames[sides] || "Άγνωστο"}</h4></p>
+                <p><h4>Κεντρική γωνία: ${centralAngle}°</h4></p>
+                <p><h4>Γωνία πολυγώνου: ${angle}°</h4></p>
+            `;
+        }
+    </script>
+</body>
+</html>
