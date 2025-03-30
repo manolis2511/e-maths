@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Επίλυση Πολυωνυμικής Εξίσωσης</title>
+    <link rel="stylesheet" href="../style.css">
+    <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+    <style>
+        input, button {width:200px; margin: 5px; padding: 5px; }
+        table {margin: auto; border-collapse: collapse; }
+        td {height: 5px; border: 1px solid black; padding: 5px; }
+        th {border: 1px solid black; padding: 5px; }
+    </style>
+</head>
+<body>
+    <header id="header"><h1>Επίλυση Πολυωνυμικής Εξίσωσης Ν-οστού Βαθμού</h1></header>
+    <h3>Εισάγετε τους συντελεστές της εξίσωσης, χωρισμένους με ",":</h3>
+    <input type="text" id="coefficients" placeholder="π.χ. 1,-3,-6,8,8,-8">
+    <button id="anotherButton" onclick="startSolving()">Λύση</button>
+    <div id="output"></div>
+    <footer id="footer">
+	    <div style="text-align: center; margin-bottom: 15px;">
+        <a href="polywnymikes.html" class="quiz-link" style="display: inline-block; font-size: 15px; color: white; text-decoration: none; margin: 0 10px;">
+            Ξεκινήστε από την αρχή
+        </a>-
+        <a href="../index.html" class="quiz-link" style="display: inline-block; font-size: 15px; color: white; text-decoration: none; margin: 0 10px;">
+            Αρχική Σελίδα
+        </a>-
+        <a href="../lykeio.html" class="quiz-link" style="display: inline-block; font-size: 15px; color: white; text-decoration: none; margin: 0 10px;">
+            Επιστροφή
+        </a>
+    </div>
+    <p>© 2025 Created by Παρα-school-ακης</p>
+    </footer>
+    <script>
+        function coefficientsToPolynomial(coeffs) {
+    let polynomial = "";
+    let degree = coeffs.length - 1;
+
+    for (let i = 0; i < coeffs.length; i++) {
+        let coef = coeffs[i];
+        let exp = degree - i;
+
+        if (coef !== 0) {
+            if (exp === degree){
+                if (coef === 1){
+                    polynomial += "x^{" + exp + "}";
+                }
+                else if (coef === -1){
+                    polynomial += "-x^{" + exp + "}";
+                }
+                else{
+                    polynomial += coef + "x^{" + exp + "}";
+                }
+            }
+            else if (exp === 1){
+                if (coef === 1){
+                    polynomial += "+x";
+                }
+                else if (coef === -1){
+                    polynomial += "-x";
+                }
+                else{
+                    if (coef<0){
+                        polynomial += coef + "x";
+                    }
+                    if (coef>0){
+                        polynomial += "+" + coef + "x";
+                    }
+                }
+            }
+            else if (exp === 0){
+                if (coef === 1){
+                    polynomial += "+1";
+                }
+                else if (coef === -1){
+                    polynomial += "-1";
+                }
+                else{
+                    if (coef<0){
+                        polynomial += coef;
+                    }
+                    if (coef>0){
+                        polynomial += "+" + coef;
+                    }
+                }
+            }
+            else {
+                if (coef === 1){
+                    polynomial += "+x^{" + exp + "}";
+                }
+                else if (coef === -1){
+                    polynomial += "-x^{" + exp + "}";
+                }
+                else{
+                    if (coef<0){
+                        polynomial += coef + "x^{" + exp + "}";
+                    }
+                    if (coef>0){
+                        polynomial += "+" + coef + "x^{" + exp + "}";
+                    }
+                }
+            }
+        }
+    }
+
+    return polynomial || "0";
+}
+
+
+
+        function findDivisors(coeffs) {
+            let constantTerm = coeffs[coeffs.length - 1];
+            let divisors = [];
+            for (let i = 1; i <= Math.abs(constantTerm); i++) {
+                if (constantTerm % i === 0) {
+                    divisors.push(i, -i);
+                }
+            }
+            return divisors;
+        }
+
+        function findRoot(coeffs, divisors) {
+            for (let divisor of divisors) {
+                let result = coeffs.reduce((acc, coef) => acc * divisor + coef, 0);
+                if (result === 0) return divisor;
+            }
+            return null;
+        }
+
+        function hornerTable(coeffs, root) {
+            let n = coeffs.length;
+            let row1 = [...coeffs];
+            let row2 = new Array(n - 1).fill(0);
+            let row3 = new Array(n).fill(0);
+            row3[0] = row1[0];
+
+            for (let i = 1; i < n; i++) {
+                row2[i - 1] = row3[i - 1] * root;
+                row3[i] = row1[i] + row2[i - 1];
+            }
+
+            let tableHTML = "<table><tr><th>Συντελεστές</th>" + row1.map(x => `<td>${x}</td>`).join("") + `<td >ρ=${root}</td></tr>`;
+            tableHTML += "<tr><th></th><td></td>" + row2.map(x => `<td>${x}</td>`).join("") + "</tr>";
+            tableHTML += "<tr><th>Αποτελέσματα</th>" + row3.map(x => `<td>${x}</td>`).join("") + "</tr></table>";
+            return { quotient: row3.slice(0, -1), remainder: row3[row3.length - 1], tableHTML };
+        }
+        function solveQuadratic(a, b, c, step) {
+    let discriminant = b * b - 4 * a * c;
+    let roots="";
+    let discriminantText="";
+    if (discriminant > 0) {
+        let root1 = (-b + Math.sqrt(discriminant)) / (2 * a);
+        let root2 = (-b - Math.sqrt(discriminant)) / (2 * a);
+        discriminantText += `H Διακρίνουσα είναι \\(Δ=β^2-4αγ=${b >= 0 ? '' : '('}${b}${b >= 0 ? '' : ')'}^2 - 4 \\cdot ${a >= 0 ? '' : '('}${a}${a >= 0 ? '' : ')'} \\cdot ${c >= 0 ? '' : '('}${c}${c >= 0 ? '' : ')'}=${discriminant}.\\)`;
+        roots += `\\( x_${step} = \\dfrac{-β + \\sqrt{\\Delta}}{2a} = \\dfrac{-${b >= 0 ? ' ' : '('}${b}${b >= 0 ? ' ' : ')'} + \\sqrt{${discriminant}}}{2 \\cdot ${a >= 0 ? ' ' : '('}${a}${a >= 0 ? ' ' : ')'}}= ${root1} \\)<br>
+                             \\( x_${step+1} = \\dfrac{-β - \\sqrt{\\Delta}}{2a} = \\dfrac{-${b >= 0 ? ' ' : '('}${b}${b >= 0 ? ' ' : ')'} - \\sqrt{${discriminant}}}{2 \\cdot ${a >= 0 ? ' ' : '('}${a}${a >= 0 ? ' ' : ')'}} = ${root2} \\)<br>
+                             Δύο ρίζες: \\(x_${step} = ${root1}\\), \\(x_${step+1} = ${root2}\\)`;
+    } else if (discriminant === 0) {
+        discriminantText += `H Διακρίνουσα είναι \\(Δ=β^2-4αγ=${b >= 0 ? '' : '('}${b}${b >= 0 ? '' : ')'}^2 - 4 \\cdot ${a >= 0 ? '' : '('}${a}${a >= 0 ? '' : ')'} \\cdot ${c >= 0 ? '' : '('}${c}${c >= 0 ? '' : ')'}=${discriminant}.\\)`;
+        let root = -b / (2 * a);
+        roots += `<p>\\( x = \\dfrac{-β}{2a}= \\dfrac{-${b >= 0 ? ' ' : '('}${b}${b >= 0 ? ' ' : ')'}}{2 \\cdot ${a >= 0 ? ' ' : '('}${a}${a >= 0 ? ' ' : ')'}}=${root} \\)</p> Άρα \\(x_${step} = x_${step+1} = ${root}\\)`;
+    } else {
+        discriminantText += `H Διακρίνουσα είναι \\(Δ=β^2-4αγ=${b >= 0 ? '' : '('}${b}${b >= 0 ? '' : ')'}^2 - 4 \\cdot ${a >= 0 ? '' : '('}${a}${a >= 0 ? '' : ')'} \\cdot ${c >= 0 ? '' : '('}${c}${c >= 0 ? '' : ')'}=${discriminant}.\\)`;
+        roots += "Δεν έχει άλλη ρίζα";
+    }
+
+    return `<h4>Λύση Δευτεροβάθμιας Εξίσωσης:</h4>
+            <p>${discriminantText}</p>
+            <p>${roots}</p>`;
+}
+
+function solvePolynomial(coeffs) {
+    let output = "";
+    let degree = coeffs.length - 1;
+    output += `<h4>Αρχικό Πολυώνυμο: \\(${coefficientsToPolynomial(coeffs)}\\)</h4>`;  
+    
+    for (let i = 0; i < degree - 2; i++) {
+        let divisors = findDivisors(coeffs);
+        let root = findRoot(coeffs, divisors);
+        if (!root) {
+            output += (i === 0) ? "<h4>Δεν βρέθηκαν ακέραιες ρίζες.</h4>" : "<h4>Δεν βρέθηκαν άλλες ακέραιες ρίζες.</h4>";
+            break;
+        }
+        let result = hornerTable(coeffs, root);
+        coeffs = result.quotient;
+        output += `<h4>Βήμα ${i + 1}:</h4>` + result.tableHTML + `Άρα \\(x_${i + 1}=${root}\\)`;
+        output += `<h4>Πολυώνυμο πηλίκου μετά το βήμα ${i + 1}: \\(${coefficientsToPolynomial(coeffs)}\\)</h4>`;  
+    }
+
+    // Αν καταλήξουμε σε πολυώνυμο 2ου βαθμού, καλούμε τη συνάρτηση της διακρίνουσας
+    if (coeffs.length === 3) {
+        let [a, b, c] = coeffs;
+        step = degree -1 ;
+        output += solveQuadratic(a, b, c, step);
+    }
+
+    document.getElementById("output").innerHTML = output;
+    MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+}
+
+        function startSolving() {
+            let input = document.getElementById("coefficients").value;
+            let coefficients = input.split(",").map(Number);
+            if (coefficients.length < 3) {
+              alert("Θέλουμε πολυώνυμο τουλάχιστον 2ου βαθμού!");
+            return;
+            }
+            solvePolynomial(coefficients);
+        }
+    </script>
+</body>
+</html>

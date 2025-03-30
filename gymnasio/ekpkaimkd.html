@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Υπολογισμός ΕΚΠ και ΜΚΔ</title>
+    <link rel="stylesheet" href="../style.css">
+    <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+    <style>
+        table { border-collapse: collapse; margin-top: 10px; }
+        td {width:20px; border: 1px dashed black; padding: 8px; text-align: center; }
+        th {border: 1px dashed black; border-left: 2px solid black; }
+    </style>
+</head>
+<body>
+    <header id="header">
+        <h1>Υπολογισμός ΕΚΠ και ΜΚΔ</h1>
+    </header>
+    <div>
+        <h4>α <input type="number" id="numA"min="1" placeholder="...">
+    β <input type="number" id="numB" min="1" placeholder="...">
+    γ <input type="number" id="numC" min="1" placeholder="..."></div>
+    <button id="anotherButton" onclick="calculate()">Υπολογισμός</button>
+    
+    <div id="output"></div>
+    <h3 id="result"></h3>
+    <footer id="footer">
+        <div style="text-align: center; margin-bottom: 15px;">
+            <a href="ekpkaimkd.html" class="quiz-link" style="display: inline-block; font-size: 15px; color: white; text-decoration: none; margin: 0 10px;">
+                Ξεκινήστε από την αρχή
+            </a>-
+            <a href="../index.html" class="quiz-link" style="display: inline-block; font-size: 15px; color: white; text-decoration: none; margin: 0 10px;">
+                Αρχική Σελίδα
+            </a>-
+            <a href="../gymnasio.html" class="quiz-link" style="display: inline-block; font-size: 15px; color: white; text-decoration: none; margin: 0 10px;">
+                Επιστροφή
+            </a>
+        </div>
+        <p>© 2025 Created by Παρα-school-ακης</p>
+    </footer>
+    <script>
+        function calculate() {
+            let a = parseInt(document.getElementById("numA").value);
+            let b = parseInt(document.getElementById("numB").value);
+            let c = document.getElementById("numC").value;
+            c = c ? parseInt(c) : Math.max(a,b);
+
+            if (isNaN(a) || isNaN(b) || a <= 0 || b <= 0 || c <= 0) {
+                alert("Παρακαλώ εισάγετε θετικούς αριθμούς.");
+                return;
+            }
+
+            let steps = []; // Αποθήκευση των βημάτων
+            let divisor = 2; // Ξεκινάμε από το 2
+            let ekpFactors = []; // Παράγοντες για το ΕΚΠ
+            let mkdFactors = []; // Παράγοντες για το ΜΚΔ
+            let tableHTML = "";
+            let lalala;
+
+            if (c==Math.max(a,b)){
+                tableHTML +=`<table><tr><td>${a} </td><td>${b} </td>`;
+                    lalala = 1;
+            }
+            else{
+                tableHTML += `<table><tr><td>${a} </td><td>${b} </td><td>${c} </td>`;
+                    lalala = 2;
+                }
+
+            while (a !== 1 || b !== 1 || c !== 1) {
+                let newA = a % divisor === 0 ? a / divisor : a;
+                let newB = b % divisor === 0 ? b / divisor : b;
+                let newC = c % divisor === 0 ? c / divisor : c;
+
+                let divisibleAny = (newA !== a) || (newB !== b) || (newC !== c);
+                let divisibleAll = (newA !== a) && (newB !== b) && (newC !== c);
+
+                if (divisibleAny) {
+                    steps.push({ a: newA, b: newB, c: newC, divisor: divisor});
+                    ekpFactors.push(divisor);
+                    if (divisibleAll) {
+                        mkdFactors.push(divisor);
+                    }
+                    a = newA;
+                    b = newB;
+                    c = newC;
+                    if (lalala === 1){
+                        tableHTML += `<th style="background-color: ${divisibleAll ? 'var(--hover-color)' : 'white'}; color: var(--text-color);">${divisor}</th></tr><tr><td>${a}</td><td>${b}</td>`;
+                    }
+                    else if(lalala === 2){ 
+                        tableHTML += `<th style="background-color: ${divisibleAll ? 'var(--hover-color)' : 'white'}; color: var(--text-color);">${divisor}</th></tr><tr><td>${a}</td><td>${b}</td><td>${c}</td>`;
+                    }
+                } else {
+                    divisor++; // Αν δεν διαιρείται κανείς, πάμε στον επόμενο αριθμό
+                    }
+            }
+            let ekp2 = "";
+            for (let i = 0 ; i <= ekpFactors.length-1 ; i++){
+                ekp2 += ekpFactors[i];
+                if(i!==ekpFactors.length-1){
+                    ekp2+="\\cdot"
+                }}
+            
+            let mkd2 = "";
+            for (let i = 0 ; i <= mkdFactors.length-1 ; i++){
+                mkd2 += mkdFactors[i];
+                if(i!==mkdFactors.length-1){
+                    mkd2+="\\cdot"
+                }}    
+
+            let ekp = ekpFactors.reduce((acc, num) => acc * num, 1);
+            let mkd = mkdFactors.reduce((acc, num) => acc * num, 1);
+
+            tableHTML += "<td style=border-right: '4px solid black'></td></table>";
+
+            // Εμφάνιση του πίνακα και των αποτελεσμάτων στην HTML
+            document.getElementById("output").innerHTML = tableHTML;
+            document.getElementById("result").innerHTML = ` \\(ΕΚΠ = ${ekp2}=${ekp}\\) <br>\\(ΜΚΔ = ${mkd2}=${mkd}\\)`;
+            MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+
+        }
+    </script>
+</body>
+</html>

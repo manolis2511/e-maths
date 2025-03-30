@@ -5,26 +5,43 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Παιχνίδι Ποσοστών</title>
     <link rel="stylesheet" href="../style.css">
+    <script type="text/javascript" async
+    src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML">
+    </script>
     <style>
         .grid-container { display: grid; gap: 2px; margin: 20px auto; }
-        .grid-item { width: 30px; height: 30px; background: lightgray; display: inline-block; cursor: pointer; }
+        .grid-item { width: 30px; height: 30px; background: var(--secondary-color); display: inline-block; cursor: pointer; }
         .selected { background: var(--hover-color); }
+        #totalCellsInput, #autoSelect {width: 80px;}
     </style>
 </head>
 <body>
     <header id="header"><h1>Παιχνίδι Ποσοστών</h1></header>
     <h3>Πόσα συνολικά τετράγωνα θα υπάρχουν</h3>
-    <div id="dimensions"><h4>Σύνολο τετραγώνων: <input id="answerInput" type="number" id="totalCellsInput" min="1" value="200">
+    <div id="dimensions"><h4>Σύνολο τετραγώνων: <input type="number" id="totalCellsInput" min="1" placeholder="...">
     <button id="anotherButton" onclick="generateGrid()">Δημιουργία Πλέγματος</button></h4></div>
     <div id="selection-mode"><h5>
     Αυτόματη επιλογή τετραγώνων
-    <input id="answerInput" type="number" id="autoSelect" min="1" value="100" placeholder="Επιλογή"> 
+    <input type="number" id="autoSelect" min="1" placeholder="..."> 
     <button id="anotherButton" onclick="autoSelectCells()">Επιλογή</button></h5></div>
     <div id="grid" class="grid-container"></div>
     <button id="anotherButton" onclick="calculatePercentage()">Υπολογισμός Ποσοστού</button>
-    <p id="result"></p>
+    <h4><p id="result"></p></h4>
     <button id="anotherButton" onclick="resetGame()">Επαναφορά</button>
-    
+    <footer id="footer">
+        <div style="text-align: center; margin-bottom: 15px;">
+            <a href="pososta.html" class="quiz-link" style="display: inline-block; font-size: 15px; color: white; text-decoration: none; margin: 0 10px;">
+                Επαναφορά
+            </a>-
+            <a href="../index.html" class="quiz-link" style="display: inline-block; font-size: 15px; color: white; text-decoration: none; margin: 0 10px;">
+                Αρχική Σελίδα
+            </a>-
+            <a href="../gymnasio.html" class="quiz-link" style="display: inline-block; font-size: 15px; color: white; text-decoration: none; margin: 0 10px;">
+                Επιστροφή
+            </a>
+        </div>
+        <p>© 2025 Created by Παρα-school-ακης</p>
+    </footer>
     <script>
         let totalCells = 0, selectedCells = 0;
         let gridWidth, gridHeight;
@@ -58,10 +75,10 @@
 
             const grid = document.getElementById("grid");
             grid.innerHTML = "";
-            grid.style.gridTemplateColumns = `repeat(${width}, 32px)`;
+            grid.style.gridTemplateColumns = `repeat(${height}, 32px)`;
             totalCells = width * height;
-            gridWidth = width;
-            gridHeight = height;
+            gridWidth = Math.max(width, height);
+            gridHeight = Math.min(height, width);
             selectedCells = 0;
 
             for (let i = 0; i < totalCells; i++) {
@@ -101,7 +118,8 @@
             if (totalCells === 0) return;
             let fraction = `${selectedCells}/${totalCells}`;
             let percentage = ((selectedCells / totalCells) * 100).toFixed(2);
-            document.getElementById("result").textContent = `Κλάσμα: ${fraction} | Ποσοστό: ${percentage}%`;
+            document.getElementById("result").textContent = `Κλάσμα: \\( \\dfrac{${selectedCells}}{${totalCells}}\\) | Ποσοστό:\\( ${percentage}\\%\\)`;
+            MathJax.Hub.Queue(["Typeset", MathJax.Hub, document.getElementById("result")]);
         }
 
         function resetGame() {
