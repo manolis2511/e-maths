@@ -22,13 +22,15 @@
 <body>
     <header id="header"><h1>Κανονικά Πολύγωνα</h1></header>
     <div class="quiz-info">Ένα πολύγωνο λέγεται <strong>κανονικό</strong>, αν όλες οι πλευρές του είναι μεταξύ τους ίσες και όλες οι γωνίες του είναι μεταξύ τους ίσες.</div><br>    
-    <div class="quiz-info">H κεντρική γωνία \( \omega \) ενός κανονικού v -γώνου είναι ίση με \( \omega = \dfrac{360^\circ}{v} \).</div><br>
-    <div class="quiz-info">Η γωνία \( \phi \) ενός κανονικού ν-γώνου είναι παραπληρωματική της κεντρικής γωνίας του ν-γώνου. \( \phi = 180^\circ - \omega \)</div>
+    <div class="category-container">
+        <div class="quiz-info">H κεντρική γωνία \( \omega \) ενός κανονικού v -γώνου είναι ίση με \( \omega = \dfrac{360^\circ}{v} \).</div><br>
+    <div class="quiz-info">Η γωνία \( \phi \) ενός κανονικού ν-γώνου είναι παραπληρωματική της κεντρικής γωνίας του ν-γώνου. \( \phi = 180^\circ - \omega \)</div></div>
     <label for="sides"><h4>Επιλέξτε αριθμό πλευρών:</h4></label>
-    <input type="number" id="sides" min="3" max="12" value="3">
+    <input type="number" id="sides" min="3" max="360" value="3">
     <button id="anotherButton" onclick="drawPolygon()">Σχεδίασε το πολύγωνο</button>
-    <canvas id="canvas" class="hidden" width="600" height="600"></canvas>
-    <div id="info"></div>
+    <div class="category-container">
+        <canvas id="canvas" class="hidden" width="600" height="600"></canvas>
+        <div id="info"></div></div>
     <footer id="footer">
         <div style="text-align: center; margin-bottom: 15px;">
             <a href="polygwna.html" class="quiz-link" style="display: inline-block; font-size: 15px; color: white; text-decoration: none; margin: 0 10px;">
@@ -44,10 +46,13 @@
         <p>© 2025 Created by Παρα-school-ακης</p>
     </footer>
     <script>
+        function numberToWords(num) {
+             return new Intl.NumberFormat("el-GR", { style: "spellout" }).format(num);
+        }
         function drawPolygon() {
             const sides = parseInt(document.getElementById("sides").value);
-            if (isNaN(sides) || sides < 3 || sides > 360) {
-                alert("Παρακαλώ εισάγετε έναν αριθμό μεταξύ 3 και 360.");
+            if (isNaN(sides) || sides < 3 || sides > 1500) {
+                alert("Παρακαλώ εισάγετε έναν αριθμό μεταξύ 3 και 1500.");
                 return;
             }
             
@@ -101,13 +106,15 @@
 
             const centralAngle = (360 / sides);
             const angle = 180-centralAngle;
+            const polygonName = polygonNames[sides] || sides + "-γωνο";
             document.getElementById("info").innerHTML = `
                 <p><h4>Αριθμός πλευρών: ${sides}</h4> </p>
-                <p><h4>Όνομα πολυγώνου: ${polygonNames[sides] || "Άγνωστο"}</h4></p>
+                <p><h4>Όνομα πολυγώνου: ${polygonName}</h4></p>
                 <p><h4>Κεντρική γωνία: ${centralAngle}°</h4></p>
                 <p><h4>Γωνία πολυγώνου: ${angle}°</h4></p>
             `;
         }
+        
     </script>
 </body>
 </html>

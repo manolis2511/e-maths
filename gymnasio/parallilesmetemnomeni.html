@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Γωνίες και Παράλληλες Ευθείες</title>
+    <link rel="stylesheet" href="../style.css">
+    <style>
+        svg { width: 500px; height: 400px; border: 1px solid black; }
+        line { stroke: black; stroke-width: 2; }
+        path {filter: none; stroke: blue; stroke-width: 5; display: none; }
+        .highlight { display: inline; }
+        .buttons { margin-top: 20px; }
+        button { margin: 5px; padding: 10px; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <h2>Γωνίες σε Παράλληλες Ευθείες</h2>
+    <svg viewBox="0 0 500 400">
+        <!-- Παράλληλες ευθείες -->
+        <line x1="50" y1="100" x2="450" y2="100" />
+        <text x="460" y="100">ε1</text>
+        <line x1="50" y1="300" x2="450" y2="300" />
+        <text x="460" y="300">ε2</text>
+
+        <!-- Τέμνουσα ευθεία -->
+        <line x1="180" y1="20" x2="300" y2="320" />
+        <text x="295" y="370">δ1</text>
+
+        <!-- Γωνίες -->
+        <path d="M 192 100 A 30 30 0 0 1 205 81" class="angle angle1" />
+        <path d="M 192 100 A 30 30 0 0 0 219 119" class="angle angle2" />
+        <path d="M 232 100 A 30 30 0 0 0 205 81" class="angle angle3" />
+        <path d="M 232 100 A 30 30 0 0 1 219 119" class="angle angle4" />
+        <path d="M 312 300 A 30 30 0 0 0 285 281" class="angle angle5" />
+        <path d="M 312 300 A 30 30 0 0 1 299 319" class="angle angle6" />
+        <path d="M 272 300 A 30 30 0 0 0 299 319" class="angle angle7" />
+        <path d="M 272 300 A 30 30 0 0 1 285 281" class="angle angle8" />
+    </svg>
+    
+    <div class="buttons">
+        <button onclick="highlightAngles('inside')">Εντος γωνίες</button>
+        <button onclick="highlightAngles('outside')">Εκτός γωνίες</button>
+        <button onclick="highlightAngles('epitaauta')">Επι τα αυτά</button>
+        <button onclick="highlightAngles('enallax')">Εναλλάξ</button>
+    </div>
+    
+    <p id="message"></p>
+    
+    <script>
+                let toggleEpitaauta = false;
+                let enallaxStep = 0;
+        function highlightAngles(type) {
+            document.querySelectorAll('.angle').forEach(el => el.classList.remove('highlight'));
+            let message = "";
+            if (type === 'inside') {
+              document.querySelector('.angle4').classList.add('highlight');
+              document.querySelector('.angle2').classList.add('highlight');
+              document.querySelector('.angle5').classList.add('highlight');
+              document.querySelector('.angle8').classList.add('highlight');
+              message = "";
+            }else if (type === 'outside') {
+                document.querySelector('.angle1').classList.add('highlight');
+                document.querySelector('.angle3').classList.add('highlight');
+                document.querySelector('.angle6').classList.add('highlight');
+                document.querySelector('.angle7').classList.add('highlight');
+                message = "";
+            } else if (type === 'epitaauta') {
+                if (!toggleEpitaauta) {
+                  document.querySelector('.angle1').classList.add('highlight');
+                  document.querySelector('.angle2').classList.add('highlight');
+                  document.querySelector('.angle7').classList.add('highlight');
+                  document.querySelector('.angle8').classList.add('highlight');
+                }else {
+            document.querySelector('.angle3').classList.add('highlight');
+            document.querySelector('.angle4').classList.add('highlight');
+            document.querySelector('.angle5').classList.add('highlight');
+            document.querySelector('.angle6').classList.add('highlight');
+              }toggleEpitaauta = !toggleEpitaauta;
+            } else if (type === 'enallax') {
+              enallaxStep = (enallaxStep + 1) % 8;
+              if (enallaxStep === 0){
+                document.querySelector('.angle1').classList.add('highlight');
+                document.querySelector('.angle5').classList.add('highlight');
+              }
+              else if(enallaxStep === 1){
+                document.querySelector('.angle4').classList.add('highlight');
+              document.querySelector('.angle8').classList.add('highlight');
+                
+              }
+              else if(enallaxStep === 2){
+                document.querySelector('.angle2').classList.add('highlight');
+                document.querySelector('.angle5').classList.add('highlight');
+              }
+              else if(enallaxStep === 3){
+                document.querySelector('.angle2').classList.add('highlight');
+                document.querySelector('.angle6').classList.add('highlight');
+              }
+              else if(enallaxStep === 4){
+                document.querySelector('.angle3').classList.add('highlight');
+                document.querySelector('.angle7').classList.add('highlight');
+              }
+              else if(enallaxStep === 5){
+                document.querySelector('.angle3').classList.add('highlight');
+                document.querySelector('.angle8').classList.add('highlight');
+              }
+              else if(enallaxStep === 6){
+                document.querySelector('.angle4').classList.add('highlight'); 
+                document.querySelector('.angle7').classList.add('highlight');
+              }else if(enallaxStep === 7){
+                document.querySelector('.angle1').classList.add('highlight');
+                document.querySelector('.angle6').classList.add('highlight');
+              }
+            }
+            document.getElementById('message').innerText = message;
+        }
+    </script>
+</body>
+</html>
