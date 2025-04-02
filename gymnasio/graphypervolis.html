@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Συμμετρία της y=a/x</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script type="text/javascript" async
+        src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML">
+window.onload = function() {
+    MathJax.typeset();
+};
+    </script>
+    <link rel="stylesheet" href="../style.css">
+    <style>
+        canvas { background: #f9f9f9; margin-bottom: 10px;}
+    </style>
+</head>
+<body>
+    <header id="header"><h1>Συμμετρία της \(y = \frac{α}{x}\)</h1></header>
+    <div><h4>Δώσε τιμή για α:
+    <input type="number" id="aValue" value="1" step="0.1"></h4></div>
+    <div>
+        <button id="anotherButton" onclick="drawGraph()">Σχεδίασε</button>
+    <button id="anotherButton" onclick="animateSymmetryX()">Άξονας Συμμετρίας \(y=x\)</button>
+    <button id="anotherButton" onclick="animateSymmetryY()">Άξονας Συμμετρίας \(y=-x\)</button>
+    <button id="anotherButton" onclick="animateSymmetry180()">Κέντρο Συμμετριας Ο</button>
+</div>
+
+    <canvas id="graphCanvas" width="500" height="500"></canvas>
+
+    <script>
+        let ctx = document.getElementById("graphCanvas").getContext("2d");
+        let animationFrame;
+
+        function drawGraph() {
+            let a = parseFloat(document.getElementById("aValue").value);
+            ctx.clearRect(0, 0, 500, 500);
+            drawAxes();
+            drawFunction(a);
+            drawSymmetryLines();
+        }
+
+        function drawAxes() {
+            ctx.strokeStyle = "black";
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.moveTo(250, 0);
+            ctx.lineTo(250, 500);
+            ctx.moveTo(0, 250);
+            ctx.lineTo(500, 250);
+            ctx.stroke();
+        }
+
+        function drawFunction(a) {
+            ctx.strokeStyle = "blue";
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            let first = true;
+            for (let x = -250; x <= 250; x++) {
+                if (x !== 0) {
+                    let y = a / (x / 50) * -50;
+                    if (first) {
+                        ctx.moveTo(250 + x, 250 + y);
+                        first = false;
+                    } else {
+                        ctx.lineTo(250 + x, 250 + y);
+                    }
+                }
+            }
+            ctx.stroke();
+        }
+
+        function drawSymmetryLines() {
+            ctx.strokeStyle = "red";
+            ctx.lineWidth = 1;
+            ctx.beginPath();
+            ctx.moveTo(0, 500);
+            ctx.lineTo(500, 0);
+            ctx.moveTo(0, 0);
+            ctx.lineTo(500, 500);
+            ctx.stroke();
+        }
+
+        function animateSymmetryX() {
+            let a = parseFloat(document.getElementById("aValue").value);
+            let step = 0;
+            let interval = setInterval(() => {
+                ctx.clearRect(0, 0, 500, 500);
+                drawAxes();
+                drawSymmetryLines();
+                drawFunction(a);
+                ctx.strokeStyle = "green";
+                ctx.lineWidth = 5;
+                ctx.beginPath();
+                let sqrtA = Math.abs(a)/a*Math.sqrt(Math.abs(a)) * 50; // Κλίμακα στον καμβά
+                    let first = true;
+                    if (a > 0){
+                    for (let x = -sqrtA; x <= 0; x++) {
+                        if (x !== 0) {
+                            let y = a / (x / 50) * (-50);
+                            let newX = (1 - step) * (250 + x) + step * (250 - y);
+                            let newY = (1 - step) * (250 + y) + step * (250 - x);
+                            if (first) {
+                                ctx.moveTo(newX, newY);
+                                first = false;
+                            } else {
+                                ctx.lineTo(newX, newY);
+                            }
+                        }
+                    }
+                    first = true;
+                    for (let x = sqrtA; x <= 250; x++) {
+                        if (x !== 0) {
+                            let y = a / (x / 50) * (-50);
+                            let newX = (1 - step) * (250 + x) + step * (250 - y);
+                            let newY = (1 - step) * (250 + y) + step * (250 - x);
+                            if (first) {
+                                ctx.moveTo(newX, newY);
+                                first = false;
+                            } else {
+                                ctx.lineTo(newX, newY);
+                            }
+                        }
+                    }}
+                    else{
+                    for (let x = -250; x <= 0; x++) {
+                        if (x !== 0) {
+                            let y = a / (x / 50) * (-50);
+                            let newX = (1 - step) * (250 + x) + step * (250 - y);
+                            let newY = (1 - step) * (250 + y) + step * (250 - x);
+                            if (first) {
+                                ctx.moveTo(newX, newY);
+                                first = false;
+                            } else {
+                                ctx.lineTo(newX, newY);
+                            }
+                        }
+                    }}
+                ctx.stroke();
+                step += 0.01;
+                if (step >= 1) clearInterval(interval);
+            }, 50);
+        }
+
+        function animateSymmetryY() {
+            let a = parseFloat(document.getElementById("aValue").value);
+            let step = 0;
+            let interval = setInterval(() => {
+                ctx.clearRect(0, 0, 500, 500);
+                drawAxes();
+                drawSymmetryLines();
+                drawFunction(a);
+                ctx.strokeStyle = "darkorange";
+                ctx.lineWidth = 5;
+                ctx.beginPath();
+                let sqrtA = Math.abs(a)/a*Math.sqrt(Math.abs(a)) * 50; // Κλίμακα στον καμβά
+                    let first = true;
+                    if (a > 0){
+                        for (let x = -250; x <= 0; x++) {
+                            if (x !== 0) {
+                                let y = a / (x / 50) * (-50);
+                                let newX = step * (250 + x) + (1 - step) * (250 + y);
+                                let newY = step * (250 + y) + (1 - step) * (250 + x);
+                                if (first) {
+                                    ctx.moveTo(newX, newY);
+                                    first = false;
+                                } else {
+                                    ctx.lineTo(newX, newY);
+                            }
+                        }
+                    }}
+                    else{
+                        for (let x = -250; x <= sqrtA; x++) {
+                            if (x !== 0) {
+                                let y = a / (x / 50) * (-50);
+                                let newX = (1 - step) * (250 + x) + step * (250 + y);
+                                let newY = (1 - step) * (250 + y) + step * (250 + x);
+                                if (first) {
+                                    ctx.moveTo(newX, newY);
+                                    first = false;
+                                } else {
+                                    ctx.lineTo(newX, newY);
+                                }
+                            }
+                        }
+                        first = true;
+                        for (let x = 0; x <= -sqrtA; x++) {
+                            if (x !== 0) {
+                                let y = a / (x / 50) * (-50);
+                                let newX = (1 - step) * (250 + x) + step * (250 + y);
+                                let newY = (1 - step) * (250 + y) + step * (250 + x);
+                                if (first) {
+                                    ctx.moveTo(newX, newY);
+                                    first = false;
+                                } else {
+                                    ctx.lineTo(newX, newY);
+                                }
+                            }
+                        }
+                    }
+                ctx.stroke();
+                step += 0.01;
+                if (step >= 1) clearInterval(interval);
+            }, 50);
+        }
+
+
+        function animateSymmetry180() {
+    let a = parseFloat(document.getElementById("aValue").value);
+    let step = 0;
+    let interval = setInterval(() => {
+        ctx.clearRect(0, 0, 500, 500);
+        drawAxes();
+        drawSymmetryLines();
+        // Εμφανίζουμε την αρχική γραφική παράσταση
+        drawFunction(a);
+
+        // Στη συνέχεια, ξεκινάμε την περιστροφή της γραφικής παράστασης
+        ctx.strokeStyle = "purple";
+        ctx.lineWidth = 5;
+        ctx.beginPath();
+        let first = true;
+
+        // Διατρέχουμε τα σημεία της γραφικής παράστασης
+        for (let x = 0; x <= 250; x++) {
+            if (x !== 0) {
+                let y = a / (x / 50) * -50; // Υπολογισμός y για το αρχικό σημείο
+                // Υπολογίζουμε τα νέα x και y με βάση το βήμα
+                let newX = (1 - step) * (x) + step * (-x);  // Μεταφορά του x στο αντίθετό του
+                let newY = (1 - step) * (y) + step * (-y);  // Μεταφορά του y στο αντίθετό του
+
+                // Σχεδιάζουμε την περιστροφή
+                if (first) {
+                    ctx.moveTo(250 + newX, 250 + newY); // Μετατόπιση στην περιοχή του καμβά
+                    first = false;
+                } else {
+                    ctx.lineTo(250 + newX, 250 + newY);
+                }
+            }
+        }
+        ctx.stroke();
+        step += 0.01;
+        if (step >= 1) clearInterval(interval);
+    }, 50);
+}
+    </script>
+    <footer id="footer">
+        <div style="text-align: center; margin-bottom: 15px;">
+            <a href="graphypervolis.html" class="quiz-link" style="display: inline-block; font-size: 15px; color: white; text-decoration: none; margin: 0 10px;">
+                Ξεκινήστε από την αρχή
+            </a>-
+            <a href="../index.html" class="quiz-link" style="display: inline-block; font-size: 15px; color: white; text-decoration: none; margin: 0 10px;">
+                Αρχική Σελίδα
+            </a>-
+            <a href="../gymnasio.html" class="quiz-link" style="display: inline-block; font-size: 15px; color: white; text-decoration: none; margin: 0 10px;">
+                Επιστροφή
+            </a>
+        </div>
+        <p>© 2025 Created by Παρα-school-ακης</p>
+    </footer>
+</body>
+</html>
